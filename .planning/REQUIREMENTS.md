@@ -107,56 +107,56 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUN-01 | — | Pending |
-| FOUN-02 | — | Pending |
-| FOUN-03 | — | Pending |
-| FOUN-04 | — | Pending |
-| FOUN-05 | — | Pending |
-| SCAF-01 | — | Pending |
-| SCAF-02 | — | Pending |
-| SCAF-03 | — | Pending |
-| TMPL-01 | — | Pending |
-| TMPL-02 | — | Pending |
-| TMPL-03 | — | Pending |
-| TMPL-04 | — | Pending |
-| TMPL-05 | — | Pending |
-| TMPL-06 | — | Pending |
-| TMPL-07 | — | Pending |
-| TMPL-08 | — | Pending |
-| TMPL-09 | — | Pending |
-| TMPL-10 | — | Pending |
-| TMPL-11 | — | Pending |
-| TMPL-12 | — | Pending |
-| TMPL-13 | — | Pending |
-| META-01 | — | Pending |
-| META-02 | — | Pending |
-| META-03 | — | Pending |
-| META-04 | — | Pending |
-| META-05 | — | Pending |
-| META-06 | — | Pending |
-| META-07 | — | Pending |
-| META-08 | — | Pending |
-| META-09 | — | Pending |
-| META-10 | — | Pending |
-| YAML-01 | — | Pending |
-| YAML-02 | — | Pending |
-| YAML-03 | — | Pending |
-| DOCS-01 | — | Pending |
-| DOCS-02 | — | Pending |
-| DOCS-03 | — | Pending |
-| DOCS-04 | — | Pending |
-| DOCS-05 | — | Pending |
-| DOCS-06 | — | Pending |
-| TEST-01 | — | Pending |
-| TEST-02 | — | Pending |
-| TEST-03 | — | Pending |
-| TEST-04 | — | Pending |
+| FOUN-01 | Phase 1 | Pending |
+| FOUN-02 | Phase 1 | Pending |
+| FOUN-03 | Phase 1 | Pending |
+| FOUN-04 | Phase 1 | Pending |
+| FOUN-05 | Phase 1 | Pending |
+| SCAF-01 | Phase 1 | Pending |
+| SCAF-02 | Phase 3 | Pending |
+| SCAF-03 | Phase 3 | Pending |
+| TMPL-01 | Phase 3 | Pending |
+| TMPL-02 | Phase 3 | Pending |
+| TMPL-03 | Phase 3 | Pending |
+| TMPL-04 | Phase 3 | Pending |
+| TMPL-05 | Phase 3 | Pending |
+| TMPL-06 | Phase 3 | Pending |
+| TMPL-07 | Phase 3 | Pending |
+| TMPL-08 | Phase 3 | Pending |
+| TMPL-09 | Phase 3 | Pending |
+| TMPL-10 | Phase 3 | Pending |
+| TMPL-11 | Phase 3 | Pending |
+| TMPL-12 | Phase 3 | Pending |
+| TMPL-13 | Phase 3 | Pending |
+| META-01 | Phase 2 | Pending |
+| META-02 | Phase 2 | Pending |
+| META-03 | Phase 2 | Pending |
+| META-04 | Phase 2 | Pending |
+| META-05 | Phase 2 | Pending |
+| META-06 | Phase 2 | Pending |
+| META-07 | Phase 2 | Pending |
+| META-08 | Phase 2 | Pending |
+| META-09 | Phase 2 | Pending |
+| META-10 | Phase 2 | Pending |
+| YAML-01 | Phase 2 | Pending |
+| YAML-02 | Phase 2 | Pending |
+| YAML-03 | Phase 2 | Pending |
+| DOCS-01 | Phase 4 | Pending |
+| DOCS-02 | Phase 4 | Pending |
+| DOCS-03 | Phase 4 | Pending |
+| DOCS-04 | Phase 4 | Pending |
+| DOCS-05 | Phase 4 | Pending |
+| DOCS-06 | Phase 4 | Pending |
+| TEST-01 | Phase 4 | Pending |
+| TEST-02 | Phase 4 | Pending |
+| TEST-03 | Phase 4 | Pending |
+| TEST-04 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 43 total
-- Mapped to phases: 0
-- Unmapped: 43
+- Mapped to phases: 43
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-21*
-*Last updated: 2026-03-21 after initial definition*
+*Last updated: 2026-03-21 — traceability filled in after roadmap creation*
