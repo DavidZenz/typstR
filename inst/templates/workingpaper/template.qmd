@@ -1,0 +1,29 @@
+---
+title: "Working Paper Title"
+author:
+  - name: "Author One"
+  - name: "Author Two"
+abstract: |
+  Replace this placeholder with your abstract. This paper examines...
+bibliography: references.bib
+format:
+  typstR-workingpaper: default
+---
+
+## Introduction
+
+Introduce the research question here. @smith2020 provide relevant background.
+
+## Data and Methods
+
+Describe data sources and empirical strategy.
+
+## Results
+
+Present main findings.
+
+## Conclusion
+
+Summarize contributions and implications.
+
+## References
