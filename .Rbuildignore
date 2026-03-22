@@ -1,0 +1,15 @@
+^\.planning$
+^BLUEPRINT\.md$
+^BRANDIN_HOOKS\.md$
+^DESIGN_PRINCIPLES\.md$
+^DOCUMENTATION_PLAN\.md$
+^EXAMPLE_API\.md$
+^EXAMPLE_API\.mdes$
+^PUB_FORMATS\.md$
+^RENDERING_STRATEGY\.md$
+^STRUCTURE\.md$
+^TABLE_FIG_STRATEGY\.md$
+^VALID_STRATEGY\.md$
+^\.github$
+^LICENSE\.md$
+^_extensions$
