@@ -29,7 +29,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. `render_pub("my-paper/template.qmd")` produces a PDF without errors on any machine with Quarto installed
   4. `render_working_paper("my-paper/template.qmd")` works as a convenience alias and produces the same PDF
   5. The extension is discovered by Quarto from _extensions/ in the user project, not from the R package install path
-**Plans**: TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 01-01-PLAN.md -- Package skeleton and Quarto extension with Typst template
+- [ ] 01-02-PLAN.md -- Scaffolding function and template files
+- [ ] 01-03-PLAN.md -- Render wrappers (render_pub, render_working_paper)
 
 ### Phase 2: Metadata Helpers and YAML Interface
 **Goal**: Users can express all manuscript metadata in R or YAML and have it appear correctly in the rendered PDF
@@ -74,7 +79,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Skeleton and Pipeline | 0/TBD | Not started | - |
+| 1. Skeleton and Pipeline | 0/3 | Planning complete | - |
 | 2. Metadata Helpers and YAML Interface | 0/TBD | Not started | - |
 | 3. Typst Templates, Branding, and Additional Formats | 0/TBD | Not started | - |
 | 4. Tests, Documentation, and CRAN Hardening | 0/TBD | Not started | - |
