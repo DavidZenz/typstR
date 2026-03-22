@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in-progress
-stopped_at: "Completed 01-01-PLAN.md"
-last_updated: "2026-03-22T19:12:00Z"
+status: executing
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-03-22T19:17:53.562Z"
 last_activity: 2026-03-22 — Plan 01-01 complete; R package skeleton + Quarto extension created
 progress:
   total_phases: 4
   completed_phases: 0
-  total_plans: 4
-  completed_plans: 1
+  total_plans: 3
+  completed_plans: 2
   percent: 10
 ---
 
@@ -50,6 +50,7 @@ Progress: [█░░░░░░░░░] 10%
 - Trend: —
 
 *Updated after each plan completion*
+| Phase 01-skeleton-and-pipeline P02 | 2 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,8 @@ Recent decisions affecting current work:
 - Format key in _extension.yml is 'workingpaper' (not 'typst') — Quarto resolves as 'typstR-workingpaper'
 - Monolithic single-file Typst template for Phase 1 — modular refactor planned for Phase 3
 - Linux Libertine serif font selected for academic typographic baseline
+- [Phase 01-skeleton-and-pipeline]: fs::file_copy() for individual template files to avoid nesting workingpaper/ subdirectory in user project
+- [Phase 01-skeleton-and-pipeline]: system.file with mustWork = TRUE ensures clear error if package is not installed
 
 ### Pending Todos
 
@@ -77,6 +80,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-22T19:12:00Z
-Stopped at: Completed 01-01-PLAN.md
-Resume file: .planning/phases/01-skeleton-and-pipeline/01-02-PLAN.md
+Last session: 2026-03-22T19:17:53.560Z
+Stopped at: Completed 01-02-PLAN.md
+Resume file: None

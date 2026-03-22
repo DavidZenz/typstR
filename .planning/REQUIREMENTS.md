@@ -11,13 +11,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **FOUN-01**: Package has CRAN-ready skeleton (DESCRIPTION, NAMESPACE, roxygen2, R CMD check clean)
 - [x] **FOUN-02**: Quarto extension bundled in inst/quarto/extensions/typstR/ with _extension.yml
-- [ ] **FOUN-03**: Extension copy mechanism copies extension into user project's _extensions/ on scaffold
+- [x] **FOUN-03**: Extension copy mechanism copies extension into user project's _extensions/ on scaffold
 - [ ] **FOUN-04**: render_pub() renders any typstR format to PDF via quarto::quarto_render()
 - [ ] **FOUN-05**: render_working_paper() convenience wrapper for working paper format
 
 ### Scaffolding
 
-- [ ] **SCAF-01**: create_working_paper() generates project with template.qmd, _quarto.yml, references.bib, and extension
+- [x] **SCAF-01**: create_working_paper() generates project with template.qmd, _quarto.yml, references.bib, and extension
 - [ ] **SCAF-02**: create_article() generates project with article template and extension
 - [ ] **SCAF-03**: create_policy_brief() generates project with policy brief template and extension
 
@@ -109,10 +109,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | FOUN-01 | Phase 1 | Complete |
 | FOUN-02 | Phase 1 | Complete |
-| FOUN-03 | Phase 1 | Pending |
+| FOUN-03 | Phase 1 | Complete |
 | FOUN-04 | Phase 1 | Pending |
 | FOUN-05 | Phase 1 | Pending |
-| SCAF-01 | Phase 1 | Pending |
+| SCAF-01 | Phase 1 | Complete |
 | SCAF-02 | Phase 3 | Pending |
 | SCAF-03 | Phase 3 | Pending |
 | TMPL-01 | Phase 3 | Pending |
