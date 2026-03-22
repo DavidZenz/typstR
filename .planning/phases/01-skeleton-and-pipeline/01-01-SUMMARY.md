@@ -118,6 +118,10 @@ None — no external service configuration required.
 - Extension structure validated — Plan 02 can implement `create_working_paper()` to copy from inst/
 - All DESCRIPTION imports declared — Plan 03 (render wrappers) can use quarto, fs, cli without DESCRIPTION changes
 
+## Self-Check: PASSED
+
+All claimed files exist on disk; all task commits (b997960, 4a46167) confirmed in git log.
+
 ---
 *Phase: 01-skeleton-and-pipeline*
 *Completed: 2026-03-22*

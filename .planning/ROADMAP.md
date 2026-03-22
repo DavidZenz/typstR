@@ -12,7 +12,7 @@ typstR ships as four sequential phases that respect a strict dependency chain: t
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Skeleton and Pipeline** - CRAN-ready package skeleton, extension bundling, scaffolding for working papers, and an end-to-end render that produces a PDF
+- [x] **Phase 1: Skeleton and Pipeline** - CRAN-ready package skeleton, extension bundling, scaffolding for working papers, and an end-to-end render that produces a PDF (completed 2026-03-22)
 - [ ] **Phase 2: Metadata Helpers and YAML Interface** - All R metadata helper functions and systematic YAML-to-Typst wiring via typst-show.typ
 - [ ] **Phase 3: Typst Templates, Branding, and Additional Formats** - Modular Typst template layer, full branding YAML roundtrip, article and policy-brief formats, and format-specific scaffolding
 - [ ] **Phase 4: Tests, Documentation, and CRAN Hardening** - Full test suite, all vignettes, roxygen2 docs, and R CMD check clean across environments without Quarto
@@ -29,7 +29,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. `render_pub("my-paper/template.qmd")` produces a PDF without errors on any machine with Quarto installed
   4. `render_working_paper("my-paper/template.qmd")` works as a convenience alias and produces the same PDF
   5. The extension is discovered by Quarto from _extensions/ in the user project, not from the R package install path
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [x] 01-01-PLAN.md -- Package skeleton and Quarto extension with Typst template
@@ -79,7 +79,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Skeleton and Pipeline | 2/3 | In Progress|  |
+| 1. Skeleton and Pipeline | 3/3 | Complete   | 2026-03-22 |
 | 2. Metadata Helpers and YAML Interface | 0/TBD | Not started | - |
 | 3. Typst Templates, Branding, and Additional Formats | 0/TBD | Not started | - |
 | 4. Tests, Documentation, and CRAN Hardening | 0/TBD | Not started | - |
