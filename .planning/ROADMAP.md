@@ -79,7 +79,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Skeleton and Pipeline | 3/3 | Complete   | 2026-03-22 |
+| 1. Skeleton and Pipeline | 3/3 | Complete    | 2026-03-22 |
 | 2. Metadata Helpers and YAML Interface | 0/TBD | Not started | - |
 | 3. Typst Templates, Branding, and Additional Formats | 0/TBD | Not started | - |
 | 4. Tests, Documentation, and CRAN Hardening | 0/TBD | Not started | - |
