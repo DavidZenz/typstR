@@ -32,7 +32,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Package skeleton and Quarto extension with Typst template
+- [x] 01-01-PLAN.md -- Package skeleton and Quarto extension with Typst template
 - [ ] 01-02-PLAN.md -- Scaffolding function and template files
 - [ ] 01-03-PLAN.md -- Render wrappers (render_pub, render_working_paper)
 
@@ -79,7 +79,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Skeleton and Pipeline | 0/3 | Planning complete | - |
+| 1. Skeleton and Pipeline | 1/3 | In progress | - |
 | 2. Metadata Helpers and YAML Interface | 0/TBD | Not started | - |
 | 3. Typst Templates, Branding, and Additional Formats | 0/TBD | Not started | - |
 | 4. Tests, Documentation, and CRAN Hardening | 0/TBD | Not started | - |

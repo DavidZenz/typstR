@@ -9,8 +9,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Package Foundation
 
-- [ ] **FOUN-01**: Package has CRAN-ready skeleton (DESCRIPTION, NAMESPACE, roxygen2, R CMD check clean)
-- [ ] **FOUN-02**: Quarto extension bundled in inst/quarto/extensions/typstR/ with _extension.yml
+- [x] **FOUN-01**: Package has CRAN-ready skeleton (DESCRIPTION, NAMESPACE, roxygen2, R CMD check clean)
+- [x] **FOUN-02**: Quarto extension bundled in inst/quarto/extensions/typstR/ with _extension.yml
 - [ ] **FOUN-03**: Extension copy mechanism copies extension into user project's _extensions/ on scaffold
 - [ ] **FOUN-04**: render_pub() renders any typstR format to PDF via quarto::quarto_render()
 - [ ] **FOUN-05**: render_working_paper() convenience wrapper for working paper format
@@ -107,8 +107,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUN-01 | Phase 1 | Pending |
-| FOUN-02 | Phase 1 | Pending |
+| FOUN-01 | Phase 1 | Complete |
+| FOUN-02 | Phase 1 | Complete |
 | FOUN-03 | Phase 1 | Pending |
 | FOUN-04 | Phase 1 | Pending |
 | FOUN-05 | Phase 1 | Pending |
