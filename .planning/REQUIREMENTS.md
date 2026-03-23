@@ -52,9 +52,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### YAML Interface
 
-- [ ] **YAML-01**: typstR: namespace in YAML front matter for package-specific fields
-- [ ] **YAML-02**: typst-show.typ correctly wires all YAML fields to Typst template variables
-- [ ] **YAML-03**: Standard Quarto YAML fields (toc, fig-cap-location, etc.) work as expected
+- [x] **YAML-01**: typstR: namespace in YAML front matter for package-specific fields
+- [x] **YAML-02**: typst-show.typ correctly wires all YAML fields to Typst template variables
+- [x] **YAML-03**: Standard Quarto YAML fields (toc, fig-cap-location, etc.) work as expected
 
 ### Documentation
 
@@ -138,9 +138,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | META-08 | Phase 2 | Complete |
 | META-09 | Phase 2 | Complete |
 | META-10 | Phase 2 | Complete |
-| YAML-01 | Phase 2 | Pending |
-| YAML-02 | Phase 2 | Pending |
-| YAML-03 | Phase 2 | Pending |
+| YAML-01 | Phase 2 | Complete |
+| YAML-02 | Phase 2 | Complete |
+| YAML-03 | Phase 2 | Complete |
 | DOCS-01 | Phase 4 | Pending |
 | DOCS-02 | Phase 4 | Pending |
 | DOCS-03 | Phase 4 | Pending |

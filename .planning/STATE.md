@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-02-PLAN.md
-last_updated: "2026-03-23T08:47:16.545Z"
+stopped_at: Completed 02-03-PLAN.md
+last_updated: "2026-03-23T08:52:01.182Z"
 last_activity: 2026-03-22 — Plans 01-02 and 01-03 complete; scaffolding + render wrappers; full pipeline functional
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 7
-  completed_plans: 5
+  completed_plans: 6
   percent: 75
 ---
 
@@ -52,6 +52,7 @@ Progress: [████████░░] 75%
 *Updated after each plan completion*
 | Phase 02-metadata-helpers-and-yaml-interface P01 | 4 | 1 tasks | 3 files |
 | Phase 02-metadata-helpers-and-yaml-interface P02-02 | 3 | 2 tasks | 5 files |
+| Phase 02-metadata-helpers-and-yaml-interface P03 | 8 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,9 @@ Recent decisions affecting current work:
 - [Phase 02-01]: manuscript_meta() calls unclass() on nested author/affiliation objects before assembly — ensures yaml::as.yaml() produces clean nested YAML
 - [Phase 02-metadata-helpers-and-yaml-interface]: keywords() validates per-argument via list(...) + vapply to prevent R c() coercion silencing type errors
 - [Phase 02-metadata-helpers-and-yaml-interface]: fig_note and tab_note kept as separate functions (not aliases) to allow divergent Typst styling in Phase 3
+- [Phase 02-metadata-helpers-and-yaml-interface]: typst-show.typ uses outer $if(typstR)$ guard wrapping all namespace field conditionals for clean fallback when block absent
+- [Phase 02-metadata-helpers-and-yaml-interface]: Content blocks [...] used for all free-text Typst fields (acknowledgements, funding, data-availability, code-availability) to survive Pandoc Markdown parsing
+- [Phase 02-metadata-helpers-and-yaml-interface]: Hyphenated YAML keys (report-number, data-availability, code-availability) kept as-is in typst-show.typ; flagged for smoke-test render validation before Phase 3
 
 ### Pending Todos
 
@@ -89,6 +93,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-23T08:47:16.542Z
-Stopped at: Completed 02-02-PLAN.md
+Last session: 2026-03-23T08:52:01.179Z
+Stopped at: Completed 02-03-PLAN.md
 Resume file: None
