@@ -31,7 +31,7 @@
 
       // Collect affiliation indices for this author
       let sups = author-affs.map(aff-ref => {
-        let aff-id = if type(aff-ref) == "dictionary" {
+        let aff-id = if type(aff-ref) == dictionary {
           aff-ref.at("ref", default: aff-ref.at("id", default: ""))
         } else {
           str(aff-ref)
@@ -42,10 +42,11 @@
 
       let is-corresponding = author.at("corresponding", default: false)
 
+      let corr-mark = if is-corresponding { [\*] } else { [] }
       if sups.len() > 0 {
-        [#name#super(sups.join(","))#if is-corresponding [*]]
+        [#name#super(sups.join(","))#corr-mark]
       } else {
-        [#name#if is-corresponding [*]]
+        [#name#corr-mark]
       }
     }).join([, ])
   ]

@@ -13,7 +13,7 @@
 // Top-level `affiliations` is the deduplicated list of affiliation objects.
 // typstR: namespace fields come through as Pandoc metadata variables.
 
-#import "formats/workingpaper.typ": working-paper
+#import "_extensions/typstR/formats/workingpaper.typ": working-paper
 
 #show: working-paper.with(
   $if(title)$
