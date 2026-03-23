@@ -8,37 +8,37 @@ An R package for creating publication-ready scientific documents using Quarto + 
 
 Users can go from `create_working_paper("my-paper")` to a polished, branded PDF in minutes — no Typst or LaTeX knowledge required.
 
+## Current State
+
+- **Version:** v1.0 (Released 2026-03-23)
+- **Status:** Complete CRAN-ready foundation with working-paper, article, and policy-brief formats.
+- **Milestone Archive:** [.planning/milestones/v1.0-ROADMAP.md](.planning/milestones/v1.0-ROADMAP.md)
+
 ## Requirements
 
 ### Validated
 
-<!-- Shipped and confirmed valuable. -->
-
-(None yet — ship to validate)
+- [x] Quarto extension bundled inside the R package
+- [x] Three publication formats: workingpaper, article, policy-brief
+- [x] Modular Typst template layer (base, titleblock, authors, abstract, bibliography, floats, appendix, branding)
+- [x] Project scaffolding functions: create_working_paper(), create_article(), create_policy_brief()
+- [x] Metadata helpers: author(), affiliation(), manuscript_meta(), funding(), data_availability(), code_availability()
+- [x] Publication helpers: jel_codes(), keywords(), fig_note(), tab_note(), appendix_title(), report_number()
+- [x] Validation/diagnostics: check_typst(), check_quarto(), check_typstR(), validate_manuscript()
+- [x] Render wrappers: render_pub(), render_working_paper()
+- [x] Branding hooks: logo, fonts, colors, margins, footer, disclaimer page — configurable via YAML
+- [x] Anonymized/review mode for article format
+- [x] YAML-driven metadata interface (typstR: block in front matter)
+- [x] Examples and starter templates for each format
+- [x] CRAN-ready package structure (R CMD check clean)
+- [x] Documentation: README, 3 vignettes (getting-started, working-papers, customizing-branding)
+- [x] Test suite covering metadata, validation, render helpers, and project creation
 
 ### Active
 
-<!-- Current scope. Building toward these. -->
-
-- [ ] Quarto extension bundled inside the R package (inst/quarto/extensions/typstR/)
-- [ ] Three publication formats: workingpaper, article, policy-brief
-- [ ] Modular Typst template layer (base, titleblock, authors, abstract, bibliography, floats, appendix, branding)
-- [ ] Project scaffolding functions: create_working_paper(), create_article(), create_policy_brief()
-- [ ] Metadata helpers: author(), affiliation(), manuscript_meta(), funding(), data_availability(), code_availability()
-- [ ] Publication helpers: jel_codes(), keywords(), fig_note(), tab_note(), appendix_title(), report_number()
-- [ ] Validation/diagnostics: check_typst(), check_quarto(), check_typstR(), validate_manuscript()
-- [ ] Render wrappers: render_pub(), render_working_paper()
-- [ ] Branding hooks: logo, fonts, colors, margins, footer, disclaimer page — configurable via YAML
-- [ ] Anonymized/review mode for article format
-- [ ] YAML-driven metadata interface (typstR: block in front matter)
-- [ ] Examples and starter templates for each format
-- [ ] CRAN-ready package structure (R CMD check clean, proper DESCRIPTION/NAMESPACE)
-- [ ] Documentation: README, vignettes (getting-started, working-papers, customizing-branding)
-- [ ] Test suite covering metadata, validation, render helpers, and project creation
+*To be defined via `/gsd:new-milestone`*
 
 ### Out of Scope
-
-<!-- Explicit boundaries. Includes reasoning to prevent re-adding. -->
 
 - Full journal submission compatibility for many publishers — too broad for v0.1, revisit after base formats mature
 - Direct import of LaTeX .cls or .sty files — fundamentally different system, not a conversion tool
@@ -66,15 +66,13 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 
 ## Key Decisions
 
-<!-- Decisions that constrain future work. Add throughout project lifecycle. -->
-
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| All three formats in v0.1 (workingpaper, article, brief) | They share most Typst template layer; shipping together is marginal extra work | — Pending |
-| Depend on quarto R package | Needed for render wrappers; natural integration point | — Pending |
-| Target CRAN from the start | Enforces good package hygiene; broader distribution | — Pending |
-| Modular Typst templates | Separate .typ files for each concern (titleblock, authors, etc.) — easier to maintain and customize | — Pending |
-| Branding via YAML, not Typst editing | Users should adapt output without touching Typst internals | — Pending |
+| All three formats in v1.0 (workingpaper, article, brief) | They share most Typst template layer; shipping together was marginal extra work | ✓ Satisfied |
+| Depend on quarto R package | Needed for render wrappers; natural integration point | ✓ Satisfied |
+| Target CRAN from the start | Enforces good package hygiene; broader distribution | ✓ Satisfied |
+| Modular Typst templates | Separate .typ files for each concern — easier to maintain and customize | ✓ Satisfied |
+| Branding via YAML, not Typst editing | Users should adapt output without touching Typst internals | ✓ Satisfied |
 
 ---
-*Last updated: 2026-03-21 after initialization*
+*Last updated: 2026-03-23 after v1.0 release*
