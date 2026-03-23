@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-04-PLAN.md
-last_updated: "2026-03-23T10:54:25.343Z"
+stopped_at: "Completed 03-05-PLAN.md (Task 2: checkpoint:human-verify pending)"
+last_updated: "2026-03-23T11:24:03.048Z"
 last_activity: 2026-03-22 — Plans 01-02 and 01-03 complete; scaffolding + render wrappers; full pipeline functional
 progress:
   total_phases: 4
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 12
-  completed_plans: 11
+  completed_plans: 12
   percent: 75
 ---
 
@@ -58,6 +58,7 @@ Progress: [████████░░] 75%
 | Phase 03-typst-templates-branding-and-additional-formats P02 | 2 | 2 tasks | 4 files |
 | Phase 03-typst-templates-branding-and-additional-formats P03 | 8 | 2 tasks | 4 files |
 | Phase 03-typst-templates-branding-and-additional-formats P04 | 8 | 2 tasks | 9 files |
+| Phase 03-typst-templates-branding-and-additional-formats P05 | 20 | 1 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -99,6 +100,8 @@ Recent decisions affecting current work:
 - [Phase 03-typst-templates-branding-and-additional-formats]: show-orcid parameter added to render-author-block with default true — backward compatible; brief sets false
 - [Phase 03-typst-templates-branding-and-additional-formats]: Article template includes JEL codes (omit report-number) — articles are academic format, brief is policy format without JEL
 - [Phase 03-typst-templates-branding-and-additional-formats]: Policy brief template includes report-number (PB 001) but no JEL codes or acknowledgements — matches format-variant: brief semantics
+- [Phase 03-typst-templates-branding-and-additional-formats]: rlang removed from DESCRIPTION Imports — not used anywhere in package R code
+- [Phase 03-typst-templates-branding-and-additional-formats]: yaml moved from Imports to Suggests — only used in test files not package functions
 
 ### Pending Todos
 
@@ -111,6 +114,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-23T10:54:25.340Z
-Stopped at: Completed 03-04-PLAN.md
+Last session: 2026-03-23T11:24:03.045Z
+Stopped at: Completed 03-05-PLAN.md (Task 2: checkpoint:human-verify pending)
 Resume file: None
