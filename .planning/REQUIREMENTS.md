@@ -62,15 +62,15 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **DOCS-02**: Getting-started vignette
 - [x] **DOCS-03**: Working-papers vignette
 - [x] **DOCS-04**: Customizing-branding vignette
-- [ ] **DOCS-05**: roxygen2 documentation for all exported functions
+- [x] **DOCS-05**: roxygen2 documentation for all exported functions
 - [x] **DOCS-06**: Example .qmd files for each format in inst/
 
 ### Testing
 
-- [ ] **TEST-01**: Test suite for metadata helper functions
-- [ ] **TEST-02**: Test suite for validation functions
-- [ ] **TEST-03**: Test suite for project scaffolding (file creation, structure)
-- [ ] **TEST-04**: Tests guarded with skip_if_not(quarto_available()) for CRAN
+- [x] **TEST-01**: Test suite for metadata helper functions
+- [x] **TEST-02**: Test suite for validation functions
+- [x] **TEST-03**: Test suite for project scaffolding (file creation, structure)
+- [x] **TEST-04**: Tests guarded with skip_if_not(quarto_available()) for CRAN
 
 ## v2 Requirements
 
@@ -145,12 +145,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DOCS-02 | Phase 4 | Complete |
 | DOCS-03 | Phase 4 | Complete |
 | DOCS-04 | Phase 4 | Complete |
-| DOCS-05 | Phase 4 | Pending |
+| DOCS-05 | Phase 4 | Complete |
 | DOCS-06 | Phase 4 | Complete |
-| TEST-01 | Phase 4 | Pending |
-| TEST-02 | Phase 4 | Pending |
-| TEST-03 | Phase 4 | Pending |
-| TEST-04 | Phase 4 | Pending |
+| TEST-01 | Phase 4 | Complete |
+| TEST-02 | Phase 4 | Complete |
+| TEST-03 | Phase 4 | Complete |
+| TEST-04 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 43 total

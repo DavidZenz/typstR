@@ -8,6 +8,8 @@
 #import "../templates/titleblock.typ": render-title-block
 #import "../templates/authors.typ": render-author-block
 #import "../templates/abstract.typ": render-abstract
+#import "../templates/branding.typ": render-logo, render-footer
+#import "../templates/disclaimer.typ": render-disclaimer
 #import "../templates/appendix.typ": start-appendix
 
 #let article(
@@ -50,7 +52,18 @@
     title-font: title-font,
     margins: margins,
     accent-color: accent-color,
+    footer-content: render-footer(footer),
   )
+
+  // Disclaimer at top (position == "first")
+  render-disclaimer(
+    disclaimer-text: disclaimer-text,
+    position: disclaimer-position,
+    enabled: disclaimer-page and disclaimer-position == "first",
+  )
+
+  // Logo appears above title block
+  render-logo(logo)
 
   // Article never shows report-number regardless of show-report-number
   render-title-block(
@@ -107,11 +120,10 @@
     #code-availability]
   }
 
-  // Disclaimer page
-  if disclaimer-page and disclaimer-text != none and disclaimer-position == "last" {
-    pagebreak()
-    align(center + horizon)[
-      #text(size: 10pt)[#disclaimer-text]
-    ]
-  }
+  // Disclaimer at end (position == "last", the default)
+  render-disclaimer(
+    disclaimer-text: disclaimer-text,
+    position: disclaimer-position,
+    enabled: disclaimer-page and disclaimer-position == "last",
+  )
 }

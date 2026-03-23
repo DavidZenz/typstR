@@ -116,7 +116,10 @@
   abstract-label: "$typstR.abstract-label$",
   $endif$
   $if(typstR.margins)$
-  margins: (x: $typstR.margin-x$, y: $typstR.margin-y$),
+  margins: (
+    $if(typstR.margins.x)$x: $typstR.margins.x$,$endif$
+    $if(typstR.margins.y)$y: $typstR.margins.y$,$endif$
+  ),
   $endif$
   $endif$
 )

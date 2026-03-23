@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Skeleton and Pipeline** - CRAN-ready package skeleton, extension bundling, scaffolding for working papers, and an end-to-end render that produces a PDF (completed 2026-03-22)
 - [x] **Phase 2: Metadata Helpers and YAML Interface** - All R metadata helper functions and systematic YAML-to-Typst wiring via typst-show.typ (completed 2026-03-23)
 - [x] **Phase 3: Typst Templates, Branding, and Additional Formats** - Modular Typst template layer, full branding YAML roundtrip, article and policy-brief formats, and format-specific scaffolding (completed 2026-03-23)
-- [ ] **Phase 4: Tests, Documentation, and CRAN Hardening** - Full test suite, all vignettes, roxygen2 docs, and R CMD check clean across environments without Quarto
+- [x] **Phase 4: Tests, Documentation, and CRAN Hardening** - Full test suite, all vignettes, roxygen2 docs, and R CMD check clean across environments without Quarto (completed 2026-03-23)
 
 ## Phase Details
 
@@ -103,4 +103,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Skeleton and Pipeline | 3/3 | Complete    | 2026-03-22 |
 | 2. Metadata Helpers and YAML Interface | 4/4 | Complete    | 2026-03-23 |
 | 3. Typst Templates, Branding, and Additional Formats | 5/5 | Complete    | 2026-03-23 |
-| 4. Tests, Documentation, and CRAN Hardening | 1/6 | In Progress | - |
+| 4. Tests, Documentation, and CRAN Hardening | 6/6 | Complete    | 2026-03-23 |
