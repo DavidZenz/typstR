@@ -91,7 +91,7 @@ Plans:
 - [x] 04-03-PLAN.md -- Create the three CRAN-safe task-oriented vignettes
 - [x] 04-04-PLAN.md -- Complete source-level roxygen docs/examples for the exported API
 - [x] 04-05-PLAN.md -- Regenerate package docs, align build metadata, and produce a fresh source tarball
-- [ ] 04-06-PLAN.md -- Run the final fast gate plus bounded `R CMD check --as-cran` hardening loop
+- [x] 04-06-PLAN.md -- Run the final fast gate plus bounded `R CMD check --as-cran` hardening loop
 
 ## Progress
 
