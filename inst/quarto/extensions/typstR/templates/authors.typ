@@ -6,6 +6,7 @@
   authors: (),
   affiliations: (),
   anonymized: false,
+  show-orcid: true,
 ) = {
   if anonymized {
     return
@@ -73,8 +74,8 @@
     }
   }
 
-  // ORCID display for authors who have it
-  let orcid-authors = authors.filter(a => a.at("orcid", default: none) != none)
+  // ORCID display for authors who have it (suppressed when show-orcid is false)
+  let orcid-authors = if show-orcid { authors.filter(a => a.at("orcid", default: none) != none) } else { () }
   if orcid-authors.len() > 0 {
     v(0.3em)
     align(center)[

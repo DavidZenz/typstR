@@ -82,6 +82,7 @@
     authors: authors,
     affiliations: affiliations,
     anonymized: anonymized,
+    show-orcid: show-orcid,
   )
 
   render-abstract(
