@@ -16,13 +16,13 @@
 //   position — "first" or "last" (informational only; not used here — caller branches)
 //   enabled  — boolean; if false returns immediately without rendering anything
 #let render-disclaimer(
-  text: none,
+  disclaimer-text: none,
   position: "last",
   enabled: false,
 ) = {
   if not enabled { return }
 
-  let disclaimer-content = if text != none { text } else { default-disclaimer-text }
+  let disclaimer-content = if disclaimer-text != none { disclaimer-text } else { default-disclaimer-text }
 
   pagebreak()
   {

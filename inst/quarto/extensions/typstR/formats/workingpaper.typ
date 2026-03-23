@@ -63,7 +63,7 @@
 
   // Disclaimer at top (position == "first")
   render-disclaimer(
-    text: disclaimer-text,
+    disclaimer-text: disclaimer-text,
     position: disclaimer-position,
     enabled: disclaimer-page and disclaimer-position == "first",
   )
@@ -126,7 +126,7 @@
 
   // Disclaimer at end (position == "last", the default)
   render-disclaimer(
-    text: disclaimer-text,
+    disclaimer-text: disclaimer-text,
     position: disclaimer-position,
     enabled: disclaimer-page and disclaimer-position == "last",
   )
