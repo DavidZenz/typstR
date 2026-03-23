@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-02-PLAN.md
-last_updated: "2026-03-23T10:50:06.723Z"
+stopped_at: Completed 03-03-PLAN.md
+last_updated: "2026-03-23T10:50:32.582Z"
 last_activity: 2026-03-22 — Plans 01-02 and 01-03 complete; scaffolding + render wrappers; full pipeline functional
 progress:
   total_phases: 4
@@ -56,6 +56,7 @@ Progress: [████████░░] 75%
 | Phase 02-metadata-helpers-and-yaml-interface P04 | 11 | 1 tasks | 6 files |
 | Phase 03-typst-templates-branding-and-additional-formats P01 | 12 | 2 tasks | 7 files |
 | Phase 03-typst-templates-branding-and-additional-formats P02 | 2 | 2 tasks | 4 files |
+| Phase 03-typst-templates-branding-and-additional-formats P03 | 8 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -93,6 +94,8 @@ Recent decisions affecting current work:
 - [Phase 03-typst-templates-branding-and-additional-formats]: Affiliation superscripts use enumerate() + dictionary lookup to map affiliation id to 1-based index; anonymized mode suppresses author block and acknowledgements
 - [Phase 03-typst-templates-branding-and-additional-formats]: render-disclaimer() enabled flag computed by caller (disclaimer-page AND position match) — keeps module stateless
 - [Phase 03-typst-templates-branding-and-additional-formats]: footer-content parameter added to apply-base-styles so all three format overlays share the same base page setup path
+- [Phase 03-typst-templates-branding-and-additional-formats]: format-variant routing in workingpaper.typ via parameter-driven branching at function entry — avoids Pandoc template conditional complexity
+- [Phase 03-typst-templates-branding-and-additional-formats]: show-orcid parameter added to render-author-block with default true — backward compatible; brief sets false
 
 ### Pending Todos
 
@@ -105,6 +108,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-23T10:50:06.720Z
-Stopped at: Completed 03-02-PLAN.md
+Last session: 2026-03-23T10:50:32.580Z
+Stopped at: Completed 03-03-PLAN.md
 Resume file: None
