@@ -64,7 +64,14 @@ Plans:
   3. Setting `typstR: disclaimer-page: true` appends a disclaimer page in working paper format
   4. `create_article()` scaffolds a project that renders a typstR-article PDF; setting `typstR: anonymized: true` strips author and affiliation blocks from the output
   5. `create_policy_brief()` scaffolds a project that renders a typstR-brief PDF with policy-brief layout
-**Plans**: TBD
+**Plans:** 5 plans
+
+Plans:
+- [ ] 03-01-PLAN.md -- Modular Typst template refactor (shared modules + workingpaper overlay)
+- [ ] 03-02-PLAN.md -- Branding hooks (logo, fonts, colors, margins, footer, disclaimer)
+- [ ] 03-03-PLAN.md -- Article and policy-brief format overlays + format variant routing
+- [ ] 03-04-PLAN.md -- Scaffolding functions (create_article, create_policy_brief) + templates
+- [ ] 03-05-PLAN.md -- End-to-end smoke tests + human PDF verification
 
 ### Phase 4: Tests, Documentation, and CRAN Hardening
 **Goal**: typstR passes R CMD check cleanly, is fully documented, and has a test suite that runs safely on CRAN machines without Quarto
@@ -87,5 +94,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Skeleton and Pipeline | 3/3 | Complete    | 2026-03-22 |
 | 2. Metadata Helpers and YAML Interface | 4/4 | Complete    | 2026-03-23 |
-| 3. Typst Templates, Branding, and Additional Formats | 0/TBD | Not started | - |
+| 3. Typst Templates, Branding, and Additional Formats | 0/5 | Not started | - |
 | 4. Tests, Documentation, and CRAN Hardening | 0/TBD | Not started | - |
