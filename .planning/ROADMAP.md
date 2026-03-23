@@ -46,7 +46,13 @@ Plans:
   3. `fig_note()` and `tab_note()` produce styled notes below figures and tables in the rendered PDF
   4. All `typstR:` namespace fields in YAML front matter survive the Pandoc metadata pipeline and appear in the Typst template output for Quarto >= 1.4.11
   5. Standard Quarto fields (toc, fig-cap-location, etc.) continue to work alongside typstR: namespace fields without conflict
-**Plans**: TBD
+**Plans:** 4 plans
+
+Plans:
+- [ ] 02-01-PLAN.md -- Core metadata helpers: author(), affiliation(), manuscript_meta()
+- [ ] 02-02-PLAN.md -- Publication and notes helpers: keywords, jel_codes, fig_note, tab_note, etc.
+- [ ] 02-03-PLAN.md -- YAML wiring: typst-show.typ, typst-template.typ, template.qmd
+- [ ] 02-04-PLAN.md -- Integration tests and human PDF verification
 
 ### Phase 3: Typst Templates, Branding, and Additional Formats
 **Goal**: Users can produce polished, institutionally branded PDFs across all three formats using only YAML — no Typst editing required
@@ -80,6 +86,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Skeleton and Pipeline | 3/3 | Complete    | 2026-03-22 |
-| 2. Metadata Helpers and YAML Interface | 0/TBD | Not started | - |
+| 2. Metadata Helpers and YAML Interface | 0/4 | Not started | - |
 | 3. Typst Templates, Branding, and Additional Formats | 0/TBD | Not started | - |
 | 4. Tests, Documentation, and CRAN Hardening | 0/TBD | Not started | - |
