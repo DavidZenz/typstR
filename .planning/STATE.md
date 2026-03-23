@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-03-PLAN.md
-last_updated: "2026-03-23T10:50:32.582Z"
+stopped_at: Completed 03-04-PLAN.md
+last_updated: "2026-03-23T10:54:25.343Z"
 last_activity: 2026-03-22 — Plans 01-02 and 01-03 complete; scaffolding + render wrappers; full pipeline functional
 progress:
   total_phases: 4
   completed_phases: 2
   total_plans: 12
-  completed_plans: 10
+  completed_plans: 11
   percent: 75
 ---
 
@@ -57,6 +57,7 @@ Progress: [████████░░] 75%
 | Phase 03-typst-templates-branding-and-additional-formats P01 | 12 | 2 tasks | 7 files |
 | Phase 03-typst-templates-branding-and-additional-formats P02 | 2 | 2 tasks | 4 files |
 | Phase 03-typst-templates-branding-and-additional-formats P03 | 8 | 2 tasks | 4 files |
+| Phase 03-typst-templates-branding-and-additional-formats P04 | 8 | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -96,6 +97,8 @@ Recent decisions affecting current work:
 - [Phase 03-typst-templates-branding-and-additional-formats]: footer-content parameter added to apply-base-styles so all three format overlays share the same base page setup path
 - [Phase 03-typst-templates-branding-and-additional-formats]: format-variant routing in workingpaper.typ via parameter-driven branching at function entry — avoids Pandoc template conditional complexity
 - [Phase 03-typst-templates-branding-and-additional-formats]: show-orcid parameter added to render-author-block with default true — backward compatible; brief sets false
+- [Phase 03-typst-templates-branding-and-additional-formats]: Article template includes JEL codes (omit report-number) — articles are academic format, brief is policy format without JEL
+- [Phase 03-typst-templates-branding-and-additional-formats]: Policy brief template includes report-number (PB 001) but no JEL codes or acknowledgements — matches format-variant: brief semantics
 
 ### Pending Todos
 
@@ -108,6 +111,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-23T10:50:32.580Z
-Stopped at: Completed 03-03-PLAN.md
+Last session: 2026-03-23T10:54:25.340Z
+Stopped at: Completed 03-04-PLAN.md
 Resume file: None

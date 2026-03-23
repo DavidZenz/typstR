@@ -18,8 +18,8 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Scaffolding
 
 - [x] **SCAF-01**: create_working_paper() generates project with template.qmd, _quarto.yml, references.bib, and extension
-- [ ] **SCAF-02**: create_article() generates project with article template and extension
-- [ ] **SCAF-03**: create_policy_brief() generates project with policy brief template and extension
+- [x] **SCAF-02**: create_article() generates project with article template and extension
+- [x] **SCAF-03**: create_policy_brief() generates project with policy brief template and extension
 
 ### Typst Templates
 
@@ -113,8 +113,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FOUN-04 | Phase 1 | Complete |
 | FOUN-05 | Phase 1 | Complete |
 | SCAF-01 | Phase 1 | Complete |
-| SCAF-02 | Phase 3 | Pending |
-| SCAF-03 | Phase 3 | Pending |
+| SCAF-02 | Phase 3 | Complete |
+| SCAF-03 | Phase 3 | Complete |
 | TMPL-01 | Phase 3 | Complete |
 | TMPL-02 | Phase 3 | Complete |
 | TMPL-03 | Phase 3 | Complete |

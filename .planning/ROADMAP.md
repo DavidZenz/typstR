@@ -64,7 +64,7 @@ Plans:
   3. Setting `typstR: disclaimer-page: true` appends a disclaimer page in working paper format
   4. `create_article()` scaffolds a project that renders a typstR-article PDF; setting `typstR: anonymized: true` strips author and affiliation blocks from the output
   5. `create_policy_brief()` scaffolds a project that renders a typstR-brief PDF with policy-brief layout
-**Plans:** 3/5 plans executed
+**Plans:** 4/5 plans executed
 
 Plans:
 - [ ] 03-01-PLAN.md -- Modular Typst template refactor (shared modules + workingpaper overlay)
@@ -94,5 +94,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Skeleton and Pipeline | 3/3 | Complete    | 2026-03-22 |
 | 2. Metadata Helpers and YAML Interface | 4/4 | Complete    | 2026-03-23 |
-| 3. Typst Templates, Branding, and Additional Formats | 3/5 | In Progress|  |
+| 3. Typst Templates, Branding, and Additional Formats | 4/5 | In Progress|  |
 | 4. Tests, Documentation, and CRAN Hardening | 0/TBD | Not started | - |
