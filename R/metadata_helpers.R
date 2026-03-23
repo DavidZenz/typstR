@@ -13,6 +13,13 @@
 #'   corresponding author. Defaults to `FALSE`.
 #'
 #' @return An S3 object with class `c("typstR_author", "list")`.
+#' @examples
+#' author(
+#'   name = "Ada Lovelace",
+#'   affiliation = "econ",
+#'   email = "ada@example.org",
+#'   corresponding = TRUE
+#' )
 #' @export
 author <- function(name,
                    affiliation = NULL,
@@ -71,6 +78,12 @@ author <- function(name,
 #' @param country Character scalar country name, or `NULL`.
 #'
 #' @return An S3 object with class `c("typstR_affiliation", "list")`.
+#' @examples
+#' affiliation(
+#'   id = "econ",
+#'   name = "Institute for Advanced Policy Studies",
+#'   country = "Austria"
+#' )
 #' @export
 affiliation <- function(id, name,
                         department = NULL,
@@ -121,6 +134,30 @@ affiliation <- function(id, name,
 #'   or `NULL`.
 #'
 #' @return An S3 object with class `c("typstR_meta", "list")`.
+#' @examples
+#' authors <- list(
+#'   author(
+#'     name = "Ada Lovelace",
+#'     affiliation = "econ",
+#'     corresponding = TRUE
+#'   )
+#' )
+#'
+#' affiliations <- list(
+#'   affiliation(
+#'     id = "econ",
+#'     name = "Institute for Advanced Policy Studies",
+#'     country = "Austria"
+#'   )
+#' )
+#'
+#' manuscript_meta(
+#'   authors = authors,
+#'   affiliations = affiliations,
+#'   keywords = keywords("trade", "policy"),
+#'   jel = jel_codes("F10"),
+#'   report_number = report_number("WP 001")
+#' )
 #' @export
 manuscript_meta <- function(authors,
                             affiliations = list(),

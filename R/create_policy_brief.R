@@ -12,6 +12,14 @@
 #' @param open Whether to open the project directory. Defaults to `TRUE`
 #'   in interactive sessions.
 #' @return The project path, invisibly.
+#' @examples
+#' \dontrun{
+#' create_policy_brief(
+#'   "my-policy-brief",
+#'   title = "What Export Controls Mean for Small Open Economies",
+#'   open = FALSE
+#' )
+#' }
 #' @export
 create_policy_brief <- function(path, title = NULL, open = interactive()) {
   if (fs::dir_exists(path)) {

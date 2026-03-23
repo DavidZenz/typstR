@@ -8,6 +8,14 @@
 #' @param open Whether to open the project directory. Defaults to `TRUE`
 #'   in interactive sessions.
 #' @return The project path, invisibly.
+#' @examples
+#' \dontrun{
+#' create_working_paper(
+#'   "my-working-paper",
+#'   title = "Trade, Policy, and Growth",
+#'   open = FALSE
+#' )
+#' }
 #' @export
 create_working_paper <- function(path, title = NULL, open = interactive()) {
   # Guard: error if directory exists (locked decision: no overwrite, no force argument)

@@ -11,6 +11,14 @@
 #' @param open Whether to open the project directory. Defaults to `TRUE`
 #'   in interactive sessions.
 #' @return The project path, invisibly.
+#' @examples
+#' \dontrun{
+#' create_article(
+#'   "my-article",
+#'   title = "Firm Dynamics in Open Economies",
+#'   open = FALSE
+#' )
+#' }
 #' @export
 create_article <- function(path, title = NULL, open = interactive()) {
   if (fs::dir_exists(path)) {

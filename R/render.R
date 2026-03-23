@@ -11,6 +11,16 @@
 #' @param open If `TRUE`, opens the rendered PDF in the system viewer.
 #'   Defaults to `TRUE` in interactive sessions.
 #' @return `NULL`, invisibly.
+#' @examples
+#' \dontrun{
+#' render_pub("my-working-paper/template.qmd", quiet = TRUE, open = FALSE)
+#' render_pub(
+#'   "my-article/template.qmd",
+#'   output_format = "typstR-article",
+#'   quiet = TRUE,
+#'   open = FALSE
+#' )
+#' }
 #' @export
 render_pub <- function(input = NULL, output_format = NULL, quiet = FALSE,
                        open = interactive()) {
@@ -48,6 +58,10 @@ render_pub <- function(input = NULL, output_format = NULL, quiet = FALSE,
 #'
 #' @inheritParams render_pub
 #' @return `NULL`, invisibly.
+#' @examples
+#' \dontrun{
+#' render_working_paper("my-working-paper/template.qmd", quiet = TRUE, open = FALSE)
+#' }
 #' @export
 render_working_paper <- function(input = NULL, quiet = FALSE,
                                  open = interactive()) {
