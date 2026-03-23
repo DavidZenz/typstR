@@ -83,14 +83,15 @@ Plans:
   3. The getting-started vignette can be read without executing render calls (pre-rendered or guarded), and reproduces the full workflow from `create_working_paper()` to a rendered PDF
   4. Every exported function has roxygen2 documentation with at least one runnable example
   5. A user landing on the README can install the package and produce a working paper PDF by following the quick-start section alone
-**Plans:** 5 plans
+**Plans:** 6 plans
 
 Plans:
 - [ ] 04-01-PLAN.md -- Expand CRAN-safe tests for helpers, render guards, scaffolding, and guarded render smoke paths
 - [ ] 04-02-PLAN.md -- Add README onboarding and polish one compact starter example per format
 - [ ] 04-03-PLAN.md -- Create the three CRAN-safe task-oriented vignettes
 - [ ] 04-04-PLAN.md -- Complete source-level roxygen docs/examples for the exported API
-- [ ] 04-05-PLAN.md -- Regenerate package docs and complete the final `R CMD check --as-cran` hardening sweep
+- [ ] 04-05-PLAN.md -- Regenerate package docs, align build metadata, and produce a fresh source tarball
+- [ ] 04-06-PLAN.md -- Run the final fast gate plus bounded `R CMD check --as-cran` hardening loop
 
 ## Progress
 
@@ -102,4 +103,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Skeleton and Pipeline | 3/3 | Complete    | 2026-03-22 |
 | 2. Metadata Helpers and YAML Interface | 4/4 | Complete    | 2026-03-23 |
 | 3. Typst Templates, Branding, and Additional Formats | 5/5 | Complete    | 2026-03-23 |
-| 4. Tests, Documentation, and CRAN Hardening | 0/5 | Planned | - |
+| 4. Tests, Documentation, and CRAN Hardening | 0/6 | Planned | - |
