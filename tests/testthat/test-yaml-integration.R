@@ -53,7 +53,7 @@ author:
 abstract: |
   Testing typstR namespace field passthrough.
 format:
-  typstR-workingpaper: default
+  typstR-typst: default
 typstR:
   keywords:
     - trade
@@ -100,7 +100,7 @@ author:
 abstract: |
   Testing that toc and number-sections do not conflict with typstR fields.
 format:
-  typstR-workingpaper:
+  typstR-typst:
     toc: true
     number-sections: true
 typstR:
@@ -148,7 +148,7 @@ author:
 abstract: |
   Smoke-testing hyphenated key passthrough.
 format:
-  typstR-workingpaper: default
+  typstR-typst: default
 typstR:
   report-number: "WP 003"
   data-availability: "Data available at https://example.com/data"

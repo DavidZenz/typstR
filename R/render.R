@@ -5,7 +5,7 @@
 #'
 #' @param input Path to a `.qmd` file, a directory containing a `.qmd` file,
 #'   or `NULL` to look in the current directory.
-#' @param output_format Quarto output format name (e.g., `"typstR-workingpaper"`).
+#' @param output_format Quarto output format name (e.g., `"typstR-typst"`).
 #'   If `NULL`, uses the format specified in the document YAML.
 #' @param quiet If `TRUE`, suppresses Quarto output. Defaults to `FALSE`.
 #' @param open If `TRUE`, opens the rendered PDF in the system viewer.
@@ -53,7 +53,7 @@ render_working_paper <- function(input = NULL, quiet = FALSE,
                                  open = interactive()) {
   render_pub(
     input = input,
-    output_format = "typstR-workingpaper",
+    output_format = "typstR-typst",
     quiet = quiet,
     open = open
   )

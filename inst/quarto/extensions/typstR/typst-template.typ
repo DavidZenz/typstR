@@ -39,7 +39,8 @@
   if authors.len() > 0 {
     align(center)[
       #authors.map(a => {
-        let parts = (a.name,)
+        let display-name = a.at("name", default: "")
+        let parts = (display-name,)
         if a.at("email", default: none) != none {
           parts.push(" <" + a.at("email") + ">")
         }
@@ -55,9 +56,10 @@
       v(0.3em)
       align(center)[
         #affiliations.map(af => {
-          let parts = (af.name,)
+          let aff-name = af.at("name", default: "")
+          let parts = (aff-name,)
           if af.at("department", default: none) != none {
-            parts = (af.at("department") + ", " + af.name,)
+            parts = (af.at("department") + ", " + aff-name,)
           }
           parts.join("")
         }).join(" | ")

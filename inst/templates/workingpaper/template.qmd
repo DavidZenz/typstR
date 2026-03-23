@@ -19,7 +19,7 @@ abstract: |
   Replace this placeholder with your abstract. This paper examines...
 bibliography: references.bib
 format:
-  typstR-workingpaper: default
+  typstR-typst: default
 typstR:
   keywords:
     - keyword one
