@@ -2,16 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 03-05-PLAN.md
-last_updated: "2026-03-23T12:39:49.339Z"
-last_activity: 2026-03-22 — Plans 01-02 and 01-03 complete; scaffolding + render wrappers; full pipeline functional
+status: Ready to execute
+stopped_at: Completed 04-03-PLAN.md
+last_updated: "2026-03-23T14:21:13.250Z"
 progress:
   total_phases: 4
   completed_phases: 3
-  total_plans: 12
-  completed_plans: 12
-  percent: 100
+  total_plans: 18
+  completed_plans: 14
 ---
 
 # Project State
@@ -21,20 +19,17 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-21)
 
 **Core value:** Users can go from `create_working_paper("my-paper")` to a polished, branded PDF in minutes — no Typst or LaTeX knowledge required.
-**Current focus:** Phase 1 — Skeleton and Pipeline
+**Current focus:** Phase 04 — tests-documentation-and-cran-hardening
 
 ## Current Position
 
-Phase: 1 of 4 (Skeleton and Pipeline)
-Plan: 3 of 4 in current phase (plans 01-02 and 01-03 complete)
-Status: In progress — Phase 1 pipeline complete, Plan 01-04 (validation) remaining
-Last activity: 2026-03-22 — Plans 01-02 and 01-03 complete; scaffolding + render wrappers; full pipeline functional
-
-Progress: [██████████] 100%
+Phase: 04 (tests-documentation-and-cran-hardening) — EXECUTING
+Plan: 3 of 6
 
 ## Performance Metrics
 
 **Velocity:**
+
 - Total plans completed: 3
 - Average duration: 7 min
 - Total execution time: 0.35 hours
@@ -46,6 +41,7 @@ Progress: [██████████] 100%
 | 01-skeleton-and-pipeline | 3 | 20 min | 7 min |
 
 **Recent Trend:**
+
 - Last 5 plans: 01-01 (6 min), 01-02 (6 min), 01-03 (8 min)
 - Trend: stable
 
@@ -60,6 +56,8 @@ Progress: [██████████] 100%
 | Phase 03-typst-templates-branding-and-additional-formats P04 | 8 | 2 tasks | 9 files |
 | Phase 03-typst-templates-branding-and-additional-formats P05 | 20 | 1 tasks | 3 files |
 | Phase 03-typst-templates-branding-and-additional-formats P05 | 25 | 2 tasks | 3 files |
+| Phase 04-tests-documentation-and-cran-hardening P02 | 3 | 2 tasks | 4 files |
+| Phase 04-tests-documentation-and-cran-hardening P03 | 11 | 1 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -104,6 +102,10 @@ Recent decisions affecting current work:
 - [Phase 03-typst-templates-branding-and-additional-formats]: rlang removed from DESCRIPTION Imports — not used anywhere in package R code
 - [Phase 03-typst-templates-branding-and-additional-formats]: yaml moved from Imports to Suggests — only used in test files not package functions
 - [Phase 03-typst-templates-branding-and-additional-formats]: Human PDF review confirmed all three format variants render correctly end-to-end; branding hook infrastructure approved for Phase 04 testing
+- [Phase 04]: README stays working-paper-first with GitHub install, create_working_paper(), edit template.qmd, and render_working_paper() as the primary onboarding path
+- [Phase 04]: Article and policy brief support remain secondary in the README opening narrative, while shipped starter templates should be realistic and compact rather than showcase-heavy
+- [Phase 04-tests-documentation-and-cran-hardening]: Package vignettes keep scaffold and render steps visible but non-evaluated so checks stay safe without Quarto.
+- [Phase 04-tests-documentation-and-cran-hardening]: VignetteBuilder metadata is added alongside new vignette sources instead of deferring package build support.
 
 ### Pending Todos
 
@@ -116,6 +118,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-23T12:07:58.704Z
-Stopped at: Completed 03-05-PLAN.md
+Last session: 2026-03-23T14:21:13.247Z
+Stopped at: Completed 04-03-PLAN.md
 Resume file: None

@@ -58,12 +58,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Documentation
 
-- [ ] **DOCS-01**: README with installation, quick start, minimal example
-- [ ] **DOCS-02**: Getting-started vignette
-- [ ] **DOCS-03**: Working-papers vignette
-- [ ] **DOCS-04**: Customizing-branding vignette
+- [x] **DOCS-01**: README with installation, quick start, minimal example
+- [x] **DOCS-02**: Getting-started vignette
+- [x] **DOCS-03**: Working-papers vignette
+- [x] **DOCS-04**: Customizing-branding vignette
 - [ ] **DOCS-05**: roxygen2 documentation for all exported functions
-- [ ] **DOCS-06**: Example .qmd files for each format in inst/
+- [x] **DOCS-06**: Example .qmd files for each format in inst/
 
 ### Testing
 
@@ -141,12 +141,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | YAML-01 | Phase 2 | Complete |
 | YAML-02 | Phase 2 | Complete |
 | YAML-03 | Phase 2 | Complete |
-| DOCS-01 | Phase 4 | Pending |
-| DOCS-02 | Phase 4 | Pending |
-| DOCS-03 | Phase 4 | Pending |
-| DOCS-04 | Phase 4 | Pending |
+| DOCS-01 | Phase 4 | Complete |
+| DOCS-02 | Phase 4 | Complete |
+| DOCS-03 | Phase 4 | Complete |
+| DOCS-04 | Phase 4 | Complete |
 | DOCS-05 | Phase 4 | Pending |
-| DOCS-06 | Phase 4 | Pending |
+| DOCS-06 | Phase 4 | Complete |
 | TEST-01 | Phase 4 | Pending |
 | TEST-02 | Phase 4 | Pending |
 | TEST-03 | Phase 4 | Pending |
