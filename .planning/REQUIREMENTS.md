@@ -23,15 +23,15 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Typst Templates
 
-- [ ] **TMPL-01**: Base Typst template with page layout, fonts, margins, page numbering
-- [ ] **TMPL-02**: Title page with title, subtitle, date
-- [ ] **TMPL-03**: Author and affiliation block with corresponding author marker
-- [ ] **TMPL-04**: Abstract block with keywords and JEL codes
-- [ ] **TMPL-05**: Acknowledgements section
-- [ ] **TMPL-06**: Bibliography rendering via Typst
-- [ ] **TMPL-07**: Appendix handling with separate numbering
+- [x] **TMPL-01**: Base Typst template with page layout, fonts, margins, page numbering
+- [x] **TMPL-02**: Title page with title, subtitle, date
+- [x] **TMPL-03**: Author and affiliation block with corresponding author marker
+- [x] **TMPL-04**: Abstract block with keywords and JEL codes
+- [x] **TMPL-05**: Acknowledgements section
+- [x] **TMPL-06**: Bibliography rendering via Typst
+- [x] **TMPL-07**: Appendix handling with separate numbering
 - [ ] **TMPL-08**: Figure and table caption styling with notes support
-- [ ] **TMPL-09**: Modular .typ file structure (base, titleblock, authors, abstract, bibliography, floats, appendix, branding)
+- [x] **TMPL-09**: Modular .typ file structure (base, titleblock, authors, abstract, bibliography, floats, appendix, branding)
 - [ ] **TMPL-10**: Branding via YAML: logo path, primary font, title font, accent color
 - [ ] **TMPL-11**: Branding via YAML: page margins, footer text, report number block
 - [ ] **TMPL-12**: Branding via YAML: disclaimer page support
@@ -115,15 +115,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCAF-01 | Phase 1 | Complete |
 | SCAF-02 | Phase 3 | Pending |
 | SCAF-03 | Phase 3 | Pending |
-| TMPL-01 | Phase 3 | Pending |
-| TMPL-02 | Phase 3 | Pending |
-| TMPL-03 | Phase 3 | Pending |
-| TMPL-04 | Phase 3 | Pending |
-| TMPL-05 | Phase 3 | Pending |
-| TMPL-06 | Phase 3 | Pending |
-| TMPL-07 | Phase 3 | Pending |
+| TMPL-01 | Phase 3 | Complete |
+| TMPL-02 | Phase 3 | Complete |
+| TMPL-03 | Phase 3 | Complete |
+| TMPL-04 | Phase 3 | Complete |
+| TMPL-05 | Phase 3 | Complete |
+| TMPL-06 | Phase 3 | Complete |
+| TMPL-07 | Phase 3 | Complete |
 | TMPL-08 | Phase 3 | Pending |
-| TMPL-09 | Phase 3 | Pending |
+| TMPL-09 | Phase 3 | Complete |
 | TMPL-10 | Phase 3 | Pending |
 | TMPL-11 | Phase 3 | Pending |
 | TMPL-12 | Phase 3 | Pending |

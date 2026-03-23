@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 3 context gathered
-last_updated: "2026-03-23T10:06:58.025Z"
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-03-23T10:46:14.492Z"
 last_activity: 2026-03-22 — Plans 01-02 and 01-03 complete; scaffolding + render wrappers; full pipeline functional
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 7
-  completed_plans: 7
+  total_plans: 12
+  completed_plans: 8
   percent: 75
 ---
 
@@ -54,6 +54,7 @@ Progress: [████████░░] 75%
 | Phase 02-metadata-helpers-and-yaml-interface P02-02 | 3 | 2 tasks | 5 files |
 | Phase 02-metadata-helpers-and-yaml-interface P03 | 8 | 2 tasks | 3 files |
 | Phase 02-metadata-helpers-and-yaml-interface P04 | 11 | 1 tasks | 6 files |
+| Phase 03-typst-templates-branding-and-additional-formats P01 | 12 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -87,6 +88,8 @@ Recent decisions affecting current work:
 - [Phase 02-metadata-helpers-and-yaml-interface]: Pandoc 3.6 template syntax: $for()$ must be followed by newline before literal quote chars; use $sep$ for list separators in for loops
 - [Phase 02-metadata-helpers-and-yaml-interface]: Typst template field access: use a.at('name', default: '') not a.name for dictionary field access in Typst; affects typst-template.typ author and affiliation rendering
 - [Phase 02-metadata-helpers-and-yaml-interface]: Phase 3 styling notes from human PDF review: author email escaping (backslash before @) and academic-style affiliation superscripts deferred to Phase 3 template work
+- [Phase 03-typst-templates-branding-and-additional-formats]: typst-template.typ retained as compatibility shim re-exporting working-paper from formats/workingpaper.typ — _extension.yml unchanged
+- [Phase 03-typst-templates-branding-and-additional-formats]: Affiliation superscripts use enumerate() + dictionary lookup to map affiliation id to 1-based index; anonymized mode suppresses author block and acknowledgements
 
 ### Pending Todos
 
@@ -99,6 +102,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-23T10:06:58.021Z
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-typst-templates-branding-and-additional-formats/03-CONTEXT.md
+Last session: 2026-03-23T10:46:14.490Z
+Stopped at: Completed 03-01-PLAN.md
+Resume file: None
