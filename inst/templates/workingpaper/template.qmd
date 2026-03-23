@@ -32,6 +32,12 @@ typstR:
   report-number: "WP 001"
   funding: |
     This research was supported by...
+  # Branding (uncomment to customize):
+  # logo: "logo.png"
+  # accent-color: "#0A5DA6"
+  # primary-font: "Linux Libertine"
+  # footer: "Working Paper Series"
+  # disclaimer-page: true
 ---
 
 ## Introduction
