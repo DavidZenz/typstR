@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-04-PLAN.md (Task 1 done; Task 2 is human-verify checkpoint)
-last_updated: "2026-03-23T09:07:23.784Z"
+stopped_at: Completed 02-04-PLAN.md
+last_updated: "2026-03-23T09:29:14.085Z"
 last_activity: 2026-03-22 — Plans 01-02 and 01-03 complete; scaffolding + render wrappers; full pipeline functional
 progress:
   total_phases: 4
@@ -86,6 +86,7 @@ Recent decisions affecting current work:
 - [Phase 02-metadata-helpers-and-yaml-interface]: Quarto 1.6+ normalises authors to by-author via Lua filter; typst-show.typ must use $for(by-author)$ and it.name.literal, it.attributes.corresponding
 - [Phase 02-metadata-helpers-and-yaml-interface]: Pandoc 3.6 template syntax: $for()$ must be followed by newline before literal quote chars; use $sep$ for list separators in for loops
 - [Phase 02-metadata-helpers-and-yaml-interface]: Typst template field access: use a.at('name', default: '') not a.name for dictionary field access in Typst; affects typst-template.typ author and affiliation rendering
+- [Phase 02-metadata-helpers-and-yaml-interface]: Phase 3 styling notes from human PDF review: author email escaping (backslash before @) and academic-style affiliation superscripts deferred to Phase 3 template work
 
 ### Pending Todos
 
@@ -98,6 +99,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-23T09:07:23.782Z
-Stopped at: Completed 02-04-PLAN.md (Task 1 done; Task 2 is human-verify checkpoint)
+Last session: 2026-03-23T09:29:10.154Z
+Stopped at: Completed 02-04-PLAN.md
 Resume file: None
