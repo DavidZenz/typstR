@@ -10,9 +10,19 @@
 # ---------------------------------------------------------------------------
 # Helper: copy the bundled extension into a temp project directory
 # ---------------------------------------------------------------------------
+.quarto_available <- function() {
+  requireNamespace("quarto", quietly = TRUE) && quarto::quarto_available()
+}
+
+.skip_if_no_quarto <- function() {
+  skip_if_not(.quarto_available())
+}
+
 .copy_extension <- function(dest_dir) {
-  ext_src <- system.file("quarto/extensions/typstR", package = "typstR",
-                         mustWork = TRUE)
+  ext_src <- system.file("quarto/extensions/typstR", package = "typstR")
+  if (!nzchar(ext_src)) {
+    ext_src <- file.path("inst", "quarto", "extensions", "typstR")
+  }
   ext_dest <- file.path(dest_dir, "_extensions", "typstR")
   dir.create(file.path(dest_dir, "_extensions"), showWarnings = FALSE)
   fs::dir_copy(ext_src, ext_dest)
@@ -23,7 +33,7 @@
 # Test 1: scaffold renders without errors
 # ---------------------------------------------------------------------------
 test_that("scaffold renders without errors", {
-  skip_if_not(quarto::quarto_available())
+  .skip_if_no_quarto()
 
   withr::with_tempdir({
     create_working_paper("test-project", open = FALSE)
@@ -39,7 +49,7 @@ test_that("scaffold renders without errors", {
 # Test 2: typstR namespace fields reach the PDF (render succeeds)
 # ---------------------------------------------------------------------------
 test_that("typstR namespace fields reach the PDF", {
-  skip_if_not(quarto::quarto_available())
+  .skip_if_no_quarto()
 
   withr::with_tempdir({
     .copy_extension(".")
@@ -88,7 +98,7 @@ the Pandoc variable pipeline without errors.
 # Test 3: standard Quarto fields work alongside typstR fields
 # ---------------------------------------------------------------------------
 test_that("standard Quarto fields work alongside typstR fields", {
-  skip_if_not(quarto::quarto_available())
+  .skip_if_no_quarto()
 
   withr::with_tempdir({
     .copy_extension(".")
@@ -136,7 +146,7 @@ Content of the second section.
 #          code-availability)
 # ---------------------------------------------------------------------------
 test_that("hyphenated keys pass through without errors", {
-  skip_if_not(quarto::quarto_available())
+  .skip_if_no_quarto()
 
   withr::with_tempdir({
     .copy_extension(".")
@@ -167,5 +177,45 @@ are handled correctly by the Pandoc variable interpolation in typst-show.typ.
     )
 
     expect_true(file.exists("test-hyphen.pdf"))
+  })
+})
+
+test_that("article template smoke-renders without errors", {
+  .skip_if_no_quarto()
+
+  withr::with_tempdir({
+    .copy_extension(".")
+    fs::dir_copy(file.path("inst", "templates", "article"), "article-template")
+
+    old <- setwd("article-template")
+    on.exit(setwd(old), add = TRUE)
+
+    expect_no_error(
+      quarto::quarto_render("template.qmd", quiet = TRUE)
+    )
+
+    qmd <- readLines("template.qmd")
+    expect_true(any(grepl("format-variant: article", qmd, fixed = TRUE)))
+    expect_true(file.exists("template.pdf"))
+  })
+})
+
+test_that("policy brief template smoke-renders without errors", {
+  .skip_if_no_quarto()
+
+  withr::with_tempdir({
+    .copy_extension(".")
+    fs::dir_copy(file.path("inst", "templates", "policy-brief"), "brief-template")
+
+    old <- setwd("brief-template")
+    on.exit(setwd(old), add = TRUE)
+
+    expect_no_error(
+      quarto::quarto_render("template.qmd", quiet = TRUE)
+    )
+
+    qmd <- readLines("template.qmd")
+    expect_true(any(grepl("format-variant: brief", qmd, fixed = TRUE)))
+    expect_true(file.exists("template.pdf"))
   })
 })

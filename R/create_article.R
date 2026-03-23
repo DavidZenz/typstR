@@ -36,9 +36,11 @@ create_article <- function(path, title = NULL, open = interactive()) {
   if (!is.null(title)) {
     qmd_path <- fs::path(path, "template.qmd")
     lines <- readLines(qmd_path)
-    lines <- sub('title: "Article Title"',
-                 paste0('title: "', title, '"'),
-                 lines, fixed = TRUE)
+    lines <- sub(
+      '^title: ".*"$',
+      paste0('title: "', title, '"'),
+      lines
+    )
     writeLines(lines, qmd_path)
   }
 
