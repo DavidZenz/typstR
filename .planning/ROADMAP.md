@@ -94,5 +94,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Skeleton and Pipeline | 3/3 | Complete    | 2026-03-22 |
 | 2. Metadata Helpers and YAML Interface | 4/4 | Complete    | 2026-03-23 |
-| 3. Typst Templates, Branding, and Additional Formats | 5/5 | Complete   | 2026-03-23 |
+| 3. Typst Templates, Branding, and Additional Formats | 5/5 | Complete    | 2026-03-23 |
 | 4. Tests, Documentation, and CRAN Hardening | 0/TBD | Not started | - |
