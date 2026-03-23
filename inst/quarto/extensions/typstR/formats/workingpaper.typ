@@ -6,6 +6,8 @@
 #import "../templates/titleblock.typ": render-title-block
 #import "../templates/authors.typ": render-author-block
 #import "../templates/abstract.typ": render-abstract
+#import "../templates/branding.typ": render-logo, render-footer
+#import "../templates/disclaimer.typ": render-disclaimer
 
 #let working-paper(
   // Core content fields
@@ -42,12 +44,32 @@
   show-report-number: true,
   body,
 ) = {
+  // Apply format-variant defaults. User-supplied YAML values take precedence
+  // because the parameter already carries the user's value at this point.
+  // The logic only overrides when the value matches the function's own default,
+  // ensuring an explicit YAML override is still respected.
+  let abstract-label = if format-variant == "brief" and abstract-label == "Abstract" { "Summary" } else { abstract-label }
+  let show-jel = if format-variant == "brief" { false } else { show-jel }
+  let show-orcid = if format-variant == "brief" { false } else { show-orcid }
+  let show-report-number = if format-variant == "article" { false } else { show-report-number }
+
   show: apply-base-styles.with(
     primary-font: primary-font,
     title-font: title-font,
     margins: margins,
     accent-color: accent-color,
+    footer-content: render-footer(footer),
   )
+
+  // Disclaimer at top (position == "first")
+  render-disclaimer(
+    text: disclaimer-text,
+    position: disclaimer-position,
+    enabled: disclaimer-page and disclaimer-position == "first",
+  )
+
+  // Logo appears above title block
+  render-logo(logo)
 
   render-title-block(
     title: title,
@@ -101,11 +123,10 @@
     #code-availability]
   }
 
-  // Disclaimer page (appended at end when disclaimer-position is "last")
-  if disclaimer-page and disclaimer-text != none and disclaimer-position == "last" {
-    pagebreak()
-    align(center + horizon)[
-      #text(size: 10pt)[#disclaimer-text]
-    ]
-  }
+  // Disclaimer at end (position == "last", the default)
+  render-disclaimer(
+    text: disclaimer-text,
+    position: disclaimer-position,
+    enabled: disclaimer-page and disclaimer-position == "last",
+  )
 }

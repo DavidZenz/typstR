@@ -7,12 +7,14 @@
   title-font: none,
   margins: (x: 1in, y: 1in),
   accent-color: none,
+  footer-content: none,
   body,
 ) = {
   set page(
     paper: "us-letter",
     margin: margins,
     numbering: "1",
+    footer: footer-content,
   )
 
   set text(font: primary-font, size: 11pt)
@@ -21,6 +23,12 @@
 
   if accent-color != none {
     show heading: set text(fill: accent-color)
+  }
+
+  // TMPL-08: Consistent caption sizing for figures and tables
+  show figure.caption: it => {
+    set text(size: 9.5pt)
+    it
   }
 
   body
