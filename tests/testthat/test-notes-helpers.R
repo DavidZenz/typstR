@@ -62,3 +62,9 @@ test_that("appendix_title() errors when title is not a single string", {
   expect_error(appendix_title(123), "single character string")
   expect_error(appendix_title(c("a", "b")), "single character string")
 })
+
+test_that("appendix_title() validates level as a positive integer scalar", {
+  expect_error(appendix_title("Methods", level = "2"), "level.+positive integer")
+  expect_error(appendix_title("Methods", level = 0), "level.+positive integer")
+  expect_error(appendix_title("Methods", level = c(1, 2)), "level.+positive integer")
+})

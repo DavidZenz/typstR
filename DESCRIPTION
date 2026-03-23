@@ -16,9 +16,12 @@ Imports:
     fs (>= 1.6.0),
     quarto (>= 1.4)
 Suggests:
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0),
     withr,
     yaml
+VignetteBuilder: knitr
 Config/testthat/edition: 3
 URL: https://github.com/typstR/typstR
 BugReports: https://github.com/typstR/typstR/issues

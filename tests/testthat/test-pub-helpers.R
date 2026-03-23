@@ -67,6 +67,10 @@ test_that("report_number() errors when given vector", {
   expect_error(report_number(c("a", "b")), "single character string")
 })
 
+test_that("report_number() error uses documented argument name", {
+  expect_error(report_number(123), "text.+single character string")
+})
+
 test_that("funding() returns correct S3 class and value", {
   result <- funding("ERC Grant 12345")
   expect_s3_class(result, "typstR_funding")
@@ -89,9 +93,19 @@ test_that("data_availability() returns correct S3 class", {
   expect_equal(as.character(result), "Data at https://example.com")
 })
 
+test_that("data_availability() errors when given invalid scalar input", {
+  expect_error(data_availability(123), "text.+single character string")
+  expect_error(data_availability(c("a", "b")), "text.+single character string")
+})
+
 test_that("code_availability() returns correct S3 class", {
   result <- code_availability("Code at https://github.com/example")
   expect_s3_class(result, "typstR_code_availability")
   expect_s3_class(result, "character")
   expect_equal(as.character(result), "Code at https://github.com/example")
+})
+
+test_that("code_availability() errors when given invalid scalar input", {
+  expect_error(code_availability(123), "text.+single character string")
+  expect_error(code_availability(c("a", "b")), "text.+single character string")
 })

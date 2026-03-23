@@ -1,0 +1,102 @@
+---
+title: "Working Papers"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Working Papers}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette focuses on the metadata surface of the working paper format. The
+goal is to keep the Quarto file readable while still capturing the fields that
+usually appear on an academic title page.
+
+## Start with authors and affiliations
+
+Use `author()` and `affiliation()` to build structured metadata:
+
+```{r}
+authors <- list(
+  author(
+    "Elena Fischer",
+    email = "elena.fischer@example.org",
+    corresponding = TRUE,
+    affiliation = "1"
+  ),
+  author(
+    "Martin Kovac",
+    affiliation = c("1", "2")
+  )
+)
+
+affiliations <- list(
+  affiliation("1", "Centre for European Industrial Analysis"),
+  affiliation("2", "University of Bratislava")
+)
+
+manuscript_meta(authors = authors, affiliations = affiliations)
+```
+
+## Add abstract and publication metadata
+
+The working-paper template expects the abstract in ordinary Quarto front matter
+and the publication-specific fields inside `typstR:`.
+
+```yaml
+abstract: |
+  This working paper studies how manufacturing firms adjust supplier networks
+  after trade policy shocks.
+typstR:
+  keywords:
+    - supply chains
+    - trade policy
+    - firm adjustment
+  jel:
+    - F14
+    - F13
+  report-number: "WP 001"
+```
+
+That is the main working-paper difference from the article format: JEL codes
+and a report number usually belong on the title page.
+
+## Reuse helper functions for standard statements
+
+The package includes small helpers for common end-matter blocks:
+
+```{r}
+funding("This research was supported by the Applied Trade Policy Programme.")
+data_availability("Replication files will be released after publication.")
+code_availability("Code is available from the corresponding author on request.")
+```
+
+These helpers are useful when you want a consistent structure across multiple
+papers in the same series.
+
+## Keep the bibliography workflow simple
+
+The scaffolder already includes `references.bib`, so the usual workflow is:
+
+1. add BibTeX entries to `references.bib`
+2. keep `bibliography: references.bib` in the Quarto YAML
+3. cite sources in the body with keys such as `@smith2020`
+4. leave `## References` at the end of the document
+
+## Use the starter template as the default shape
+
+`create_working_paper()` gives you a compact manuscript skeleton with:
+
+- academic title block metadata
+- bibliography wiring
+- acknowledgements, funding, and report number support
+- room for working-paper branding without editing Typst files directly
+
+For the full scaffold-to-render flow, see
+`vignette("getting-started", package = "typstR")`.

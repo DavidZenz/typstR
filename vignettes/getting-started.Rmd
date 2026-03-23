@@ -1,0 +1,120 @@
+---
+title: "Getting Started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+`typstR` is built around one fast path: scaffold a working paper, edit one
+Quarto file, and render a PDF when Quarto is available.
+
+## Create a project
+
+Start by creating a working paper directory:
+
+```{r}
+library(typstR)
+```
+
+```{r eval = FALSE}
+create_working_paper("my-paper")
+```
+
+This creates a small project with:
+
+- `template.qmd` for the manuscript
+- `_quarto.yml` for project settings
+- `references.bib` for bibliography entries
+- the bundled `typstR` extension used by the template
+
+## Edit `template.qmd`
+
+The working-paper template already contains the main fields most users need:
+title, authors, affiliations, an abstract, bibliography wiring, and a
+`typstR:` block for publication metadata.
+
+```yaml
+typstR:
+  keywords:
+    - supply chains
+    - trade policy
+  jel:
+    - F14
+    - F13
+  report-number: "WP 001"
+  funding: |
+    This research was supported by the Applied Trade Policy Programme.
+```
+
+You can also build structured metadata in R before pasting it into the Quarto
+file:
+
+```{r}
+lead_author <- author(
+  "Elena Fischer",
+  email = "elena.fischer@example.org",
+  corresponding = TRUE,
+  affiliation = "1"
+)
+
+home_institute <- affiliation("1", "Centre for European Industrial Analysis")
+
+manuscript_meta(
+  authors = list(lead_author),
+  affiliations = list(home_institute)
+)
+```
+
+## Add manuscript content
+
+Keep the manuscript in `template.qmd`. The shipped starter uses a compact
+working-paper structure:
+
+- `Introduction`
+- `Data and Methods`
+- `Results`
+- `Conclusion`
+- `References`
+
+Add citations through `references.bib` and cite them in the manuscript with
+standard Quarto syntax such as `@smith2020`.
+
+## Render the PDF
+
+Rendering depends on Quarto, so the call below is shown but not run during
+vignette checks.
+
+```{r eval = FALSE}
+render_working_paper("my-paper/template.qmd")
+```
+
+If you prefer to guard the call in your own scripts, use the same condition
+that package tests use:
+
+```{r}
+quarto_ready <- quarto::quarto_available()
+quarto_ready
+```
+
+```{r eval = FALSE}
+if (quarto::quarto_available()) {
+  render_working_paper("my-paper/template.qmd")
+}
+```
+
+## Next steps
+
+Once the basic workflow is working, the other vignettes cover the two main
+follow-up tasks:
+
+- `vignette("working-papers", package = "typstR")` for working-paper metadata
+- `vignette("customizing-branding", package = "typstR")` for branding fields

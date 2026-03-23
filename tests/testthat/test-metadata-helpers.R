@@ -5,6 +5,14 @@ test_that("author() returns correct S3 class", {
   expect_equal(a$name, "Jane Doe")
 })
 
+test_that("author() validates scalar arguments", {
+  expect_error(author(123), "name.+single character string")
+  expect_error(
+    author("Jane Doe", corresponding = c(TRUE, FALSE)),
+    "corresponding.+single logical value"
+  )
+})
+
 test_that("author() stores all fields when provided", {
   a <- author("Jane Doe",
               affiliation = c("1", "2"),
@@ -109,6 +117,36 @@ test_that("manuscript_meta() populates typstR block with optional fields", {
   expect_equal(m[["typstR"]][["keywords"]], c("economics", "labor"))
   expect_equal(m[["typstR"]][["jel"]], c("J01", "J21"))
   expect_equal(m[["typstR"]][["acknowledgements"]], "Thanks")
+})
+
+test_that("manuscript_meta() preserves hyphenated typstR keys", {
+  m <- manuscript_meta(
+    authors = list(author("Jane")),
+    report_number = "WP-001",
+    data_availability = "Available on request",
+    code_availability = "https://github.com/example/repo"
+  )
+
+  expect_named(
+    m[["typstR"]],
+    c("report-number", "data-availability", "code-availability")
+  )
+  expect_equal(m[["typstR"]][["report-number"]], "WP-001")
+  expect_equal(m[["typstR"]][["data-availability"]], "Available on request")
+  expect_equal(
+    m[["typstR"]][["code-availability"]],
+    "https://github.com/example/repo"
+  )
+})
+
+test_that("manuscript_meta() omits typstR block when no optional fields are supplied", {
+  m <- manuscript_meta(
+    authors = list(author("Jane")),
+    affiliations = list()
+  )
+
+  expect_null(m[["typstR"]])
+  expect_false("typstR" %in% names(m))
 })
 
 test_that("yaml::as.yaml() on manuscript_meta produces valid YAML", {
