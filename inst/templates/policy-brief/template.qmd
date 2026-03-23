@@ -1,0 +1,43 @@
+---
+title: "Policy Brief Title"
+author:
+  - name: "Author One"
+    email: "author.one@example.org"
+    corresponding: true
+    affiliation:
+      - "1"
+affiliations:
+  - id: "1"
+    name: "Institute Name"
+abstract: |
+  Replace this placeholder with a concise summary of the policy brief.
+bibliography: references.bib
+format:
+  typstR-typst: default
+typstR:
+  format-variant: brief
+  keywords:
+    - keyword one
+    - keyword two
+  report-number: "PB 001"
+  funding: |
+    This research was supported by...
+---
+
+## Key Findings
+
+Summarize the most important findings for a policy audience.
+
+## Background
+
+Provide brief context for the policy question.
+
+## Evidence
+
+Present key evidence supporting the findings.
+
+## Policy Implications
+
+Describe actionable policy recommendations.
+
+## References

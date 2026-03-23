@@ -1,0 +1,53 @@
+---
+title: "Article Title"
+author:
+  - name: "Author One"
+    email: "author.one@example.org"
+    corresponding: true
+    affiliation:
+      - "1"
+  - name: "Author Two"
+    affiliation:
+      - "1"
+      - "2"
+affiliations:
+  - id: "1"
+    name: "Institute Name"
+  - id: "2"
+    name: "University Name"
+abstract: |
+  Replace this placeholder with your abstract. This paper examines...
+bibliography: references.bib
+format:
+  typstR-typst: default
+typstR:
+  format-variant: article
+  keywords:
+    - keyword one
+    - keyword two
+  jel:
+    - C10
+    - F13
+  acknowledgements: |
+    The authors thank...
+  funding: |
+    This research was supported by...
+---
+
+## Introduction
+
+Introduce the research question here. @smith2020 provide relevant background.
+
+## Data and Methods
+
+Describe data sources and empirical strategy.
+
+## Results
+
+Present main findings.
+
+## Conclusion
+
+Summarize contributions and implications.
+
+## References
