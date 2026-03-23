@@ -17,33 +17,60 @@
   stop("Could not locate repository root for scaffolding tests.")
 }
 
+.using_installed_package <- function() {
+  nzchar(system.file(package = "typstR")) &&
+    exists("create_working_paper", mode = "function", inherits = TRUE) &&
+    exists("create_article", mode = "function", inherits = TRUE) &&
+    exists("create_policy_brief", mode = "function", inherits = TRUE)
+}
+
 .load_scaffolding_functions <- function() {
+  if (.using_installed_package()) {
+    return(NULL)
+  }
+
   repo_root <- .repo_root()
   source(file.path(repo_root, "R", "create_working_paper.R"), local = FALSE)
   source(file.path(repo_root, "R", "create_article.R"), local = FALSE)
   source(file.path(repo_root, "R", "create_policy_brief.R"), local = FALSE)
+
+  repo_root
+}
+
+.with_template_lookup <- function(fn_name, repo_root, code) {
+  fn <- get(fn_name, inherits = TRUE)
+
+  if (is.null(repo_root)) {
+    force(code)
+    return(invisible(NULL))
+  }
+
+  local_system_file <- function(..., package = NULL, mustWork = FALSE) {
+    rel <- file.path(...)
+    if (identical(package, "typstR")) {
+      path <- file.path(repo_root, "inst", rel)
+      if (dir.exists(path) || file.exists(path)) {
+        return(path)
+      }
+    }
+    base::system.file(..., package = package, mustWork = mustWork)
+  }
+
+  assign("system.file", local_system_file, envir = environment(fn))
+  on.exit(rm("system.file", envir = environment(fn)), add = TRUE)
+
+  force(code)
 }
 
 test_that("create_working_paper() scaffolds expected files and title override", {
-  repo_root <- .repo_root()
-  .load_scaffolding_functions()
+  repo_root <- .load_scaffolding_functions()
 
   withr::with_tempdir({
-    local_system_file <- function(..., package = NULL, mustWork = FALSE) {
-      rel <- file.path(...)
-      if (identical(package, "typstR")) {
-        path <- file.path(repo_root, "inst", rel)
-        if (dir.exists(path) || file.exists(path)) {
-          return(path)
-        }
-      }
-      base::system.file(..., package = package, mustWork = mustWork)
-    }
-
-    assign("system.file", local_system_file, envir = environment(create_working_paper))
-    on.exit(rm("system.file", envir = environment(create_working_paper)), add = TRUE)
-
-    create_working_paper("wp-project", title = "My Working Paper", open = FALSE)
+    .with_template_lookup(
+      "create_working_paper",
+      repo_root,
+      create_working_paper("wp-project", title = "My Working Paper", open = FALSE)
+    )
 
     expect_true(file.exists("wp-project/template.qmd"))
     expect_true(file.exists("wp-project/_quarto.yml"))
@@ -57,25 +84,14 @@ test_that("create_working_paper() scaffolds expected files and title override", 
 })
 
 test_that("create_article() scaffolds expected files and article markers", {
-  repo_root <- .repo_root()
-  .load_scaffolding_functions()
+  repo_root <- .load_scaffolding_functions()
 
   withr::with_tempdir({
-    local_system_file <- function(..., package = NULL, mustWork = FALSE) {
-      rel <- file.path(...)
-      if (identical(package, "typstR")) {
-        path <- file.path(repo_root, "inst", rel)
-        if (dir.exists(path) || file.exists(path)) {
-          return(path)
-        }
-      }
-      base::system.file(..., package = package, mustWork = mustWork)
-    }
-
-    assign("system.file", local_system_file, envir = environment(create_article))
-    on.exit(rm("system.file", envir = environment(create_article)), add = TRUE)
-
-    create_article("article-project", title = "My Article", open = FALSE)
+    .with_template_lookup(
+      "create_article",
+      repo_root,
+      create_article("article-project", title = "My Article", open = FALSE)
+    )
 
     expect_true(file.exists("article-project/template.qmd"))
     expect_true(file.exists("article-project/_quarto.yml"))
@@ -89,25 +105,14 @@ test_that("create_article() scaffolds expected files and article markers", {
 })
 
 test_that("create_policy_brief() scaffolds expected files and brief markers", {
-  repo_root <- .repo_root()
-  .load_scaffolding_functions()
+  repo_root <- .load_scaffolding_functions()
 
   withr::with_tempdir({
-    local_system_file <- function(..., package = NULL, mustWork = FALSE) {
-      rel <- file.path(...)
-      if (identical(package, "typstR")) {
-        path <- file.path(repo_root, "inst", rel)
-        if (dir.exists(path) || file.exists(path)) {
-          return(path)
-        }
-      }
-      base::system.file(..., package = package, mustWork = mustWork)
-    }
-
-    assign("system.file", local_system_file, envir = environment(create_policy_brief))
-    on.exit(rm("system.file", envir = environment(create_policy_brief)), add = TRUE)
-
-    create_policy_brief("brief-project", title = "My Brief", open = FALSE)
+    .with_template_lookup(
+      "create_policy_brief",
+      repo_root,
+      create_policy_brief("brief-project", title = "My Brief", open = FALSE)
+    )
 
     expect_true(file.exists("brief-project/template.qmd"))
     expect_true(file.exists("brief-project/_quarto.yml"))
