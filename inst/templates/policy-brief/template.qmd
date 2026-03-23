@@ -1,43 +1,57 @@
 ---
-title: "Policy Brief Title"
+title: "How Energy Price Shocks Reach Small Manufacturers"
 author:
-  - name: "Author One"
-    email: "author.one@example.org"
+  - name: "Sofia Novak"
+    email: "sofia.novak@example.org"
     corresponding: true
     affiliation:
       - "1"
 affiliations:
   - id: "1"
-    name: "Institute Name"
+    name: "Applied Policy Lab"
 abstract: |
-  Replace this placeholder with a concise summary of the policy brief.
+  This policy brief summarizes how higher energy costs affect smaller producers
+  and which policy tools can ease short-run adjustment. The example keeps the
+  prose short and decision-oriented while preserving the metadata needed for a
+  clean typstR brief.
 bibliography: references.bib
 format:
   typstR-typst: default
 typstR:
   format-variant: brief
   keywords:
-    - keyword one
-    - keyword two
+    - energy prices
+    - small firms
+    - industrial policy
   report-number: "PB 001"
   funding: |
-    This research was supported by...
+    This research was supported by the Industrial Transition Observatory.
 ---
 
 ## Key Findings
 
-Summarize the most important findings for a policy audience.
+- Energy-cost spikes reduce margins fastest for smaller manufacturers with thin
+  cash buffers.
+- Short-term liquidity support works best when paired with clear efficiency
+  upgrade incentives.
+- Targeted communication reduces delays in firm take-up of emergency schemes.
 
 ## Background
 
-Provide brief context for the policy question.
+Provide the policy context in one or two short paragraphs. Focus on why the
+issue matters now, which firms are most exposed, and what decision makers need
+to know first.
 
 ## Evidence
 
-Present key evidence supporting the findings.
+Summarize the most relevant statistics, comparisons, or survey findings that
+support the brief's message. Keep the evidence section readable for a policy
+audience rather than a specialist academic one.
 
 ## Policy Implications
 
-Describe actionable policy recommendations.
+Translate the evidence into a short set of practical recommendations, including
+which measure can be implemented quickly and which one addresses longer-run
+competitiveness.
 
 ## References

@@ -1,53 +1,63 @@
 ---
-title: "Article Title"
+title: "Market Concentration and Export Resilience"
 author:
-  - name: "Author One"
-    email: "author.one@example.org"
+  - name: "Ana Ribeiro"
+    email: "ana.ribeiro@example.org"
     corresponding: true
     affiliation:
       - "1"
-  - name: "Author Two"
+  - name: "Jonas Meyer"
     affiliation:
       - "1"
       - "2"
 affiliations:
   - id: "1"
-    name: "Institute Name"
+    name: "Institute for Quantitative Policy Research"
   - id: "2"
-    name: "University Name"
+    name: "University of Cologne"
 abstract: |
-  Replace this placeholder with your abstract. This paper examines...
+  This article-style starter examines whether more concentrated export markets
+  recover faster after external shocks. It is intentionally compact while still
+  showing the metadata, section structure, and academic framing expected in a
+  journal-oriented manuscript.
 bibliography: references.bib
 format:
   typstR-typst: default
 typstR:
   format-variant: article
   keywords:
-    - keyword one
-    - keyword two
+    - export resilience
+    - market concentration
+    - industrial organization
   jel:
-    - C10
-    - F13
+    - L11
+    - F14
   acknowledgements: |
-    The authors thank...
+    The authors thank colleagues for feedback on the research design and
+    interpretation of the baseline results.
   funding: |
-    This research was supported by...
+    This research was supported by the Competitive Markets Initiative.
 ---
 
 ## Introduction
 
-Introduce the research question here. @smith2020 provide relevant background.
+Use the introduction to define the research question, motivate the article for
+an academic audience, and situate the contribution in the related literature.
+@smith2020
 
 ## Data and Methods
 
-Describe data sources and empirical strategy.
+Briefly describe the dataset, the identification strategy, and any key model or
+estimation choices required to reproduce the main analysis.
 
 ## Results
 
-Present main findings.
+Present the primary findings with enough narrative to show how tables and
+figures would fit into the article workflow.
 
 ## Conclusion
 
-Summarize contributions and implications.
+End with the paper's contribution, external validity, and the most important
+avenue for follow-up work.
 
 ## References

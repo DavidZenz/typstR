@@ -1,37 +1,42 @@
 ---
-title: "Working Paper Title"
+title: "Trade Fragmentation and Supplier Adjustment"
 author:
-  - name: "Author One"
-    email: "author.one@example.org"
+  - name: "Elena Fischer"
+    email: "elena.fischer@example.org"
     corresponding: true
     affiliation:
       - "1"
-  - name: "Author Two"
+  - name: "Martin Kovac"
     affiliation:
       - "1"
       - "2"
 affiliations:
   - id: "1"
-    name: "Institute Name"
+    name: "Centre for European Industrial Analysis"
   - id: "2"
-    name: "University Name"
+    name: "University of Bratislava"
 abstract: |
-  Replace this placeholder with your abstract. This paper examines...
+  This working paper studies how manufacturing firms adjust supplier networks
+  after trade policy shocks. Using linked customs and balance-sheet data, the
+  example shows how typstR supports a concise academic manuscript with standard
+  metadata, bibliography handling, and working-paper branding.
 bibliography: references.bib
 format:
   typstR-typst: default
 typstR:
   keywords:
-    - keyword one
-    - keyword two
+    - supply chains
+    - trade policy
+    - firm adjustment
   jel:
-    - C10
+    - F14
     - F13
   acknowledgements: |
-    The authors thank...
+    The authors thank seminar participants at the annual industrial economics
+    workshop for useful comments on an earlier draft.
   report-number: "WP 001"
   funding: |
-    This research was supported by...
+    This research was supported by the Applied Trade Policy Programme.
   # Branding (uncomment to customize):
   # logo: "logo.png"
   # accent-color: "#0A5DA6"
@@ -42,18 +47,25 @@ typstR:
 
 ## Introduction
 
-Introduce the research question here. @smith2020 provide relevant background.
+This starter manuscript asks how firms reallocate sourcing relationships when
+trade costs rise suddenly. The introduction should state the policy question,
+place the paper in the literature, and preview the main contribution. @smith2020
 
 ## Data and Methods
 
-Describe data sources and empirical strategy.
+Describe the sample, the key variables, and the empirical design in a few
+compact paragraphs. This section is a good place to explain any linked firm,
+product, or customs data used in the analysis.
 
 ## Results
 
-Present main findings.
+Summarize the main estimates or descriptive patterns here. A compact working
+paper example should highlight the headline result, one robustness point, and
+the broader economic interpretation.
 
 ## Conclusion
 
-Summarize contributions and implications.
+Close with the main takeaway, limits of the analysis, and the next step for the
+research agenda.
 
 ## References
