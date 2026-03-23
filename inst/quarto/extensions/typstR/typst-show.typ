@@ -1,5 +1,5 @@
 // typst-show.typ: Pandoc template that maps Quarto/Pandoc metadata to the
-// working-paper Typst function defined in typst-template.typ.
+// working-paper Typst function defined in formats/workingpaper.typ.
 //
 // Quarto 1.6+ normalises author metadata into a `by-author` variable (via its
 // Lua filter).  The raw `author` variable is NOT used for author display; use
@@ -13,9 +13,17 @@
 // Top-level `affiliations` is the deduplicated list of affiliation objects.
 // typstR: namespace fields come through as Pandoc metadata variables.
 
+#import "formats/workingpaper.typ": working-paper
+
 #show: working-paper.with(
   $if(title)$
   title: "$title$",
+  $endif$
+  $if(subtitle)$
+  subtitle: "$subtitle$",
+  $endif$
+  $if(date)$
+  date: "$date$",
   $endif$
   $if(by-author)$
   authors: (
@@ -25,6 +33,13 @@
       $if(it.email)$email: "$it.email$",$endif$
       $if(it.orcid)$orcid: "$it.orcid$",$endif$
       $if(it.attributes.corresponding)$corresponding: true,$endif$
+      $if(it.affiliations)$
+      affiliations: (
+        $for(it.affiliations)$
+        (ref: "$it.ref$"),
+        $endfor$
+      ),
+      $endif$
     ),
     $endfor$
   ),
@@ -66,6 +81,42 @@
   $endif$
   $if(typstR.code-availability)$
   code-availability: [$typstR.code-availability$],
+  $endif$
+  $if(typstR.logo)$
+  logo: "$typstR.logo$",
+  $endif$
+  $if(typstR.primary-font)$
+  primary-font: "$typstR.primary-font$",
+  $endif$
+  $if(typstR.title-font)$
+  title-font: "$typstR.title-font$",
+  $endif$
+  $if(typstR.accent-color)$
+  accent-color: rgb("$typstR.accent-color$"),
+  $endif$
+  $if(typstR.footer)$
+  footer: "$typstR.footer$",
+  $endif$
+  $if(typstR.disclaimer-page)$
+  disclaimer-page: true,
+  $endif$
+  $if(typstR.disclaimer-position)$
+  disclaimer-position: "$typstR.disclaimer-position$",
+  $endif$
+  $if(typstR.disclaimer-text)$
+  disclaimer-text: [$typstR.disclaimer-text$],
+  $endif$
+  $if(typstR.anonymized)$
+  anonymized: true,
+  $endif$
+  $if(typstR.format-variant)$
+  format-variant: "$typstR.format-variant$",
+  $endif$
+  $if(typstR.abstract-label)$
+  abstract-label: "$typstR.abstract-label$",
+  $endif$
+  $if(typstR.margins)$
+  margins: (x: $typstR.margin-x$, y: $typstR.margin-y$),
   $endif$
   $endif$
 )
