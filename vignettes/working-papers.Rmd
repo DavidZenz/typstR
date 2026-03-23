@@ -12,6 +12,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
+library(typstR)
 ```
 
 This vignette focuses on the metadata surface of the working paper format. The
