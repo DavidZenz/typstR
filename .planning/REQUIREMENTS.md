@@ -30,11 +30,11 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **TMPL-05**: Acknowledgements section
 - [x] **TMPL-06**: Bibliography rendering via Typst
 - [x] **TMPL-07**: Appendix handling with separate numbering
-- [ ] **TMPL-08**: Figure and table caption styling with notes support
+- [x] **TMPL-08**: Figure and table caption styling with notes support
 - [x] **TMPL-09**: Modular .typ file structure (base, titleblock, authors, abstract, bibliography, floats, appendix, branding)
-- [ ] **TMPL-10**: Branding via YAML: logo path, primary font, title font, accent color
-- [ ] **TMPL-11**: Branding via YAML: page margins, footer text, report number block
-- [ ] **TMPL-12**: Branding via YAML: disclaimer page support
+- [x] **TMPL-10**: Branding via YAML: logo path, primary font, title font, accent color
+- [x] **TMPL-11**: Branding via YAML: page margins, footer text, report number block
+- [x] **TMPL-12**: Branding via YAML: disclaimer page support
 - [ ] **TMPL-13**: Three format definitions: workingpaper, article, policy-brief in _extension.yml
 
 ### Metadata Helpers
@@ -122,11 +122,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TMPL-05 | Phase 3 | Complete |
 | TMPL-06 | Phase 3 | Complete |
 | TMPL-07 | Phase 3 | Complete |
-| TMPL-08 | Phase 3 | Pending |
+| TMPL-08 | Phase 3 | Complete |
 | TMPL-09 | Phase 3 | Complete |
-| TMPL-10 | Phase 3 | Pending |
-| TMPL-11 | Phase 3 | Pending |
-| TMPL-12 | Phase 3 | Pending |
+| TMPL-10 | Phase 3 | Complete |
+| TMPL-11 | Phase 3 | Complete |
+| TMPL-12 | Phase 3 | Complete |
 | TMPL-13 | Phase 3 | Pending |
 | META-01 | Phase 2 | Complete |
 | META-02 | Phase 2 | Complete |
