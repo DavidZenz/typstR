@@ -15,7 +15,7 @@
 render_pub <- function(input = NULL, output_format = NULL, quiet = FALSE,
                        open = interactive()) {
   # Pre-flight: Quarto availability (locked decision)
-  if (!quarto::quarto_available()) {
+  if (!quarto_available()) {
     cli::cli_abort(c(
       "Quarto is not installed or not on PATH.",
       "i" = "Install Quarto from {.url https://quarto.org}."
@@ -57,4 +57,14 @@ render_working_paper <- function(input = NULL, quiet = FALSE,
     quiet = quiet,
     open = open
   )
+}
+
+#' Check whether Quarto is available for rendering
+#'
+#' Uses the quarto R package API when it is installed, but returns `FALSE`
+#' cleanly in development/test environments where the R package is absent.
+#'
+#' @noRd
+quarto_available <- function() {
+  requireNamespace("quarto", quietly = TRUE) && quarto::quarto_available()
 }

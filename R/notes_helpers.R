@@ -66,6 +66,10 @@ appendix_title <- function(title, level = 1) {
   if (!is.character(title) || length(title) != 1L) {
     cli::cli_abort("{.arg title} must be a single character string.")
   }
+  if (!is.numeric(level) || length(level) != 1L || is.na(level) ||
+      level < 1 || level != as.integer(level)) {
+    cli::cli_abort("{.arg level} must be a positive integer.")
+  }
   header <- paste0(strrep("#", level), " Appendix: ", title, " {.appendix}")
   cat(header, "\n", sep = "")
   invisible(title)
