@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 2 context gathered
-last_updated: "2026-03-23T07:58:39.559Z"
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-03-23T08:47:16.545Z"
 last_activity: 2026-03-22 — Plans 01-02 and 01-03 complete; scaffolding + render wrappers; full pipeline functional
 progress:
   total_phases: 4
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
+  total_plans: 7
+  completed_plans: 5
   percent: 75
 ---
 
@@ -50,6 +50,8 @@ Progress: [████████░░] 75%
 - Trend: stable
 
 *Updated after each plan completion*
+| Phase 02-metadata-helpers-and-yaml-interface P01 | 4 | 1 tasks | 3 files |
+| Phase 02-metadata-helpers-and-yaml-interface P02-02 | 3 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -70,6 +72,11 @@ Recent decisions affecting current work:
 - [01-03]: render_pub() returns invisible(NULL) not output path — consistent with locked decision
 - [01-03]: quarto::quarto_available() pre-flight check (not Sys.which) — uses quarto R package API correctly
 - [01-03]: open = interactive() default — auto-open PDF in interactive sessions, suppress in scripts/CI
+- [Phase 02-01]: NULL fields filtered with Filter(Negate(is.null)) before structuring S3 objects — prevents yaml tilde for optional omitted author/affiliation fields
+- [Phase 02-01]: @method print TypeName + @export required for S3 dispatch NAMESPACE registration — @export alone on print.typstR_X is insufficient
+- [Phase 02-01]: manuscript_meta() calls unclass() on nested author/affiliation objects before assembly — ensures yaml::as.yaml() produces clean nested YAML
+- [Phase 02-metadata-helpers-and-yaml-interface]: keywords() validates per-argument via list(...) + vapply to prevent R c() coercion silencing type errors
+- [Phase 02-metadata-helpers-and-yaml-interface]: fig_note and tab_note kept as separate functions (not aliases) to allow divergent Typst styling in Phase 3
 
 ### Pending Todos
 
@@ -82,6 +89,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-23T07:58:39.557Z
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-metadata-helpers-and-yaml-interface/02-CONTEXT.md
+Last session: 2026-03-23T08:47:16.542Z
+Stopped at: Completed 02-02-PLAN.md
+Resume file: None

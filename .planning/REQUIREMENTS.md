@@ -39,16 +39,16 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Metadata Helpers
 
-- [ ] **META-01**: author() creates structured author metadata for YAML
-- [ ] **META-02**: affiliation() creates structured affiliation metadata for YAML
-- [ ] **META-03**: manuscript_meta() combines all metadata into valid YAML block
-- [ ] **META-04**: keywords() helper for keyword metadata
-- [ ] **META-05**: jel_codes() helper for JEL classification codes
-- [ ] **META-06**: report_number() helper for institute report numbering
-- [ ] **META-07**: fig_note() and tab_note() for figure/table notes
-- [ ] **META-08**: appendix_title() helper for appendix sections
-- [ ] **META-09**: funding() helper for funding statements
-- [ ] **META-10**: data_availability() and code_availability() helpers
+- [x] **META-01**: author() creates structured author metadata for YAML
+- [x] **META-02**: affiliation() creates structured affiliation metadata for YAML
+- [x] **META-03**: manuscript_meta() combines all metadata into valid YAML block
+- [x] **META-04**: keywords() helper for keyword metadata
+- [x] **META-05**: jel_codes() helper for JEL classification codes
+- [x] **META-06**: report_number() helper for institute report numbering
+- [x] **META-07**: fig_note() and tab_note() for figure/table notes
+- [x] **META-08**: appendix_title() helper for appendix sections
+- [x] **META-09**: funding() helper for funding statements
+- [x] **META-10**: data_availability() and code_availability() helpers
 
 ### YAML Interface
 
@@ -128,16 +128,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TMPL-11 | Phase 3 | Pending |
 | TMPL-12 | Phase 3 | Pending |
 | TMPL-13 | Phase 3 | Pending |
-| META-01 | Phase 2 | Pending |
-| META-02 | Phase 2 | Pending |
-| META-03 | Phase 2 | Pending |
-| META-04 | Phase 2 | Pending |
-| META-05 | Phase 2 | Pending |
-| META-06 | Phase 2 | Pending |
-| META-07 | Phase 2 | Pending |
-| META-08 | Phase 2 | Pending |
-| META-09 | Phase 2 | Pending |
-| META-10 | Phase 2 | Pending |
+| META-01 | Phase 2 | Complete |
+| META-02 | Phase 2 | Complete |
+| META-03 | Phase 2 | Complete |
+| META-04 | Phase 2 | Complete |
+| META-05 | Phase 2 | Complete |
+| META-06 | Phase 2 | Complete |
+| META-07 | Phase 2 | Complete |
+| META-08 | Phase 2 | Complete |
+| META-09 | Phase 2 | Complete |
+| META-10 | Phase 2 | Complete |
 | YAML-01 | Phase 2 | Pending |
 | YAML-02 | Phase 2 | Pending |
 | YAML-03 | Phase 2 | Pending |
