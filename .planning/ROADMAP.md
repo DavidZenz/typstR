@@ -86,11 +86,11 @@ Plans:
 **Plans:** 6 plans
 
 Plans:
-- [ ] 04-01-PLAN.md -- Expand CRAN-safe tests for helpers, render guards, scaffolding, and guarded render smoke paths
+- [x] 04-01-PLAN.md -- Expand CRAN-safe tests for helpers, render guards, scaffolding, and guarded render smoke paths
 - [x] 04-02-PLAN.md -- Add README onboarding and polish one compact starter example per format
 - [x] 04-03-PLAN.md -- Create the three CRAN-safe task-oriented vignettes
-- [ ] 04-04-PLAN.md -- Complete source-level roxygen docs/examples for the exported API
-- [ ] 04-05-PLAN.md -- Regenerate package docs, align build metadata, and produce a fresh source tarball
+- [x] 04-04-PLAN.md -- Complete source-level roxygen docs/examples for the exported API
+- [x] 04-05-PLAN.md -- Regenerate package docs, align build metadata, and produce a fresh source tarball
 - [ ] 04-06-PLAN.md -- Run the final fast gate plus bounded `R CMD check --as-cran` hardening loop
 
 ## Progress
