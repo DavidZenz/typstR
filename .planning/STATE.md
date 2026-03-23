@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-03-PLAN.md
-last_updated: "2026-03-23T08:52:01.182Z"
+stopped_at: Completed 02-04-PLAN.md (Task 1 done; Task 2 is human-verify checkpoint)
+last_updated: "2026-03-23T09:07:23.784Z"
 last_activity: 2026-03-22 — Plans 01-02 and 01-03 complete; scaffolding + render wrappers; full pipeline functional
 progress:
   total_phases: 4
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 7
-  completed_plans: 6
+  completed_plans: 7
   percent: 75
 ---
 
@@ -53,6 +53,7 @@ Progress: [████████░░] 75%
 | Phase 02-metadata-helpers-and-yaml-interface P01 | 4 | 1 tasks | 3 files |
 | Phase 02-metadata-helpers-and-yaml-interface P02-02 | 3 | 2 tasks | 5 files |
 | Phase 02-metadata-helpers-and-yaml-interface P03 | 8 | 2 tasks | 3 files |
+| Phase 02-metadata-helpers-and-yaml-interface P04 | 11 | 1 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -81,6 +82,10 @@ Recent decisions affecting current work:
 - [Phase 02-metadata-helpers-and-yaml-interface]: typst-show.typ uses outer $if(typstR)$ guard wrapping all namespace field conditionals for clean fallback when block absent
 - [Phase 02-metadata-helpers-and-yaml-interface]: Content blocks [...] used for all free-text Typst fields (acknowledgements, funding, data-availability, code-availability) to survive Pandoc Markdown parsing
 - [Phase 02-metadata-helpers-and-yaml-interface]: Hyphenated YAML keys (report-number, data-availability, code-availability) kept as-is in typst-show.typ; flagged for smoke-test render validation before Phase 3
+- [Phase 02-metadata-helpers-and-yaml-interface]: Quarto 1.8 extension format key must be 'typst' (not custom name); user-facing format becomes {ext-name}-typst; affects all template.qmd and render wrapper references
+- [Phase 02-metadata-helpers-and-yaml-interface]: Quarto 1.6+ normalises authors to by-author via Lua filter; typst-show.typ must use $for(by-author)$ and it.name.literal, it.attributes.corresponding
+- [Phase 02-metadata-helpers-and-yaml-interface]: Pandoc 3.6 template syntax: $for()$ must be followed by newline before literal quote chars; use $sep$ for list separators in for loops
+- [Phase 02-metadata-helpers-and-yaml-interface]: Typst template field access: use a.at('name', default: '') not a.name for dictionary field access in Typst; affects typst-template.typ author and affiliation rendering
 
 ### Pending Todos
 
@@ -93,6 +98,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-23T08:52:01.179Z
-Stopped at: Completed 02-03-PLAN.md
+Last session: 2026-03-23T09:07:23.782Z
+Stopped at: Completed 02-04-PLAN.md (Task 1 done; Task 2 is human-verify checkpoint)
 Resume file: None
