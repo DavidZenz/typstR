@@ -1,224 +1,139 @@
-# Feature Research
+# Feature Landscape
 
-**Domain:** R scientific publishing package (Quarto + Typst PDF)
-**Researched:** 2026-03-21
-**Confidence:** HIGH (ecosystem well-documented; competitors directly inspected)
+**Domain:** typstR v1.1 (Reliability + Onboarding Polish, brownfield)
+**Researched:** 2026-03-31
+**Confidence:** MEDIUM-HIGH (strong internal codebase evidence + official docs for Quarto/cli/testthat tooling)
 
----
+## Milestone Scope Boundary (v1.1)
 
-## Feature Landscape
+This milestone should improve **failure quality and first-run success** of the existing three-format package.
 
-### Table Stakes (Users Expect These)
+**In scope:**
+- Pre-render validation coverage expansion (setup + manuscript + metadata consistency)
+- Structured diagnostics with concrete remediation hints
+- Starter/scaffold defaults that render successfully on first run
+- Targeted, measured performance improvements in helper/render paths
 
-Features users assume exist. Missing these = product feels incomplete.
-
-| Feature | Why Expected | Complexity | Notes |
-|---------|--------------|------------|-------|
-| Multiple author support with affiliations | Every scientific paper has multiple authors mapped to institutions; this is a formatting primitive, not a differentiator | MEDIUM | Quarto's standard author/affiliations YAML schema works; need to render correctly in Typst titleblock. apaquarto, reproducr, and quarto-preprint all implement this. |
-| Abstract | Universal in papers; expected in the YAML block | LOW | Standard Quarto metadata field; maps to Typst template block. |
-| Bibliography / citations | Reproducible scientific writing requires citable references | LOW | Quarto handles via `bibliography:` YAML + Typst native citation or pandoc citeproc. Already solved infrastructure. |
-| Cross-references for figures and tables | Researchers number and refer to figures/tables; manual numbering is unacceptable | LOW | Quarto provides `@fig-` and `@tbl-` syntax natively for Typst. Not in scope to reimplement. |
-| Table of contents | Expected on multi-section working papers and reports | LOW | Quarto `toc: true` passes through to Typst natively. |
-| Keywords | Standard front-matter field for academic papers and working papers alike | LOW | Typst template renders a keywords block from YAML; typstR-specific metadata extension. |
-| Section numbering | Convention for academic documents; readers cite section numbers | LOW | Quarto `number-sections: true` works for Typst. |
-| Appendix | Economics and social science papers routinely have appendices | MEDIUM | Quarto has appendix support; rendering as a named section in Typst with correct numbering needs template work. |
-| Figure and table captions | Standard for all scientific figures and tables | LOW | Quarto standard figure/table syntax handles this. |
-| ORCID identifier per author | Increasingly required by journals; expected in modern templates | LOW | Standard Quarto YAML author field; rendered as icon or text in title block. |
-| Corresponding author designation | Standard for multi-author papers | LOW | Quarto YAML `corresponding: true` per author; needs Typst titleblock rendering. |
-| Acknowledgements section | Funding, thanks to reviewers — expected | LOW | Typst template block; driven by YAML field. |
+**Out of scope for this milestone:**
+- Net-new major publication formats or journal template expansion
+- Changes that alter output semantics of existing formats
+- Broad architecture rewrites (keep brownfield integration with current R package + Quarto extension + Typst templates)
 
 ---
 
-### Differentiators (Competitive Advantage)
+## Table Stakes
 
-Features that set the product apart. Not required, but valued.
+Features users should reasonably expect in a reliability/onboarding polish release.
 
-| Feature | Value Proposition | Complexity | Notes |
-|---------|-------------------|------------|-------|
-| Project scaffolding (`create_working_paper()`) | Users go from zero to polished PDF in one function call — the "one-minute setup" that competitors don't provide; rticles requires manual file setup | MEDIUM | Must generate .qmd, _quarto.yml, example bib, assets, and open in editor. This is the primary adoption hook. |
-| JEL classification codes | Domain-specific to economics; no existing R/Quarto/Typst template handles this as a first-class metadata field | LOW | Simple rendered block after keywords; high signal value to target audience (economists, policy analysts). |
-| Report number block | Standard for institute working paper series; not present in quarto-preprint, rticles, or apaquarto | LOW | Single rendered line on title page driven by `report-number:` YAML; trivial to implement, high user value. |
-| Institutional branding via YAML (no Typst editing) | Institutes need branded PDFs; current solutions require editing raw Typst — typstR makes this declarative | HIGH | Cover: logo path, accent color, fonts, margins, footer text, disclaimer page. Quarto's `_brand.yml` partially overlaps; typstR should be compatible but extend it. Key differentiator from raw Quarto templates. |
-| Anonymized / review mode | Journal submission requires blinding; apaquarto has this for APA, but no Typst-native solution exists for general scientific use | MEDIUM | YAML flag strips authors, affiliations, ORCID, acknowledgements, funding from rendered output. reproducr and apaquarto both implement blinding, confirming strong user demand. |
-| Funding declaration block | Required by many funders (NIH, EU, ERC); increasingly expected | LOW | YAML field `funding:` drives a rendered declaration section. Data/code availability statements are adjacent. |
-| Data and code availability statements | Required by many journals and replication policies | LOW | `data_availability:` and `code_availability:` YAML fields map to a rendered section. Differentiator because no existing Typst template makes these first-class. |
-| `validate_manuscript()` diagnostics | Users hit cryptic Typst/Quarto errors at render time; pre-render validation catches common issues early | MEDIUM | Checks: Quarto installed, Typst available, required files present, logo path valid, bib exists if cited, metadata well-formed. quarto-preprint and rticles have no equivalent. |
-| Three named publication formats | workingpaper, article, policy-brief cover the full target user range without forcing users to adapt a generic template | HIGH | Each format has distinct title page layout, metadata fields, and optional feature set. The three formats share 80% of the Typst template layer — marginal cost is low once the base layer is built. |
-| Render wrapper (`render_pub()`, `render_working_paper()`) | Lowers the cognitive overhead for users unfamiliar with Quarto CLI; provides a clean R-native entry point | LOW | Thin wrapper over `quarto::quarto_render()` with format-aware defaults. |
-| Fig/table note helpers (`fig_note()`, `tab_note()`) | Economics convention is to put source/note lines under figures and tables; no standard Quarto/Typst mechanism exists | LOW | Small helper functions that emit correctly formatted Typst markup for sub-caption note lines. Researchers use these constantly. |
-| Modular Typst template layer | Makes customization and maintenance tractable; users who know Typst can swap individual modules | HIGH | Separate .typ files for titleblock, authors, abstract, bibliography, floats, appendix, branding. Design constraint, not user-facing feature — but critical for longevity. |
+| ID | Category | Feature | Why Expected | Complexity | Dependency Notes | User-Observable Acceptance |
+|---|---|---|---|---|---|---|
+| TS-VAL-01 | Validation | **Pre-render environment checks** (`quarto`, typst backend availability, required extension presence) | Current `render_*()` path fails late; users expect immediate setup diagnosis | MEDIUM | Depends on stable environment probe layer reused by render wrappers | Running `render_working_paper()` in a broken environment fails fast with actionable message before render starts |
+| TS-VAL-02 | Validation | **Document structure checks** (`.qmd` detect, single-target resolution, `_extensions/typstR` sanity) | Current helpers already resolve input paths; users expect deterministic failure when project shape is wrong | LOW-MEDIUM | Extends `resolve_input()` path logic and scaffold assumptions | Wrong project structure returns explicit error with file/path references |
+| TS-VAL-03 | Validation | **Metadata consistency checks from YAML** (required fields per variant, affiliation ref integrity, key/type checks) | Many users edit YAML directly and bypass helper constructors | HIGH | Depends on format-variant rule catalog and Typst bridge keys in `typst-show.typ` | Invalid YAML metadata yields targeted diagnostics (field + expected shape + fix) |
+| TS-DIAG-01 | Diagnostics UX | **Structured diagnostics model** (severity, code, message, hint, location) | Ad-hoc strings are hard to test and hard to triage | MEDIUM | Foundation for all validator checks; should be reused by check/render entry points | Validation returns machine-testable issue set and human-readable summary |
+| TS-DIAG-02 | Diagnostics UX | **Concrete remediation hints** (exact key names, file paths, command suggestions) | v1.1 goal explicitly calls for actionable guidance | MEDIUM | Requires per-check hint templates and key dictionary | Error output includes “what to change” (not just “what failed”) |
+| TS-ONB-01 | Onboarding/Scaffold | **First-render-safe scaffolds** (starter content + references + metadata pass validation out of the box) | New users should succeed without reading internals | LOW-MEDIUM | Depends on validator integration in CI against shipped templates | Fresh `create_*()` project renders cleanly on supported setup |
+| TS-ONB-02 | Onboarding/Scaffold | **Starter content tuned for common edits** (clear placeholders, fewer near-miss YAML keys) | Current onboarding is good but still vulnerable to YAML typo friction | LOW | Template edits only; should preserve current format semantics | Users can replace title/authors/content without breaking metadata wiring |
+| TS-PERF-01 | Performance | **Measured optimization budget for render/helper hot paths** | Performance work must be evidence-driven, not speculative | MEDIUM | Requires benchmark harness and baseline snapshots before code changes | Benchmarks show measurable improvement on selected hot paths with no output behavior change |
+| TS-PERF-02 | Performance | **No redundant expensive operations in wrappers** (avoid repeated filesystem scans/copies/checks within one render call) | Brownfield package should remove avoidable overhead before adding complexity | LOW-MEDIUM | Depends on call-path audit of `render.R`, scaffolding copy logic, and extension checks | Render call performs only necessary checks once; benchmark confirms reduced overhead |
 
 ---
 
-### Anti-Features (Commonly Requested, Often Problematic)
+## Differentiators
 
-Features that seem good but create problems.
+Features that can make v1.1 feel substantially better than “just more checks.”
 
-| Feature | Why Requested | Why Problematic | Alternative |
-|---------|---------------|-----------------|-------------|
-| Journal submission compatibility for 40+ publishers | rticles has 40+ templates; users ask for "just add Nature/PLOS/Elsevier" | Each publisher has idiosyncratic layout requirements; maintaining them is a full-time job that dilutes the core product; rticles itself struggles with template staleness | Explicitly out of scope for v0.1. If demand exists after launch, add one high-value journal template (e.g., arXiv preprint style) as v0.2 work. |
-| LaTeX `.cls` / `.sty` import | Users have institutional LaTeX templates and want automatic conversion | Fundamentally different typesetting system; conversion is lossy; no reliable automated path exists | Typst templates are the replacement, not a conversion target. Document this decision clearly. |
-| HTML and Word output | "Can it output to Word for co-authors?" is common | Typst output pipeline is the entire value proposition; Word requires a completely different template and workflow; splitting effort dilutes quality | Quarto's default HTML/Word output works for those formats; typstR is explicitly PDF-first. |
-| Built-in table engine | Users want `gt`-style tables in Typst output | typstable, gt with Typst support, and tinytable already exist; reinventing this is wasted effort and creates conflicts | Delegate entirely to typstable/gt/tinytable. typstR handles layout conventions (captions, notes, positioning) only. |
-| Real-time preview / live render | Nice developer experience feature | Requires a file watcher, browser integration, or RStudio pane — far outside the R package scope and adds binary dependencies | Quarto's built-in preview (`quarto preview`) handles this. typstR should document this workflow. |
-| Universal LaTeX-to-Typst conversion | "I have 50 .tex files I want to migrate" | Structurally hard; pandoc conversion of Typst is incomplete; math macros, custom environments, and bibliography styles all break | Not in scope. Point users to pandoc's experimental Typst writer. |
-| Automatic DOI resolution / CrossRef API | "Fill in the metadata from the DOI" | Adds a network dependency, API rate limits, and authentication complexity; out of mission for a document formatting package | Users manage their own bibliography .bib files. |
-| CRediT contributor taxonomy | apaquarto implements all 14 CRediT roles with degree-of-involvement | Valuable for psychology and biomedical fields; excess complexity for the economics/policy target audience | Document that users can add custom author notes manually if needed. Reconsider if non-economics adoption grows. |
-| Multi-language / i18n for template text | "Can the 'Abstract' label appear in German/French?" | Typst handles this via `set text(lang: ...)` but requires translating all template strings; maintenance burden | Expose a `lang:` pass-through to Typst for font shaping; leave label translation as an advanced customization for users who know Typst. |
+| ID | Category | Feature | Value Proposition | Complexity | Notes |
+|---|---|---|---|---|---|
+| DF-DIAG-01 | Diagnostics UX | **Near-miss key detection** (e.g., `accent_color` → `accent-color`, `report_number` → `report-number`) | Prevents common YAML typo loops; high perceived polish | MEDIUM | Especially relevant given branding/docs examples and hyphenated key usage |
+| DF-DIAG-02 | Diagnostics UX | **Grouped report output** (Errors vs Warnings vs Info, stable ordering) | Faster triage for users and maintainers; simpler snapshot testing | LOW-MEDIUM | Works well with `cli` bullets + testthat snapshot expectations |
+| DF-ONB-01 | Onboarding | **Validation-first onboarding command pattern** (`validate` before render in docs/starter comments) | Teaches safe workflow and reduces “mystery render failure” support burden | LOW | Documentation + starter guidance + optional render preflight hook |
+| DF-PERF-01 | Performance | **Regression-safe perf gates** (bench snapshots in CI for selected paths) | Protects gains from later regressions; confidence for future refactors | MEDIUM-HIGH | Needs stable benchmark scenarios and tolerance thresholds |
+
+---
+
+## Candidate Requirement Set for v1.1 Roadmap
+
+Prioritized, category-balanced requirements that are directly testable.
+
+| Priority | Req ID | Requirement | Category | Complexity | Depends On |
+|---|---|---|---|---|---|
+| P1 | RQ-VAL-ENV | Implement `check_quarto()/check_typst()/check_typstR()` style environment probes with actionable results | Validation | MEDIUM | TS-VAL-01, TS-DIAG-01 |
+| P1 | RQ-VAL-META | Add YAML-driven metadata and consistency validation for all current variants (workingpaper/article/brief) | Validation | HIGH | TS-VAL-03, TS-DIAG-01 |
+| P1 | RQ-DIAG-HINT | Introduce structured diagnostics schema with remediation hints and stable issue codes | Diagnostics UX | MEDIUM | TS-DIAG-01 |
+| P1 | RQ-ONB-FIRST | Ensure every scaffolded starter renders and validates successfully in CI on supported setup | Onboarding | MEDIUM | TS-ONB-01, RQ-VAL-META |
+| P2 | RQ-DIAG-NM | Add near-miss key suggestions for frequent YAML mistakes | Diagnostics UX | MEDIUM | DF-DIAG-01 |
+| P2 | RQ-ONB-TPL | Tighten template defaults/placeholders to reduce first-edit failure probability | Onboarding | LOW | TS-ONB-02 |
+| P2 | RQ-PERF-HOT | Profile helper/render paths and optimize top measurable hotspots without changing output semantics | Performance | MEDIUM | TS-PERF-01 |
+| P3 | RQ-PERF-GATE | Add lightweight performance regression checks for selected stable benchmarks | Performance | MEDIUM-HIGH | DF-PERF-01, RQ-PERF-HOT |
+
+---
+
+## Anti-Features (Explicitly Avoid in v1.1)
+
+| Anti-Feature | Why Avoid | What To Do Instead |
+|---|---|---|
+| Adding major new output formats or large journal-template catalog | Violates milestone goal; dilutes reliability/onboarding investment | Keep format surface fixed; improve validation and DX on existing formats |
+| Silent auto-mutation of user manuscripts/YAML during validation | High trust risk; can hide errors and create hard-to-debug drift | Report exact issue + suggested fix; keep user edits explicit |
+| Live preview daemon/watcher subsystem | High complexity, not required for reliability milestone | Continue leveraging Quarto’s existing preview/render tooling |
+| Performance changes without benchmark baseline and acceptance threshold | Creates churn with no proof of user benefit | Require before/after measurement on defined scenarios |
+| Dependency-heavy “auto-install everything” behavior in render path | Fragile in CRAN/user environments; can fail unpredictably | Detect and report missing dependencies with clear remediation commands |
 
 ---
 
 ## Feature Dependencies
 
-```
-Project scaffolding (create_working_paper)
-    └──requires──> Format definitions (workingpaper_typst)
-                       └──requires──> Typst template layer (base, titleblock, authors, abstract)
-                                          └──requires──> Quarto extension (_extension.yml, format defs)
+```text
+Structured diagnostics schema (RQ-DIAG-HINT)
+  -> enables environment checks (RQ-VAL-ENV)
+  -> enables metadata consistency checks (RQ-VAL-META)
+  -> enables near-miss hints (RQ-DIAG-NM)
 
-Institutional branding
-    └──requires──> Typst template layer (branding module)
-    └──enhances──> All three publication formats
+Metadata rule catalog by format variant (RQ-VAL-META)
+  -> required for scaffold first-run guarantees (RQ-ONB-FIRST)
+  -> required for template hardening work (RQ-ONB-TPL)
 
-Anonymized review mode
-    └──requires──> Author/affiliation rendering in Typst titleblock
-    └──conflicts──> Branding (branding output may identify institution; branding should also be suppressed in review mode)
-
-Validation (validate_manuscript)
-    └──requires──> Format definitions (to know what fields are required per format)
-    └──enhances──> All render wrappers
-
-Render wrappers (render_pub, render_working_paper)
-    └──requires──> quarto R package (quarto::quarto_render)
-    └──enhances──> Project scaffolding (scaffolded project uses render wrappers in README)
-
-JEL codes / keywords
-    └──requires──> typstR: YAML metadata block handling
-    └──enhances──> workingpaper and article formats
-
-Fig/table notes (fig_note, tab_note)
-    └──requires──> Quarto Typst output (raw Typst block passthrough)
-
-Data/code availability, funding
-    └──requires──> typstR: YAML metadata block handling
-    └──enhances──> article format (often required for journal submission)
+Benchmark harness + hotspot profiling (RQ-PERF-HOT)
+  -> prerequisite for perf regression gates (RQ-PERF-GATE)
 ```
 
 ### Dependency Notes
 
-- **Project scaffolding requires format definitions:** `create_working_paper()` generates a `.qmd` pointing to `typstR-workingpaper`; the format must exist or the generated file is broken.
-- **Branding requires Typst template modularization:** If the Typst layer is one monolithic file, swapping branding elements safely is fragile. The modular design is a prerequisite.
-- **Anonymized mode conflicts with branding:** A review submission with a logo defeats the purpose. The `review: true` flag must suppress both author metadata and branding.
-- **Validation requires knowing expected fields per format:** `validate_manuscript()` needs to know which metadata fields are required vs optional for each format — this ties validation to the format definitions.
+- **Do diagnostics before adding many checks.** Without stable issue shape/codes, tests become string-fragile and roadmap phases will churn.
+- **Do metadata validation before onboarding hardening.** You can’t claim first-run success unless the validator encodes expected metadata truth for each variant.
+- **Do profiling before optimization.** Existing code already avoids some heavy work in render paths; optimize only confirmed hotspots.
 
 ---
 
-## MVP Definition
+## MVP Recommendation (v1.1)
 
-### Launch With (v0.1)
+Prioritize these for milestone completion:
+1. **RQ-DIAG-HINT** (diagnostic contract)
+2. **RQ-VAL-ENV** + **RQ-VAL-META** (fast-fail coverage)
+3. **RQ-ONB-FIRST** (starter render/validate green path)
+4. **RQ-PERF-HOT** (measurable hotspot improvements only)
 
-Minimum viable product — what's needed to validate the concept with the economics/policy institute target audience.
-
-- [ ] `workingpaper_typst` format — primary format for target audience; standalone value
-- [ ] Title, subtitle, authors, affiliations, corresponding author, ORCID — without these, the title page is useless
-- [ ] Abstract, keywords, JEL codes — economics-specific metadata; a key differentiator
-- [ ] Acknowledgements, funding declaration — expected in working papers
-- [ ] Report number — trivial implementation, high signal to institute users
-- [ ] Bibliography — papers without references are not papers
-- [ ] Appendix support — most economics working papers have one
-- [ ] Figure and table captions, fig_note / tab_note — fundamental to scientific figures
-- [ ] `create_working_paper()` scaffolding — the one-minute setup; adoption hook
-- [ ] Institutional branding (logo, font, color, margin, footer) via YAML — primary differentiator for institute users
-- [ ] `validate_manuscript()` and `check_*()` diagnostics — pre-render error catching; reduces support burden
-- [ ] `render_pub()` / `render_working_paper()` wrappers — R-native entry point
-
-### Add After Validation (v0.1.x)
-
-Features to add once core is working and the template layer is stable.
-
-- [ ] `article_typst` format — adds anonymized review mode; needed for journal preprint/submission use case
-- [ ] `policy_brief` format — short format; shares most of the base template layer
-- [ ] Data and code availability statements — increasingly required; low complexity add-on
-- [ ] Anonymized / review mode — tied to `article_typst`; implement together
-
-### Future Consideration (v0.2+)
-
-Features to defer until product-market fit is established.
-
-- [ ] `_brand.yml` deep integration — Quarto's brand YAML overlaps with typstR branding; deeper integration would reduce duplication but requires stability in Quarto's brand API
-- [ ] arXiv preprint style — would make typstR useful for pure preprint workflow; only worth building if user demand emerges outside economics institutes
-- [ ] CRediT contributor taxonomy — relevant if adoption expands to biomedical or psychology users
-- [ ] Language localization of template strings — niche need; only worth implementing if non-English institute adoption occurs
-
----
-
-## Feature Prioritization Matrix
-
-| Feature | User Value | Implementation Cost | Priority |
-|---------|------------|---------------------|----------|
-| workingpaper format + titleblock | HIGH | HIGH | P1 |
-| Author/affiliation/ORCID rendering | HIGH | MEDIUM | P1 |
-| Abstract, keywords, JEL codes | HIGH | LOW | P1 |
-| create_working_paper() scaffolding | HIGH | MEDIUM | P1 |
-| Bibliography | HIGH | LOW | P1 |
-| Institutional branding via YAML | HIGH | HIGH | P1 |
-| Report number | HIGH | LOW | P1 |
-| Appendix support | HIGH | MEDIUM | P1 |
-| fig_note / tab_note helpers | MEDIUM | LOW | P1 |
-| validate_manuscript() diagnostics | MEDIUM | MEDIUM | P1 |
-| render_pub() wrappers | MEDIUM | LOW | P1 |
-| article_typst format | HIGH | MEDIUM | P2 |
-| Anonymized / review mode | HIGH | MEDIUM | P2 |
-| policy_brief format | MEDIUM | LOW | P2 |
-| Data/code availability statements | MEDIUM | LOW | P2 |
-| _brand.yml deep integration | LOW | MEDIUM | P3 |
-| arXiv preprint style | LOW | MEDIUM | P3 |
-| CRediT taxonomy | LOW | HIGH | P3 |
-
-**Priority key:**
-- P1: Must have for launch (v0.1)
-- P2: Should have, add when possible (v0.1.x)
-- P3: Nice to have, future consideration (v0.2+)
-
----
-
-## Competitor Feature Analysis
-
-| Feature | rticles | quarto-preprint | apaquarto | reproducr | typstR (planned) |
-|---------|---------|----------------|-----------|-----------|-----------------|
-| Output format | PDF via LaTeX | PDF via Typst | PDF/DOCX/HTML via Typst/pandoc | PDF/HTML via R Markdown | PDF via Typst |
-| Project scaffolding | rmarkdown::draft() only | quarto use template | quarto use template | none | create_working_paper() R function |
-| Author/affiliation | Template-specific | Yes (standard Quarto) | Yes (full CRediT) | Yes | Yes |
-| ORCID | Template-specific | Yes | Yes | Yes | Yes |
-| Keywords | Template-specific | Via categories field | Yes | Yes | Yes (first-class YAML) |
-| JEL codes | AEA template only | No | No | No | Yes (first-class, all formats) |
-| Report number | No | No | No | No | Yes |
-| Anonymized review mode | No (some templates) | No | Yes (mask:) | Yes (blinding param) | Yes (article format) |
-| Institutional branding | No | No | No | No | Yes (logo, fonts, colors, footer) |
-| Validation / diagnostics | No | No | No | No | Yes (validate_manuscript) |
-| Fig/table notes | No | No | No | No | Yes (fig_note, tab_note) |
-| Funding declaration | No | No | Auto from author note | No | Yes (first-class YAML) |
-| Data/code availability | No | No | No | No | Yes (v0.1.x) |
-| R-native render wrapper | No | No | No | No | Yes (render_pub) |
-| CRAN availability | Yes | No (Quarto ext only) | Yes | GitHub only | Target: Yes |
+Defer to late milestone / next milestone:
+- **RQ-PERF-GATE** (if benchmark stability for CI is not yet reliable)
 
 ---
 
 ## Sources
 
-- [rticles CRAN package documentation](https://cran.r-project.org/web/packages/rticles/rticles.pdf) — Confirmed feature set, template scope, AEA JEL template
-- [rticles GitHub](https://github.com/rstudio/rticles) — Template list, community contributions
-- [Quarto Typst Basics](https://quarto.org/docs/output-formats/typst.html) — Native Typst features, known limitations
-- [Quarto Custom Typst Formats](https://quarto.org/docs/output-formats/typst-custom.html) — Template partials model, extension structure
-- [Quarto Manuscript Authoring](https://quarto.org/docs/manuscripts/authoring/rstudio.html) — Scholarly metadata, cross-references
-- [Quarto Brand YAML for Typst](https://quarto.org/docs/advanced/typst/brand-yaml.html) — Branding system, font/color integration
-- [quarto-preprint GitHub](https://github.com/mvuorre/quarto-preprint) — Closest Typst competitor; confirmed feature gaps (no JEL, no report number, no branding, no diagnostics)
-- [apaquarto options](https://wjschne.github.io/apaquarto/options.html) — Anonymized mode implementation, CRediT taxonomy, author note automation
-- [reproducr package](https://jschultecloos.github.io/reproducr/) — Blinding mode, ORCID, separate bibliographies pattern
-- [typstable CRAN](https://cloud.r-project.org/web/packages/typstable/typstable.pdf) — Confirmed scope: table styling only, not a manuscript framework
-- [typr R package](https://r-packages.io/packages/typr) — Confirmed scope: Typst CLI compilation helper only
+### Internal codebase evidence (HIGH confidence)
+- `.planning/PROJECT.md` (v1.1 goal and scope constraints)
+- `R/render.R`, `R/utils.R`, `R/create_*.R` (current render/scaffold behavior)
+- `inst/templates/*/template.qmd` (starter defaults and likely first-run friction points)
+- `inst/quarto/extensions/typstR/typst-show.typ` (authoritative metadata key surface)
+- `tests/testthat/test-render-guards.R`, `test-scaffolding.R`, `test-yaml-integration.R` (current behavioral guarantees)
 
----
-
-*Feature research for: R scientific publishing package (Quarto + Typst PDF)*
-*Researched: 2026-03-21*
+### Official docs (MEDIUM-HIGH confidence)
+- Quarto command reference (`quarto check`): https://quarto.org/docs/reference/commands/check.html
+- Quarto Typst custom formats / template partials: https://quarto.org/docs/output-formats/typst-custom.html
+- Quarto extensions overview: https://quarto.org/docs/extensions/
+- Quarto R render API (`quarto::quarto_render`): https://quarto-dev.github.io/quarto-r/reference/quarto_render.html
+- cli diagnostics primitives: https://cli.r-lib.org/reference/cli_abort.html and https://cli.r-lib.org/reference/cli_bullets.html
+- rlang condition signaling: https://rlang.r-lib.org/reference/abort.html
+- testthat snapshot testing (diagnostic output stabilization): https://testthat.r-lib.org/reference/expect_snapshot.html
+- bench microbenchmarking: https://bench.r-lib.org/reference/mark.html
+- profvis profiling: https://profvis.r-lib.org/

@@ -1,371 +1,257 @@
-# Architecture Research
+# Architecture Patterns
 
-**Domain:** R package bundling Quarto extension + Typst templates (scientific publishing)
-**Researched:** 2026-03-21
-**Confidence:** HIGH
+**Domain:** typstR v1.1 (Reliability and Onboarding Polish, brownfield)
+**Researched:** 2026-03-31
 
-## Standard Architecture
+## Recommended Architecture
 
-### System Overview
+v1.1 should add a **reliability orchestration layer in the R package** without changing typstR’s core output model (Quarto extension + Typst templates). The design goal is fail-fast behavior with actionable remediation, while preserving existing public workflows (`create_*()`, `render_pub()`, `render_working_paper()`).
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                         User Project (on disk)                        │
-│                                                                        │
-│  paper.qmd          _quarto.yml        references.bib    logo.png     │
-│  (YAML front matter  (project config)  (bibliography)   (branding)    │
-│   + prose + code)                                                      │
-│       │                                                                │
-│       │  format: typstR-workingpaper                                   │
-│       │                                                                │
-│  _extensions/typstR/          ← copied here by create_working_paper() │
-│  ├── _extension.yml                                                    │
-│  ├── typst-show.typ                                                    │
-│  ├── templates/base.typ                                                │
-│  └── ...                                                               │
-└──────────────────────────────────────────────────────────────────────┘
-          │
-          │  quarto render / render_pub()
-          ▼
-┌──────────────────────────────────────────────────────────────────────┐
-│                          Quarto CLI (1.4+)                             │
-│                                                                        │
-│  1. Parse YAML front matter                                            │
-│  2. Convert .qmd → Pandoc AST (markdown + code execution)             │
-│  3. Locate extension via _extensions/typstR/_extension.yml            │
-│  4. Apply typst-show.typ (map Pandoc metadata → Typst function args)   │
-│  5. Apply typst-template.typ partials (base layout, branding, etc.)   │
-│  6. Emit .typ intermediate file                                        │
-└──────────────────────────────────────────────────────────────────────┘
-          │
-          │  (Quarto invokes bundled Typst compiler)
-          ▼
-┌──────────────────────────────────────────────────────────────────────┐
-│                    Typst Compiler (bundled with Quarto)                │
-│                                                                        │
-│  Compiles .typ → .pdf                                                  │
-│  Resolves #import statements for modular .typ files                    │
-│  Applies fonts, colors, layout from branding.typ                       │
-└──────────────────────────────────────────────────────────────────────┘
-          │
-          ▼
-       paper.pdf
+### System Shape for v1.1
+
+```text
+Caller
+  ├─ create_working_paper()/create_article()/create_policy_brief()
+  │    └─ scaffold_project() [new internal helper]
+  │         ├─ copy inst/templates/<variant>
+  │         ├─ copy inst/quarto/extensions/typstR
+  │         ├─ apply starter defaults (title + guidance)
+  │         └─ run quick readiness checks (diagnostic warnings only)
+  │
+  └─ render_pub()/render_working_paper()
+       ├─ resolve_input()
+       ├─ validate_manuscript() [new exported API]
+       │    └─ emits structured diagnostics (error/warn/info + fixes)
+       ├─ quarto::quarto_render()
+       └─ post-render verification (expected output + open behavior)
 ```
 
-### Component Responsibilities
+### Component Boundaries
 
-| Component | Responsibility | Location |
-|-----------|----------------|----------|
-| R layer — scaffolding | `create_working_paper()` copies extension from `inst/` into user project `_extensions/` and creates starter `.qmd` | `R/create_*.R` |
-| R layer — metadata helpers | Produce YAML-safe R lists that serialize into Quarto front matter | `R/metadata_helpers.R` |
-| R layer — render wrappers | Thin wrappers around `quarto::quarto_render()` with pre-flight validation | `R/render.R` |
-| R layer — validation | Checks Quarto/Typst availability, file presence, metadata structure | `R/validation.R` |
-| Quarto extension — `_extension.yml` | Declares format names (`typstR-workingpaper`, etc.) and lists template partials | `inst/quarto/extensions/typstR/_extension.yml` |
-| Quarto extension — `typst-show.typ` | Bridge: maps Pandoc/YAML metadata variables into Typst function arguments | `inst/quarto/extensions/typstR/typst-show.typ` |
-| Quarto extension — format YAMLs | Per-format defaults (toc, margins, section numbering, etc.) | `inst/quarto/extensions/typstR/formats/*.yml` |
-| Typst templates — `base.typ` | Root layout: page size, columns, main body show rule, imports all other partials | `inst/quarto/extensions/typstR/templates/base.typ` |
-| Typst templates — `titleblock.typ` | Title, subtitle, report number, date block | `templates/titleblock.typ` |
-| Typst templates — `authors.typ` | Author and affiliation rendering, corresponding author marker, ORCID | `templates/authors.typ` |
-| Typst templates — `abstract.typ` | Abstract box, keywords, JEL code block | `templates/abstract.typ` |
-| Typst templates — `floats.typ` | Figure and table caption styling, float note display | `templates/floats.typ` |
-| Typst templates — `appendix.typ` | Appendix numbering, section reset, title rendering | `templates/appendix.typ` |
-| Typst templates — `branding.typ` | Logo placement, accent colors, fonts, footer text, margins — YAML-driven | `templates/branding.typ` |
-| Typst templates — `bibliography.typ` | Reference list styling | `templates/bibliography.typ` |
-| Inst templates (project starters) | Starter `.qmd` + `_quarto.yml` + `references.bib` copied to user's directory | `inst/templates/workingpaper/` etc. |
-
-## Recommended Project Structure
-
-```
-typstR/
-├── DESCRIPTION
-├── NAMESPACE
-├── R/
-│   ├── create_working_paper.R   # scaffolding: copies inst/templates + inst/extensions
-│   ├── create_article.R
-│   ├── create_policy_brief.R
-│   ├── metadata_helpers.R       # author(), affiliation(), manuscript_meta(), etc.
-│   ├── render.R                 # render_pub(), render_working_paper()
-│   ├── validation.R             # check_quarto(), check_typst(), validate_manuscript()
-│   ├── notes_helpers.R          # fig_note(), tab_note(), jel_codes(), keywords()
-│   └── utils.R                  # internal helpers (path ops, yaml serialization)
-│
-├── inst/
-│   ├── quarto/
-│   │   └── extensions/
-│   │       └── typstR/                    ← the Quarto extension bundle
-│   │           ├── _extension.yml         ← declares formats + partials
-│   │           ├── typst-show.typ         ← Pandoc metadata → Typst arg bridge
-│   │           ├── formats/
-│   │           │   ├── workingpaper.yml   ← format defaults
-│   │           │   ├── article.yml
-│   │           │   └── brief.yml
-│   │           ├── templates/             ← modular Typst files
-│   │           │   ├── base.typ           ← imports all others; root show rule
-│   │           │   ├── titleblock.typ
-│   │           │   ├── authors.typ
-│   │           │   ├── abstract.typ
-│   │           │   ├── bibliography.typ
-│   │           │   ├── floats.typ
-│   │           │   ├── appendix.typ
-│   │           │   └── branding.typ
-│   │           ├── partials/              ← Pandoc template partials if needed
-│   │           └── assets/
-│   │               ├── logo-placeholder.png
-│   │               └── example-bibliography.bib
-│   └── templates/                         ← project starter skeletons
-│       ├── workingpaper/
-│       │   ├── template.qmd
-│       │   ├── _quarto.yml
-│       │   ├── references.bib
-│       │   └── logo.png
-│       ├── article/
-│       │   ├── template.qmd
-│       │   └── _quarto.yml
-│       └── policy-brief/
-│           ├── template.qmd
-│           └── _quarto.yml
-│
-├── man/                          ← roxygen2-generated docs
-├── vignettes/
-│   ├── getting-started.Rmd
-│   ├── working-papers.Rmd
-│   └── customizing-branding.Rmd
-├── tests/
-│   └── testthat/
-│       ├── test-metadata.R
-│       ├── test-validation.R
-│       ├── test-render-helpers.R
-│       └── test-project-creation.R
-└── README.md
-```
-
-### Structure Rationale
-
-- **`inst/quarto/extensions/typstR/`:** This is where the Quarto extension lives inside the package. The subdirectory path is conventional for R packages shipping Quarto extensions (as opposed to `inst/extdata/_extensions/` used by some older examples — both work, but the `inst/quarto/` prefix makes the purpose explicit and avoids collisions with extdata conventions).
-- **`inst/templates/`:** Separate from the extension itself. These are the starter project files that `create_working_paper()` copies into the user's new directory. The extension files live separately and are also copied by the scaffolding function.
-- **`templates/` inside the extension:** Modular Typst files that `base.typ` imports via Typst's `#import`. This allows each concern (titleblock, authors, branding) to be edited in isolation without touching the root template.
-- **`formats/*.yml`:** Per-format YAML defaults (toc, number-sections, columns, margins) kept separate from the core extension metadata so adding a new format is additive, not a mutation.
-
-## Architectural Patterns
-
-### Pattern 1: Extension-Copy Scaffolding
-
-**What:** The `create_*()` functions use `system.file()` to locate the bundled extension and `file.copy(recursive = TRUE)` to copy it into the user's project `_extensions/` directory alongside the starter `.qmd`.
-
-**When to use:** This is the standard mechanism for shipping non-R assets (Quarto extensions, Typst files) in an R package and making them locally available in user projects. Quarto requires the extension to physically exist in `_extensions/` relative to the document.
-
-**Trade-offs:** Users get a local copy of the extension in every project — editable for customization but not auto-updated when the package updates. This is acceptable and expected behavior; it mirrors how `rmarkdown::draft()` works.
-
-**Example:**
-```r
-create_working_paper <- function(path, title = NULL, open = interactive()) {
-  # 1. Create project directory
-  fs::dir_create(path)
-
-  # 2. Copy starter template files (template.qmd, _quarto.yml, etc.)
-  template_dir <- system.file("templates/workingpaper", package = "typstR")
-  fs::dir_copy(template_dir, path, overwrite = FALSE)
-
-  # 3. Copy extension into _extensions/ within the new project
-  ext_src <- system.file("quarto/extensions/typstR", package = "typstR")
-  ext_dest <- file.path(path, "_extensions", "typstR")
-  fs::dir_create(file.path(path, "_extensions"))
-  fs::dir_copy(ext_src, ext_dest, overwrite = FALSE)
-
-  # 4. Optionally set title in template.qmd, open file
-  if (open) rstudioapi::openProject(path)
-}
-```
-
-### Pattern 2: YAML-Driven Branding via Typst Variables
-
-**What:** All branding options (logo path, fonts, colors, margins, footer) are declared in YAML front matter or `_quarto.yml` under the format key, passed through `typst-show.typ` as named Typst function arguments, and consumed by `branding.typ`.
-
-**When to use:** Any option a user should configure without editing Typst directly. This keeps the design principle that users never need to open `.typ` files.
-
-**Trade-offs:** Custom Pandoc variable passthrough has had stability issues at Quarto/Pandoc version boundaries (notably the 1.6 change where interpolated variables moved). This is a known fragility point that requires version-pinning or defensive coding in `typst-show.typ`.
-
-**Example (YAML front matter):**
-```yaml
-format:
-  typstR-workingpaper:
-    logo: "logo.png"
-typstR:
-  accent-color: "#003f7f"
-  title-font: "Source Serif Pro"
-  footer-text: "Vienna Institute for International Economic Studies"
-```
-
-**Example (typst-show.typ maps this to Typst):**
-```typst
-#show: article.with(
-  logo: "$logo$",
-  accent-color: "$typstR.accent-color$",
-  footer-text: "$typstR.footer-text$",
-)
-```
-
-### Pattern 3: Modular Typst via `#import`
-
-**What:** `base.typ` acts as the root template function. It `#import`s each sub-template file (`titleblock.typ`, `authors.typ`, etc.) and orchestrates them. Each sub-template exposes a single function (e.g., `#title-block(title, subtitle, report-number)`) that `base.typ` calls.
-
-**When to use:** Necessary for maintainability at this scope. A single monolithic `.typ` file exceeding a few hundred lines becomes very hard to test and maintain.
-
-**Trade-offs:** Typst's `#import` paths must be resolvable at compile time relative to the document root. When the extension lives in `_extensions/typstR/`, relative imports inside the `templates/` subdirectory work correctly (`#import "templates/titleblock.typ": title-block`). Verified pattern.
+| Component | Responsibility | Communicates With |
+|-----------|---------------|-------------------|
+| `R/diagnostics.R` (new) | Canonical diagnostic model (`code`, `severity`, `message`, `hint`, `context`) and formatting helpers | `R/validation.R`, `R/render.R`, `R/create_*.R` |
+| `R/validation.R` (new) | Pre-render checks for runtime, project structure, YAML fields, metadata consistency, file references | `R/utils.R` (path/yaml helpers), `R/diagnostics.R`, `R/render.R` |
+| `R/render.R` (existing, modified) | Orchestration: resolve input, run validation gate, invoke Quarto, surface failures truthfully | `R/validation.R`, `quarto` package, `R/utils.R` |
+| `R/create_*.R` (existing, modified) | User entry points for scaffolding; delegate shared logic to one helper to prevent drift | `R/scaffold.R` (new internal) or `R/utils.R`, `inst/templates/`, `_extensions/` |
+| `inst/templates/*` (existing, modified) | Starter content optimized for first successful render and clear user edits | `create_*()` |
+| `inst/quarto/extensions/typstR/typst-show.typ` + `formats/*.typ` (existing) | Rendering contract target for validation rules (field names and accepted variants) | Quarto + Typst runtime |
 
 ## Data Flow
 
-### Render Flow
+### Flow 1: Validation (new primary reliability path)
 
-```
-User edits paper.qmd
-        │
-        │  (YAML front matter: title, authors, typstR: block)
-        ▼
-render_pub("paper.qmd")   OR   quarto::quarto_render("paper.qmd")
-        │
-        │  [optional pre-flight: validate_manuscript()]
-        ▼
-Quarto CLI
-  ├── Executes R/Python code chunks → embeds outputs
-  ├── Parses YAML front matter → Pandoc metadata variables
-  ├── Loads _extensions/typstR/_extension.yml → finds format typstR-workingpaper
-  ├── Loads formats/workingpaper.yml → merges format defaults
-  ├── Runs typst-show.typ → maps Pandoc vars to Typst show rule args
-  ├── Runs templates/base.typ (via template-partials) → constructs full layout
-  └── Emits paper.typ (intermediate Typst source)
-        │
-        ▼
-Typst compiler (bundled with Quarto)
-  ├── Resolves #import statements for modular template files
-  ├── Applies branding.typ (logo, fonts, colors, margins)
-  ├── Renders floats, bibliography, appendix sections
-  └── Produces paper.pdf
-```
+1. `validate_manuscript(input)` resolves a concrete `.qmd` path.
+2. Build one `manuscript_context` object (single pass):
+   - project root
+   - `_extensions/typstR` presence
+   - parsed YAML front matter
+   - discovered referenced files (`bibliography`, `logo`, etc.)
+   - selected variant (`typstR.format-variant`)
+3. Run check modules against the shared context (no repeated parsing/walking).
+4. Return `typstR_diagnostics` object:
+   - machine-readable for tests/automation
+   - human-readable via CLI bullets
+5. Rendering gate consumes diagnostics:
+   - errors: abort with remediation
+   - warnings: continue (unless strict mode)
 
-### Key Data Flows
+### Flow 2: Render control flow (existing path, hardened)
 
-1. **Metadata propagation:** YAML front matter → Pandoc metadata → `typst-show.typ` template variables → Typst function arguments → rendered PDF fields. The `typstR:` YAML block carries custom fields (jel, keywords, report-number, branding). Each must be explicitly mapped in `typst-show.typ`.
-
-2. **Scaffolding flow:** `create_working_paper(path)` → read `inst/templates/workingpaper/` via `system.file()` → copy to `path/` → read `inst/quarto/extensions/typstR/` via `system.file()` → copy to `path/_extensions/typstR/` → open project. The user's project is then self-contained and renderable.
-
-3. **Validation flow:** `validate_manuscript(path)` → checks Quarto binary exists, Typst reachable via Quarto, required files present, `_extensions/typstR/` present, logo path valid if specified, bibliography file exists if `bibliography:` declared, metadata fields well-formed. Returns list of warnings/errors before the user attempts render.
-
-4. **Branding override flow:** User edits YAML (not `.typ` files) → `typst-show.typ` passes values to `branding.typ` function → PDF reflects branding. If user needs deeper customization, they can edit the locally copied `.typ` files directly, but this is escape-hatch behavior.
-
-## Build Order (Phase Implications)
-
-The three layers have strict dependencies that dictate what must be built before what:
-
-```
-Phase 1 — Package skeleton + Typst base template
-  ├── DESCRIPTION, NAMESPACE, R CMD check passing
-  ├── One format: typstR-workingpaper
-  ├── _extension.yml + typst-show.typ + base.typ
-  └── create_working_paper() + render_pub()
-        ↓ (validates that the R↔Quarto↔Typst pipeline works end to end)
-
-Phase 2 — Metadata helpers + YAML interface
-  ├── author(), affiliation(), manuscript_meta()
-  ├── typstR: YAML block structure
-  ├── typst-show.typ metadata passthrough wiring
-  └── validate_manuscript() for metadata checks
-        ↓ (requires Phase 1 render pipeline to test against)
-
-Phase 3 — Modular Typst templates
-  ├── titleblock.typ, authors.typ, abstract.typ
-  ├── bibliography.typ, floats.typ, appendix.typ
-  ├── branding.typ (YAML-driven)
-  └── jel_codes(), keywords(), fig_note(), tab_note()
-        ↓ (requires Phase 2 metadata to populate templates)
-
-Phase 4 — Additional formats + review mode
-  ├── typstR-article (anonymized/review mode)
-  ├── typstR-brief
-  └── format-specific format/*.yml defaults
-
-Phase 5 — Hardening
-  ├── Full test suite
-  ├── Vignettes
-  ├── check_typst(), check_quarto(), check_typstR()
-  └── CRAN submission preparation
+```text
+render_pub()
+  -> quarto availability/version checks
+  -> resolve_input()
+  -> validate_manuscript()
+  -> if diagnostics$error_count > 0: abort with actionable report
+  -> quarto::quarto_render()
+  -> verify expected artifact exists
+  -> open file (if requested and available)
 ```
 
-**Rationale for this order:** The render pipeline must work before metadata wiring can be tested. Modular Typst files depend on the metadata they receive, so they come after the YAML interface is stable. Additional formats are thin overlays once the base template exists.
+### Flow 3: Scaffolding control flow (onboarding hardening)
 
-## Anti-Patterns
+```text
+create_*()
+  -> scaffold_project(variant, path, title, open)
+  -> copy starter template + extension
+  -> apply title replacement with success check
+  -> print next-step commands (edit + render)
+  -> optional post-scaffold readiness check (warning-only diagnostics)
+```
 
-### Anti-Pattern 1: Shipping Extension as Quarto Install Target Only
+## Integration Points for v1.1 Scope
 
-**What people do:** Point users to `quarto install extension typstR/typstR` from GitHub rather than bundling the extension inside the R package.
+### 1) Expanded Pre-render Validation Coverage
 
-**Why it's wrong:** Breaks the R-native workflow. Users must run a shell command, extension version is decoupled from package version, and `system.file()` won't find the extension for `create_*()` functions. The R package and the Quarto extension become two separate things to keep in sync.
+**Where it should live:** `R/validation.R` with small single-purpose checks.
 
-**Do this instead:** Bundle the extension in `inst/quarto/extensions/typstR/` and have `create_*()` copy it into each project. The extension version is always the installed package version.
+**Checks to implement first (highest value):**
+- runtime checks: Quarto present, minimum supported version (from `_extension.yml` contract)
+- project structure checks: `.qmd` exists, `_extensions/typstR` exists
+- file reference checks: `bibliography`, `typstR.logo`, other file-path metadata
+- metadata consistency checks:
+  - `author` present/non-empty
+  - affiliation references resolve
+  - `typstR.format-variant` in allowed set (`workingpaper`, `article`, `brief`)
+  - field type checks for `keywords`, `jel`, booleans, margins
+- render-intent checks:
+  - warn when `render_working_paper()` is used with non-working-paper variant
 
-### Anti-Pattern 2: Monolithic `typst-template.typ`
+### 2) Structured Diagnostics + Remediation
 
-**What people do:** Put all layout code (title page, authors, abstract, body, floats, bibliography, appendix, branding) in one large `.typ` file.
+**Where it should live:** `R/diagnostics.R` plus thin adapters in `validation` and `render`.
 
-**Why it's wrong:** A single file becomes unmanageable beyond a few hundred lines. Format variants (workingpaper vs. article) diverge and you end up with `if workingpaper { ... } else { ... }` branches everywhere. Testing individual concerns is impossible.
+**Recommended diagnostic shape:**
 
-**Do this instead:** One `.typ` file per concern. `base.typ` imports and orchestrates. Each sub-template exposes a single well-named function. Format variants override only the partials they need to differ.
+| Field | Purpose |
+|------|---------|
+| `code` | Stable identifier (e.g., `missing_extension`, `invalid_format_variant`) |
+| `severity` | `error` / `warning` / `info` |
+| `message` | What failed |
+| `hint` | Exact remediation step |
+| `file` / `field` | Precise location |
+| `evidence` | Observed value/state |
 
-### Anti-Pattern 3: Hardcoding Branding in Typst
+This avoids brittle string matching in tests and prevents “plausible but vague” errors.
 
-**What people do:** Hardcode logo path, colors, and fonts directly in `.typ` files.
+### 3) Scaffold Defaults / Starter Content Improvements
 
-**Why it's wrong:** Every institute or project using typstR has to edit Typst internals, which defeats the purpose of the package. Branding becomes a code change rather than a configuration change.
+**Where it should live:** `inst/templates/*` content + shared scaffold helper used by all `create_*()` functions.
 
-**Do this instead:** All branding values flow from YAML through `typst-show.typ` into `branding.typ` function arguments. Typst files contain no hardcoded branding constants — only variable references. Sensible defaults live in `formats/workingpaper.yml` and can be overridden per-document.
+**Integration guidance:**
+- extract repeated scaffolding logic into one internal helper (single source of truth)
+- keep format-specific starter text in template files only
+- enforce post-copy invariants centrally (expected files present, title replacement actually applied)
+- add explicit “first render success” hints in scaffold output
 
-### Anti-Pattern 4: Skipping Intermediate Validation
+### 4) Targeted Performance Improvements (Only Where Measured)
 
-**What people do:** Call `quarto::quarto_render()` directly and let Typst/Quarto produce opaque error messages when metadata is malformed or files are missing.
+**Where it should live:**
+- validation context builder (`R/validation.R`) — parse once, reuse
+- render orchestration (`R/render.R`) — avoid duplicate checks/path scans
+- scaffold helper — reduce repeated file-system calls and duplicated logic
 
-**Why it's wrong:** Typst and Quarto error messages for missing variables, bad paths, or malformed YAML are cryptic. This undermines the "easy for non-Typst users" goal.
+**Measurement requirement:** add benchmark coverage (micro for hot helpers, integration timing for render+validate path) before and after changes.
 
-**Do this instead:** `render_pub()` calls `validate_manuscript()` first. Validation catches common errors (missing logo, no `_extensions/typstR/`, missing bibliography) with human-readable messages before the render pipeline even starts.
+## Build Order (Dependency-aware Decomposition)
 
-### Anti-Pattern 5: Using `inst/extdata/_extensions/` Path
+1. **Diagnostics foundation (must be first)**
+   - add diagnostic schema and constructors
+   - add printer/formatter
+   - no behavior change yet
 
-**What people do:** Some tutorials show `inst/extdata/_extensions/` as the path for bundled extensions.
+2. **Validation engine over shared context**
+   - implement `validate_manuscript()` and check modules
+   - export `check_quarto()`, `check_typst()`, `check_typstR()` only after internal contract is stable
 
-**Why it's wrong:** It works but conflates extension files with "data" in the R package sense. `inst/quarto/extensions/typstR/` is more explicit about the purpose and avoids potential `extdata` tooling assumptions (e.g., some CRAN checks enumerate extdata for size).
+3. **Render integration gate**
+   - wire validation into `render_pub()`
+   - ensure render errors preserve root cause and remediation
+   - add post-render artifact verification
 
-**Do this instead:** Use `inst/quarto/extensions/typstR/` as the canonical path. Makes intent clear and keeps Quarto-specific assets in a named namespace.
+4. **Scaffolding consolidation + onboarding updates**
+   - extract shared scaffold logic
+   - update starter templates/content for first-run success
+   - ensure `open` behavior is truthful and tested
 
-## Integration Points
+5. **Performance pass + regression guardrails**
+   - benchmark modified paths
+   - keep only optimizations with measurable gains
 
-### External Services / Tools
+## Patterns to Follow
 
-| Tool | Integration Pattern | Notes |
-|------|---------------------|-------|
-| Quarto CLI | R `quarto` package wraps CLI calls; `quarto_render()` and `quarto_add_extension()` | Must be present on PATH; version checked by `check_quarto()` |
-| Typst compiler | Bundled with Quarto — not a separate install for typical users | `check_typst()` verifies Quarto's bundled Typst is available; direct CLI usage is optional escape hatch |
-| tinytable / gt / typstable | No direct dependency; typstR handles layout, delegates table formatting to these packages | User chooses table package; typstR's `floats.typ` handles caption and note display |
-| rstudioapi | Optional: `create_*()` calls `rstudioapi::openProject()` when `interactive()` | Graceful fallback if not in RStudio |
+### Pattern 1: Single Context, Multiple Checks
+**What:** Build one validated context object and run all checks from it.
+**When:** Any `validate_manuscript()` execution.
+**Why:** Prevent repeated YAML parsing and path walking.
 
-### Internal Boundaries
+### Pattern 2: Diagnostics as Data, Not Strings
+**What:** Return structured diagnostic records and format for CLI at boundary.
+**When:** Validation and render failures.
+**Why:** Stable tests, better automation, clearer user remediation.
 
-| Boundary | Communication | Notes |
-|----------|---------------|-------|
-| R layer → Quarto extension | File system: `create_*()` copies files; `render_pub()` invokes `quarto_render()` | No in-process communication; entirely file-based |
-| R layer → YAML | R helpers produce named lists; serialized to YAML via `yaml::as.yaml()` or direct character output | `manuscript_meta()` and friends return R objects the user injects into front matter |
-| Quarto extension → Typst templates | `template-partials:` list in `_extension.yml`; Quarto composes them | The bridge is `typst-show.typ`; template files are #imported by `base.typ` |
-| Typst templates → branding | `branding.typ` function called from `base.typ` with YAML-derived arguments | No side effects; pure layout functions |
-| `validate_manuscript()` → render | Validation runs first, blocks render on error, warns on non-fatal issues | `render_pub()` orchestrates this sequencing |
+### Pattern 3: Shared Scaffolding Core
+**What:** `create_*()` remain public wrappers; one internal scaffold implementation does the real work.
+**When:** Any onboarding/starter change touching multiple formats.
+**Why:** Prevent format drift and triple maintenance.
+
+### Pattern 4: Additive API Evolution
+**What:** Keep existing function signatures stable; add optional behavior via new args/defaults only if needed.
+**When:** Integrating validation into render/scaffold.
+**Why:** Brownfield safety for existing callers.
+
+## Anti-Patterns to Avoid
+
+### Anti-Pattern 1: Validation by `cli_abort()` Side Effects Alone
+**Why bad:** Impossible to aggregate or test robustly.
+**Instead:** Collect diagnostics, then decide whether to abort.
+
+### Anti-Pattern 2: Re-reading Files Per Check
+**Why bad:** Wasted IO and slower render path.
+**Instead:** Shared context object with parsed metadata and resolved paths.
+
+### Anti-Pattern 3: Silent Fallbacks on Invalid Metadata
+**Why bad:** Users think settings applied when they were ignored.
+**Instead:** Explicit warnings/errors for unknown variants/invalid fields.
+
+### Anti-Pattern 4: Unmeasured “Performance” Refactors
+**Why bad:** Risky churn without user-visible benefit.
+**Instead:** Baseline -> change -> benchmark -> keep/drop.
+
+## Silent-Failure Hotspots and Mitigations
+
+| Hotspot (current) | What can silently fail | Mitigation in v1.1 | Target location |
+|---|---|---|---|
+| `create_*()` `open` argument | Argument is accepted but not acted on | Implement or remove behavior; add tests asserting effect | `R/create_*.R` + tests |
+| Title prefill regex substitution | No title replacement if template line shape changes | Verify replacement count; emit diagnostic when zero | shared scaffold helper |
+| `format-variant` handling | Invalid value can degrade to unintended layout | Validate against allowed enum; block render on invalid value | `R/validation.R` |
+| `render_pub()` output-open path assumption | PDF may not exist at inferred path | Post-render existence check + warning with actual expected path | `R/render.R` |
+| `logo` path escaping in Typst bridge | Path normalization may break certain user paths | Validate path early and warn on suspicious escaping/backslashes | `R/validation.R` + `typst-show.typ` contract checks |
+| Unknown `typstR:` keys | User expects effect; key is ignored | Warn on unknown keys with close-match suggestions | `R/validation.R` |
+
+## Scalability Considerations
+
+| Concern | At single manuscript use | At CI/batch renders | At institute/team scale |
+|---------|--------------------------|---------------------|-------------------------|
+| Validation overhead | negligible | can accumulate if checks duplicate IO | enforce single-context architecture |
+| Diagnostics signal/noise | interactive-friendly | needs machine-readable codes | stable codebook + severity filtering |
+| Scaffold consistency | manual review catches drift | drift appears as flaky tests | shared scaffold core + snapshot tests |
+| Quarto/Typst drift | one user can self-fix | CI failures block release | version checks + clear upgrade guidance |
+
+## Roadmap Implications for v1.1
+
+Recommended milestone decomposition:
+1. **Reliability substrate:** diagnostics + validation context model
+2. **Coverage expansion:** metadata/file/runtime checks and check_* exports
+3. **Render hardening:** preflight gating + truthful failure propagation
+4. **Onboarding polish:** shared scaffolder + starter template improvements
+5. **Performance validation:** benchmark-driven optimizations only
+
+This order minimizes risk: first build shared truth objects (diagnostics/context), then attach behavior at public entry points.
 
 ## Sources
 
-- [Custom Typst Formats — Quarto official docs](https://quarto.org/docs/output-formats/typst-custom.html) — HIGH confidence
-- [Including Quarto Template in R Package — Spencer Schien](https://spencerschien.info/post/r_for_nonprofits/quarto_template/) — MEDIUM confidence (practical implementation pattern)
-- [Designing and Deploying Internal Quarto Templates — Meghan Hall](https://meghan.rbind.io/blog/2024-08-14-quarto-templates/) — MEDIUM confidence (2024, current pattern)
-- [quarto-awesomecv-typst — Kazuya Nagimoto on GitHub](https://github.com/kazuyanagimoto/quarto-awesomecv-typst) — MEDIUM confidence (R + Quarto + Typst integration pattern in production)
-- [quarto-ext/typst-templates — Quarto official templates repo](https://github.com/quarto-ext/typst-templates) — HIGH confidence
-- [YAML metadata passthrough discussion — quarto-dev GitHub](https://github.com/quarto-dev/quarto-cli/discussions/11459) — MEDIUM confidence (known fragility with Pandoc variable interpolation across versions)
-- [Quarto 1.6 Typst variable interpolation issue — quarto-dev/quarto-cli #10212](https://github.com/quarto-dev/quarto-cli/issues/10212) — HIGH confidence (confirmed version-specific behavior change)
+### Codebase evidence (HIGH confidence)
+- `.planning/PROJECT.md`
+- `R/render.R`
+- `R/utils.R`
+- `R/create_working_paper.R`, `R/create_article.R`, `R/create_policy_brief.R`
+- `inst/templates/workingpaper/template.qmd`
+- `inst/templates/article/template.qmd`
+- `inst/templates/policy-brief/template.qmd`
+- `inst/quarto/extensions/typstR/_extension.yml`
+- `inst/quarto/extensions/typstR/typst-show.typ`
+- `inst/quarto/extensions/typstR/formats/*.typ`
+- `tests/testthat/test-render-guards.R`
+- `tests/testthat/test-scaffolding.R`
+- `tests/testthat/test-yaml-integration.R`
 
----
-*Architecture research for: R package + Quarto extension + Typst template (typstR scientific publishing)*
-*Researched: 2026-03-21*
+### External references (MEDIUM/HIGH confidence)
+- Quarto custom Typst formats: https://quarto.org/docs/output-formats/typst-custom.html
+- Quarto format extensions: https://quarto.org/docs/extensions/formats.html
+- quarto R `quarto_available()`: https://quarto-dev.github.io/quarto-r/reference/quarto_available.html
+- quarto R `quarto_version()`: https://quarto-dev.github.io/quarto-r/reference/quarto_version.html
+- rlang conditions and `abort()`: https://rlang.r-lib.org/reference/abort.html
+- rlang chained conditions: https://rlang.r-lib.org/reference/topic-condition-chains.html
+- testthat snapshot/condition testing: https://testthat.r-lib.org/

@@ -1,187 +1,139 @@
-# Stack Research
+# Technology Stack — typstR v1.1 (Reliability + Onboarding Polish)
 
-**Domain:** R package wrapping Quarto extensions and Typst templates for scientific publishing
-**Researched:** 2026-03-21
-**Confidence:** HIGH (core R toolchain), MEDIUM (Quarto+Typst integration patterns), MEDIUM (inst/ bundling approach)
-
----
-
-## Recommended Stack
-
-### Core Technologies
-
-| Technology | Version | Purpose | Why Recommended |
-|------------|---------|---------|-----------------|
-| R | >= 4.1.0 | Package runtime | Minimum required by quarto R package 1.5.1; native pipe operator available; broad compatibility |
-| Quarto CLI | >= 1.4.11 | Document rendering, Typst output | Minimum version for custom Typst format extensions per official docs; current stable is 1.9 |
-| Typst | bundled with Quarto | PDF typesetting engine | Do NOT require separate Typst install — Quarto bundles it; typr falls back to this correctly |
-| quarto (R pkg) | 1.5.1 | CLI wrapper, render wrappers, path utilities | Official Posit-maintained interface; `quarto_render()`, `project_path()`, version checking; v1.5.0 added `write_yaml_metadata_block()` and path helpers used in render_pub() |
-
-### R Package Layer — Runtime Dependencies
-
-| Library | Version | Purpose | Why This One |
-|---------|---------|---------|--------------|
-| cli | >= 3.6.0 (current: 3.6.5) | User-facing messages, progress, errors | The r-lib standard; styled output with `cli_abort()`, `cli_inform()`, `cli_bullets()`; CRAN-clean |
-| rlang | >= 1.1.0 (current: 1.1.7) | Error handling, tidy eval, `%||%` | Foundation of r-lib ecosystem; `abort()` with classed conditions; required by cli |
-| fs | >= 1.6.0 (current: 1.6.7) | File path manipulation, directory creation | Cross-platform; `path_join()`, `dir_create()`, `file_copy()` — used in scaffolding and template copying |
-| yaml | >= 2.3.0 | YAML serialization for metadata helpers | Required by quarto R pkg itself; `yaml::as.yaml()` for writing metadata blocks |
-
-### R Package Layer — Development Dependencies
-
-| Library | Version | Purpose | Why This One |
-|---------|---------|---------|--------------|
-| roxygen2 | 7.3.3 | Documentation generation (Rd files, NAMESPACE) | Industry standard; markdown syntax supported and recommended for all new packages in 2025 |
-| devtools | 2.5.0 | Development workflow (load_all, check, install) | Meta-package wrapping usethis, roxygen2, testthat — single install gets the whole toolchain |
-| usethis | 3.2.1 | Package scaffolding, CI setup, license, NEWS | `usethis::use_*` functions for consistent CRAN-ready structure |
-| testthat | 3.3.2 | Unit testing | The only serious option for CRAN R packages; third edition (test_that 3) required for modern idioms |
-| withr | 3.0.2 | Temporary state in tests | Clean teardown of temp dirs, env vars, working directory changes in tests — critical for scaffold tests |
-| pkgdown | 2.1.3 | Documentation website | Standard for CRAN packages; auto-generates reference, articles, changelog |
-
-### Quarto Extension Layer
-
-| Component | File | Purpose |
-|-----------|------|---------|
-| Extension manifest | `inst/quarto/extensions/typstR/_extension.yml` | Declares format names, quarto-required version, extension metadata |
-| Format definitions | `inst/quarto/extensions/typstR/formats/*.yml` | Per-format YAML merging Quarto Typst defaults with typstR overrides |
-| Typst template entry | `typst-template.typ` | Core Typst template function invoked per document |
-| Typst show file | `typst-show.typ` | Maps Quarto metadata variables to Typst template arguments |
-| Modular templates | `inst/quarto/extensions/typstR/templates/*.typ` | Separate `.typ` files per concern: base, titleblock, authors, abstract, bibliography, floats, appendix, branding |
-
-### Typst Template Layer
-
-| Component | Why Modular |
-|-----------|-------------|
-| `base.typ` | Page geometry, fonts, global defaults — shared across all three formats |
-| `titleblock.typ` | Title, subtitle, report number, date — format-specific overrides possible |
-| `authors.typ` | Author/affiliation blocks, corresponding author, ORCID — reused by all formats |
-| `abstract.typ` | Abstract, keywords, JEL codes — suppressed in policy-brief |
-| `bibliography.typ` | Citation style, reference section heading |
-| `floats.typ` | Figure and table caption style, note rendering |
-| `appendix.typ` | Appendix section header, numbering reset |
-| `branding.typ` | Logo placement, brand colors, footer, disclaimer — overridden per institution |
+**Project:** typstR  
+**Milestone:** v1.1 (Reliability and Onboarding Polish)  
+**Researched:** 2026-03-31  
+**Scope:** pre-render validation, structured diagnostics, scaffold onboarding defaults, measurable helper/render performance  
+**Overall confidence:** HIGH (core stack and architecture fit), MEDIUM (point-in-time package version snapshots)
 
 ---
 
-## Installation
+## v1.1 Stack Decisions (Opinionated)
 
-```r
-# Runtime dependencies (DESCRIPTION Imports:)
-install.packages(c("cli", "rlang", "fs", "yaml", "quarto"))
+1. **Keep runtime dependencies minimal; do not introduce a new validation framework.**
+2. **Promote `yaml` to `Imports`** for runtime manuscript/front-matter checks (currently in `Suggests`).
+3. **Use `cli` condition metadata for structured diagnostics** (error class + fields + remediation hints), not a new diagnostics package.
+4. **Add `bench` as dev/test-only (`Suggests`)** for measurable performance work; never required at runtime.
+5. **Keep Quarto-dependent tests explicitly skippable** (already done) so CI/CRAN can run without Quarto.
 
-# Dev dependencies (DESCRIPTION Suggests: or dev only)
-install.packages(c("devtools", "usethis", "testthat", "withr", "pkgdown", "roxygen2"))
+---
 
-# Check Quarto CLI is present (>= 1.4.11)
-quarto::quarto_version()
-```
+## Recommended Stack for v1.1
+
+### Runtime (user-facing)
+
+| Technology | Version Constraint | Purpose in v1.1 | Integration Notes |
+|---|---:|---|---|
+| R | `>= 4.1.0` | Baseline runtime | Matches `quarto` package requirement; no change needed. |
+| cli | `>= 3.6.0` | Human-readable + structured diagnostics | Keep using `cli::cli_abort()`/`cli_warn()`; attach machine-parseable fields (e.g., `class`, `field`, `hint`, `example`) in condition metadata. |
+| fs | `>= 1.6.0` | Fast, cross-platform path/file checks | Continue using for file existence and scaffold checks in pre-render validation. |
+| quarto (R pkg) | `>= 1.4` | Render backend + Quarto availability checks | Keep as render entry point (`quarto::quarto_render()`); do **not** shell out directly. |
+| yaml | **`>= 2.3.10`** | Runtime parsing of YAML front matter during validation | **Move from `Suggests` to `Imports`** for deterministic pre-render metadata checks and onboarding diagnostics. |
+
+### Dev/Test-only (NOT runtime)
+
+| Tool | Version Constraint | Why in v1.1 | Usage Boundary |
+|---|---:|---|---|
+| testthat | `>= 3.0.0` | Validation and diagnostics behavior tests | Keep unit tests Quarto-free where possible; integration tests only when rendering is required. |
+| withr | current | Isolated temp projects and env control | Keep for scaffold and validation isolation. |
+| bench | `>= 1.1.4` | Quantify helper/render overhead before/after changes | Add to `Suggests`; run in perf scripts/tests guarded by opt-in env vars, not on CRAN. |
+
+---
+
+## Version/Compatibility Constraints to Enforce
+
+### 1) Quarto package version vs Quarto CLI version
+`DESCRIPTION` currently constrains the **R package** (`quarto >= 1.4`), while extension manifest constrains the **CLI** (`inst/quarto/extensions/typstR/_extension.yml` has `quarto-required: ">=1.4.11"`).
+
+**v1.1 guidance:**
+- Keep R package dependency (`quarto >= 1.4`) for API stability.
+- Add/maintain explicit runtime CLI version check in validation preflight and diagnostics.
+- Error message should clearly separate:
+  - "R package installed"
+  - "Quarto CLI missing/too old"
+
+### 2) CRAN/CI behavior when Quarto is absent
+Quarto is a system requirement; not all CI agents (or CRAN environments) have it.
+
+**v1.1 guidance:**
+- Keep current test pattern: `requireNamespace("quarto", quietly = TRUE) && quarto::quarto_available()`.
+- Validation logic that does not require rendering must stay runnable without Quarto.
+- Render integration tests remain conditionally skipped (not silently passing).
+
+---
+
+## Integration Guidance with Current typstR Architecture
+
+| Layer | Keep | Add/Change for v1.1 |
+|---|---|---|
+| **R package layer** (`R/`) | Existing render/scaffold architecture | Add a dedicated validation+diagnostic core that returns structured condition metadata and remediation hints. |
+| **Quarto extension layer** (`inst/quarto/extensions/typstR/`) | Existing extension packaging model | No new extension framework; only compatibility checks + clearer failure messaging tied to `quarto-required`. |
+| **Template/scaffold layer** (`inst/templates/`) | Existing starter templates and copy flow | Improve starter defaults/content only; do not introduce new output format families. |
+
+**Practical integration rules:**
+- Run pre-render validation before `quarto::quarto_render()`.
+- Emit one canonical diagnostic schema (same fields for setup errors and manuscript errors).
+- Keep diagnostics in R layer; Typst templates remain presentation-focused.
+
+---
+
+## What NOT to Add (Scope Creep Guardrails)
+
+| Do NOT add | Why not for v1.1 | Do instead |
+|---|---|---|
+| New runtime validation frameworks (`checkmate`, `assertthat`, `validate`, etc.) | Duplicates existing domain-specific checks; adds dependency surface without solving remediation quality | Implement typstR-specific checks + structured condition metadata using existing stack (`cli` + base types + `yaml`). |
+| Direct process orchestration (`processx`/`callr`) for render path | Splits render behavior and increases platform risk | Keep single render path via `quarto::quarto_render()`. |
+| Hard dependency on standalone Typst CLI | Conflicts with current Quarto-first packaging and onboarding simplicity | Continue relying on Quarto-managed Typst toolchain. |
+| New output formats / journal-specific engines | Explicitly out of scope for v1.1 | Focus only on reliability/onboarding for existing formats. |
+| Runtime profiling/caching frameworks (`profvis`, `memoise`) as defaults | Premature complexity without measured bottleneck evidence | Benchmark first (`bench`), optimize hot paths directly, keep semantics unchanged. |
+
+---
+
+## Suggested DESCRIPTION delta for v1.1
 
 ```yaml
-# DESCRIPTION minimum versions
 Imports:
-  cli (>= 3.6.0),
-  rlang (>= 1.1.0),
-  fs (>= 1.6.0),
-  yaml (>= 2.3.0),
-  quarto (>= 1.4.0)
+  cli (>= 3.6.0)
+  fs (>= 1.6.0)
+  quarto (>= 1.4)
+  yaml (>= 2.3.10)   # move from Suggests to Imports
+
+Suggests:
+  testthat (>= 3.0.0)
+  withr
+  bench (>= 1.1.4)   # new, dev/perf only
 ```
 
 ---
 
-## Alternatives Considered
+## Confidence by Area
 
-| Recommended | Alternative | When Alternative Makes Sense |
-|-------------|-------------|------------------------------|
-| quarto R pkg for render wrappers | `processx` direct Quarto CLI calls | Only if fine-grained process control is needed; quarto pkg already wraps processx internally |
-| Bundle extension in `inst/quarto/extensions/` | Distribute as standalone Quarto extension | Standalone works for Quarto-only users who never use R; bundling in inst/ is the right choice when R helpers and the extension ship together as one package |
-| Modular `.typ` files | Single monolithic Typst template | Single file is simpler initially but breaks down once branding overrides are needed; modular scales to institutional customization |
-| yaml package for metadata | jsonlite | JSON is less natural for Quarto YAML front matter; yaml package serializes R lists to YAML directly |
-| withr for test isolation | manual `on.exit()` teardown | withr is more composable and readable; no functional difference for simple cases, but withr scales better with nested tests |
-| testthat 3 | tinytest | testthat 3 is the CRAN default expectation; tinytest has no snapshot testing; devtools integrates testthat natively |
-
----
-
-## What NOT to Use
-
-| Avoid | Why | Use Instead |
-|-------|-----|-------------|
-| Standalone Typst CLI as hard dependency | Users should not need to install Typst separately; Quarto bundles it; making typst CLI required breaks CRAN system dependency norms | Rely on Quarto's bundled Typst; use `typr::typst_compile()` only as optional fallback where available |
-| `rmarkdown::render()` for Typst output | rmarkdown does not support Typst format; any rmarkdown-based route is a dead end | `quarto::quarto_render()` |
-| Lua filters for metadata injection | Lua filters are powerful but add maintenance surface; Quarto's Typst format passes front matter to Typst natively via `typst-show.typ` | Use `typst-show.typ` + `_extension.yml` format variables to pass metadata |
-| Hardcoded font names in templates | Breaks on systems that don't have the font; Quarto 1.9 added `mainfont` as a top-level YAML key | Accept `mainfont` / `fontsize` from YAML; provide fallback to Typst defaults |
-| `.Rmd` vignettes compiled via LaTeX | Defeats the purpose; vignettes about Typst output should themselves render to HTML or be `.qmd` vignettes using Quarto as the vignette engine | Use `VignetteBuilder: quarto` in DESCRIPTION + `.qmd` vignettes, or conventional `.Rmd` vignettes rendered to HTML |
-| `devtools::use_*` (old API) | Deprecated; `usethis` is the canonical replacement | `usethis::use_*` |
-
----
-
-## Stack Patterns by Variant
-
-**If rendering in tests (checking that scaffold produces valid .qmd):**
-- Test only file structure and YAML content, not that Quarto actually renders
-- Because rendering requires Quarto CLI installed, adds test time, and is an integration test not a unit test
-- Use `withr::local_tempdir()` + `create_working_paper()` + assert file existence and YAML content
-
-**If branding is institution-specific:**
-- All branding variables live in `typstR:` YAML block, not in Typst source
-- Because Typst source should be untouched by end users; YAML is the designed interface
-
-**If a user needs a raw Typst compile (no Quarto):**
-- Defer to `typr::typst_compile()` — it handles the Quarto-bundled Typst fallback
-- Do not re-implement this path in typstR; it is out of scope
-
-**If targeting CRAN:**
-- No internet access in tests (`CRAN = TRUE` env var during checks)
-- No `quarto_render()` calls in tests (requires Quarto CLI system dependency)
-- Wrap any optional system-dependency calls with `if (quarto::quarto_available())` guards
-
----
-
-## Version Compatibility
-
-| Component | Compatible With | Notes |
-|-----------|-----------------|-------|
-| quarto R pkg 1.5.1 | R >= 4.1.0 | Requires Quarto CLI installed separately; not bundled in R pkg |
-| Quarto >= 1.4.11 | Custom Typst extension format | `quarto-required: ">=1.4.11"` in `_extension.yml` |
-| Quarto 1.9 (current stable) | Typst ~0.12-0.13 bundled | Active work to upgrade to Typst 0.14.2 per quarto-dev/discussions#13637 |
-| testthat 3 | R >= 3.6 | Third edition syntax (`expect_snapshot()`, `local_mocked_bindings()`) requires testthat >= 3.0.0 |
-| roxygen2 7.3.x | R >= 3.6 | Markdown documentation enabled via `@md` tag or `Roxygen: list(markdown = TRUE)` in DESCRIPTION |
-| fs 1.6.x | R >= 3.6 | No known compatibility issues with the R layer |
-
----
-
-## Key Integration Pattern: Bundled Extension Discovery
-
-The non-obvious piece of this stack is how the R package exposes its bundled Quarto extension at render time. The pattern is:
-
-```r
-# In render_pub() or create_working_paper():
-ext_path <- system.file("quarto/extensions", package = "typstR")
-# Copy or symlink to project's _extensions/ at render time
-# OR: set --resource-path in quarto_render() call
-```
-
-`system.file()` is base R — no additional dependency. The scaffold functions must copy or reference `inst/quarto/extensions/typstR/` into the user's project `_extensions/typstR/` directory so Quarto's extension resolution finds it. This is the main architectural constraint the stack imposes.
+| Area | Confidence | Why |
+|---|---|---|
+| Runtime dependency decisions | HIGH | Directly aligned with current codebase and v1.1 scope. |
+| Quarto/CRAN compatibility guidance | HIGH | Matches current test patterns and CRAN policy constraints on external software. |
+| Performance tooling choice (`bench`) | MEDIUM-HIGH | Strong ecosystem fit; benchmark thresholds still project-specific. |
+| Version snapshots | MEDIUM | Package versions evolve; constraints should use minima + periodic refresh. |
 
 ---
 
 ## Sources
 
-- [Quarto Custom Typst Formats](https://quarto.org/docs/output-formats/typst-custom.html) — extension file structure, quarto-required version (HIGH confidence)
-- [Quarto 1.9 Release Notes](https://quarto.org/docs/download/release.html) — current stable version, new Typst features (HIGH confidence)
-- [quarto R package v1.5.1 on CRAN](https://cran.r-project.org/web/packages/quarto/index.html) — version 1.5.1, R >= 4.1.0 requirement, dependency list (HIGH confidence)
-- [quarto R package v1.5.0 blog post](https://quarto.org/docs/blog/posts/2025-07-28-r-package-release-1.5/) — new functions: write_yaml_metadata_block, project_path, find_project_root (HIGH confidence)
-- [roxygen2 7.3.3 on CRAN](https://cran.r-project.org/web/packages/roxygen2/index.html) — version confirmed (HIGH confidence)
-- [testthat 3.3.2 on CRAN](https://cran.r-project.org/web/packages/testthat/index.html) — version confirmed (HIGH confidence)
-- [cli 3.6.5 on CRAN](https://cran.r-project.org/web/packages/cli/index.html) — version confirmed (HIGH confidence)
-- [rlang 1.1.7 on CRAN](https://cran.r-project.org/web/packages/rlang/index.html) — version confirmed (HIGH confidence)
-- [fs 1.6.7 on CRAN](https://cran.r-project.org/web/packages/fs/index.html) — version confirmed (HIGH confidence)
-- [usethis 3.2.1 on CRAN](https://cran.r-project.org/web/packages/usethis/index.html) — version confirmed (HIGH confidence)
-- [pkgdown 2.1.3](https://pkgdown.r-lib.org/) — version confirmed via CRAN (HIGH confidence)
-- [withr 3.0.2 on CRAN](https://cran.r-project.org/web/packages/withr/) — version confirmed (HIGH confidence)
-- [Typst 0.14 upgrade discussion](https://github.com/orgs/quarto-dev/discussions/13637) — active PR to upgrade bundled Typst (MEDIUM confidence — timing uncertain)
-- [typr package on CRAN](https://cran.r-project.org/web/packages/typr/index.html) — competitor survey; renders Typst, falls back to Quarto's bundled Typst (MEDIUM confidence)
-- [quarto-preprint extension](https://github.com/mvuorre/quarto-preprint) — reference implementation: standalone Quarto extension, Typst 77% of codebase, no R wrapper (HIGH confidence)
-- [R Packages (2e) — Function documentation](https://r-pkgs.org/man.html) — roxygen2 markdown best practices (HIGH confidence)
-
----
-*Stack research for: typstR — R package for Quarto + Typst scientific publishing*
-*Researched: 2026-03-21*
+- Quarto custom format extensions and Typst format docs:  
+  https://quarto.org/docs/extensions/formats.html  
+  https://quarto.org/docs/output-formats/typst-custom.html
+- typstR extension manifest (`quarto-required`):  
+  `inst/quarto/extensions/typstR/_extension.yml` (repository)
+- CRAN `quarto` package metadata (R version/system requirement/dependencies):  
+  https://cran.r-project.org/web/packages/quarto/index.html
+- CRAN `yaml` package metadata:  
+  https://cran.r-project.org/web/packages/yaml/index.html
+- CRAN `bench` package metadata:  
+  https://cran.r-project.org/web/packages/bench/index.html
+- `cli` conditions API (`cli_abort`):  
+  https://cli.r-lib.org/reference/cli_abort.html
+- `testthat` skip helpers:  
+  https://testthat.r-lib.org/reference/skip.html
+- CRAN repository policy and Writing R Extensions (external software/testing constraints):  
+  https://cran.r-project.org/web/packages/policies.html  
+  https://stat.ethz.ch/R-manual/R-devel/doc/manual/R-exts.html
