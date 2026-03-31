@@ -1,32 +1,32 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: Milestone verified
-stopped_at: Completed Phase 4 Verification and Audit Closure
-last_updated: "2026-03-23T15:47:00Z"
+milestone: v1.1
+milestone_name: Reliability and Onboarding Polish
+status: Defining requirements
+stopped_at: Milestone v1.1 initialization in progress
+last_updated: "2026-03-31T20:44:10Z"
 progress:
-  total_phases: 4
-  completed_phases: 4
-  total_plans: 18
-  completed_plans: 18
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-21)
+See: .planning/PROJECT.md (updated 2026-03-31)
 
 **Core value:** Users can go from `create_working_paper("my-paper")` to a polished, branded PDF in minutes — no Typst or LaTeX knowledge required.
-**Current focus:** Milestone Closure
+**Current focus:** Milestone v1.1 requirement definition
 
 ## Current Position
 
-Phase: 04
-Plan: Complete
-Verification: Passed
-Audit: Passed (Gaps closed)
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-03-31 — Milestone v1.1 started
 ## Performance Metrics
 
 **Velocity:**
@@ -119,6 +119,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-23T14:21:13.247Z
-Stopped at: Completed 04-03-PLAN.md
+Last session: 2026-03-31T20:44:10Z
+Stopped at: Milestone initialization and scope confirmation complete
 Resume file: None

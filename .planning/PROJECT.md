@@ -10,9 +10,20 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 
 ## Current State
 
-- **Version:** v1.0 (Released 2026-03-23)
-- **Status:** Complete CRAN-ready foundation with working-paper, article, and policy-brief formats.
+- **Version:** v1.1 (Planning started 2026-03-31)
+- **Status:** Defining requirements and roadmap for reliability/UX improvements after v1.0 release.
+- **Previous Release:** v1.0 (Released 2026-03-23)
 - **Milestone Archive:** [.planning/milestones/v1.0-ROADMAP.md](.planning/milestones/v1.0-ROADMAP.md)
+
+## Current Milestone: v1.1 Reliability and Onboarding Polish
+
+**Goal:** Make common setup/manuscript mistakes fail fast with actionable guidance while keeping typstR release-ready and easier for first-time users.
+
+**Target features:**
+- Expand pre-render validation coverage for common manuscript and setup errors.
+- Add structured diagnostics with concrete remediation hints.
+- Improve scaffold defaults and starter content for higher first-run success.
+- Apply targeted performance improvements in helper/render paths where measurable.
 
 ## Requirements
 
@@ -36,7 +47,10 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 
 ### Active
 
-*To be defined via `/gsd:new-milestone`*
+- [ ] Catch common setup/manuscript mistakes before Quarto render with actionable fixes
+- [ ] Expand `validate_manuscript()` checks for metadata, file inputs, and consistency
+- [ ] Improve scaffolding defaults/starter documents for smoother onboarding
+- [ ] Reduce avoidable helper/render overhead without changing output semantics
 
 ### Out of Scope
 
@@ -74,5 +88,22 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 | Modular Typst templates | Separate .typ files for each concern — easier to maintain and customize | ✓ Satisfied |
 | Branding via YAML, not Typst editing | Users should adapt output without touching Typst internals | ✓ Satisfied |
 
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `$gsd-transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `$gsd-complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
+
 ---
-*Last updated: 2026-03-23 after v1.0 release*
+*Last updated: 2026-03-31 after starting v1.1 milestone*
