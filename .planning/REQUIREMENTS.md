@@ -1,162 +1,80 @@
 # Requirements: typstR
 
-**Defined:** 2026-03-21
+**Defined:** 2026-03-31
 **Core Value:** Users can go from `create_working_paper("my-paper")` to a polished, branded PDF in minutes — no Typst or LaTeX knowledge required.
 
-## v1 Requirements
+## v1.1 Requirements
 
-Requirements for initial release. Each maps to roadmap phases.
-
-### Package Foundation
-
-- [x] **FOUN-01**: Package has CRAN-ready skeleton (DESCRIPTION, NAMESPACE, roxygen2, R CMD check clean)
-- [x] **FOUN-02**: Quarto extension bundled in inst/quarto/extensions/typstR/ with _extension.yml
-- [x] **FOUN-03**: Extension copy mechanism copies extension into user project's _extensions/ on scaffold
-- [x] **FOUN-04**: render_pub() renders any typstR format to PDF via quarto::quarto_render()
-- [x] **FOUN-05**: render_working_paper() convenience wrapper for working paper format
-
-### Scaffolding
-
-- [x] **SCAF-01**: create_working_paper() generates project with template.qmd, _quarto.yml, references.bib, and extension
-- [x] **SCAF-02**: create_article() generates project with article template and extension
-- [x] **SCAF-03**: create_policy_brief() generates project with policy brief template and extension
-
-### Typst Templates
-
-- [x] **TMPL-01**: Base Typst template with page layout, fonts, margins, page numbering
-- [x] **TMPL-02**: Title page with title, subtitle, date
-- [x] **TMPL-03**: Author and affiliation block with corresponding author marker
-- [x] **TMPL-04**: Abstract block with keywords and JEL codes
-- [x] **TMPL-05**: Acknowledgements section
-- [x] **TMPL-06**: Bibliography rendering via Typst
-- [x] **TMPL-07**: Appendix handling with separate numbering
-- [x] **TMPL-08**: Figure and table caption styling with notes support
-- [x] **TMPL-09**: Modular .typ file structure (base, titleblock, authors, abstract, bibliography, floats, appendix, branding)
-- [x] **TMPL-10**: Branding via YAML: logo path, primary font, title font, accent color
-- [x] **TMPL-11**: Branding via YAML: page margins, footer text, report number block
-- [x] **TMPL-12**: Branding via YAML: disclaimer page support
-- [x] **TMPL-13**: Three format definitions: workingpaper, article, policy-brief in _extension.yml
-
-### Metadata Helpers
-
-- [x] **META-01**: author() creates structured author metadata for YAML
-- [x] **META-02**: affiliation() creates structured affiliation metadata for YAML
-- [x] **META-03**: manuscript_meta() combines all metadata into valid YAML block
-- [x] **META-04**: keywords() helper for keyword metadata
-- [x] **META-05**: jel_codes() helper for JEL classification codes
-- [x] **META-06**: report_number() helper for institute report numbering
-- [x] **META-07**: fig_note() and tab_note() for figure/table notes
-- [x] **META-08**: appendix_title() helper for appendix sections
-- [x] **META-09**: funding() helper for funding statements
-- [x] **META-10**: data_availability() and code_availability() helpers
-
-### YAML Interface
-
-- [x] **YAML-01**: typstR: namespace in YAML front matter for package-specific fields
-- [x] **YAML-02**: typst-show.typ correctly wires all YAML fields to Typst template variables
-- [x] **YAML-03**: Standard Quarto YAML fields (toc, fig-cap-location, etc.) work as expected
-
-### Documentation
-
-- [x] **DOCS-01**: README with installation, quick start, minimal example
-- [x] **DOCS-02**: Getting-started vignette
-- [x] **DOCS-03**: Working-papers vignette
-- [x] **DOCS-04**: Customizing-branding vignette
-- [x] **DOCS-05**: roxygen2 documentation for all exported functions
-- [x] **DOCS-06**: Example .qmd files for each format in inst/
-
-### Testing
-
-- [x] **TEST-01**: Test suite for metadata helper functions
-- [x] **TEST-02**: Test suite for validation functions
-- [x] **TEST-03**: Test suite for project scaffolding (file creation, structure)
-- [x] **TEST-04**: Tests guarded with skip_if_not(quarto_available()) for CRAN
-
-## v2 Requirements
-
-Deferred to future release. Tracked but not in current roadmap.
+Requirements for milestone v1.1 **Reliability and Onboarding Polish**.
 
 ### Validation
 
-- **VALID-01**: check_quarto() verifies Quarto installation and version
-- **VALID-02**: check_typst() verifies Typst availability through Quarto
-- **VALID-03**: check_typstR() validates full environment setup
-- **VALID-04**: validate_manuscript() checks metadata completeness, file existence, format validity
+- [ ] **VAL-01**: User can run pre-render environment validation that reports Quarto/Typst availability, version-floor compatibility, and extension presence before render begins.
 
-### Advanced Features
+### Diagnostics
 
-- **ADV-01**: Anonymized/review mode for article format (strips author info)
-- **ADV-02**: RStudio project file integration in scaffolding
-- **ADV-03**: Gallery of rendered examples in pkgdown site
+- [ ] **DIAG-01**: User receives structured diagnostics for validation issues with stable code, severity, location, and hint fields.
+
+### Onboarding
+
+- [ ] **ONB-01**: User can scaffold each supported format and get a validation+render-successful starter project on a supported setup without manual template fixes.
+
+### Performance
+
+- [ ] **PERF-01**: User sees measurable improvement in selected helper/render hotspots with no output semantics changes.
+
+## Future Requirements
+
+Acknowledged but deferred beyond v1.1 scope.
+
+### Validation
+
+- **VAL-02**: User can detect malformed project structure and ambiguous input resolution before render.
+- **VAL-03**: User can detect YAML metadata consistency issues across workingpaper/article/brief variants before render.
+
+### Diagnostics
+
+- **DIAG-02**: User gets explicit remediation playbooks per validation failure class.
+- **DIAG-03**: User gets near-miss YAML key suggestions for common typo/alias mistakes.
+- **DIAG-04**: User gets grouped and stable-ordered diagnostics output for faster triage.
+
+### Onboarding
+
+- **ONB-02**: User gets starter defaults/placeholders tuned to reduce first-edit failure probability.
+- **ONB-03**: User is guided through a validation-first onboarding flow in starters and docs.
+
+### Performance
+
+- **PERF-02**: User avoids redundant expensive operations in wrapper/check paths within a single render flow.
+- **PERF-03**: User benefits from lightweight performance regression checks for stable benchmark scenarios.
 
 ## Out of Scope
 
+Explicitly excluded from v1.1 to prevent scope creep.
+
 | Feature | Reason |
 |---------|--------|
-| Full journal submission compatibility | Too broad for v0.1; revisit after base formats mature |
-| LaTeX .cls/.sty import | Fundamentally different system; not a conversion tool |
-| Low-level Typst parser | Unnecessary complexity; rely on Quarto's Typst integration |
-| Universal LaTeX-to-Typst conversion | Out of mission |
-| HTML/Word output support | Typst PDF is the focus |
-| Custom table engine | Delegate to typstable, gt, tinytable; typstR handles layout only |
-| Standalone Typst CLI dependency | Quarto bundles Typst; separate install violates CRAN norms |
+| Major new output formats or large journal template expansion | Milestone is reliability/onboarding polish for existing formats, not feature-surface expansion. |
+| HTML/Word output expansion | Conflicts with current Typst-first product focus for this milestone. |
+| Silent auto-mutation of user YAML/manuscripts | Violates trust and obscures root causes; diagnostics must report, not rewrite. |
+| Live preview/watcher subsystem | High complexity and not required for v1.1 reliability goals. |
 
 ## Traceability
 
-Which phases cover which requirements. Updated during roadmap creation.
+Mapped during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUN-01 | Phase 1 | Complete |
-| FOUN-02 | Phase 1 | Complete |
-| FOUN-03 | Phase 1 | Complete |
-| FOUN-04 | Phase 1 | Complete |
-| FOUN-05 | Phase 1 | Complete |
-| SCAF-01 | Phase 1 | Complete |
-| SCAF-02 | Phase 3 | Complete |
-| SCAF-03 | Phase 3 | Complete |
-| TMPL-01 | Phase 3 | Complete |
-| TMPL-02 | Phase 3 | Complete |
-| TMPL-03 | Phase 3 | Complete |
-| TMPL-04 | Phase 3 | Complete |
-| TMPL-05 | Phase 3 | Complete |
-| TMPL-06 | Phase 3 | Complete |
-| TMPL-07 | Phase 3 | Complete |
-| TMPL-08 | Phase 3 | Complete |
-| TMPL-09 | Phase 3 | Complete |
-| TMPL-10 | Phase 3 | Complete |
-| TMPL-11 | Phase 3 | Complete |
-| TMPL-12 | Phase 3 | Complete |
-| TMPL-13 | Phase 3 | Complete |
-| META-01 | Phase 2 | Complete |
-| META-02 | Phase 2 | Complete |
-| META-03 | Phase 2 | Complete |
-| META-04 | Phase 2 | Complete |
-| META-05 | Phase 2 | Complete |
-| META-06 | Phase 2 | Complete |
-| META-07 | Phase 2 | Complete |
-| META-08 | Phase 2 | Complete |
-| META-09 | Phase 2 | Complete |
-| META-10 | Phase 2 | Complete |
-| YAML-01 | Phase 2 | Complete |
-| YAML-02 | Phase 2 | Complete |
-| YAML-03 | Phase 2 | Complete |
-| DOCS-01 | Phase 4 | Complete |
-| DOCS-02 | Phase 4 | Complete |
-| DOCS-03 | Phase 4 | Complete |
-| DOCS-04 | Phase 4 | Complete |
-| DOCS-05 | Phase 4 | Complete |
-| DOCS-06 | Phase 4 | Complete |
-| TEST-01 | Phase 4 | Complete |
-| TEST-02 | Phase 4 | Complete |
-| TEST-03 | Phase 4 | Complete |
-| TEST-04 | Phase 4 | Complete |
+| VAL-01 | TBD | Pending |
+| DIAG-01 | TBD | Pending |
+| ONB-01 | TBD | Pending |
+| PERF-01 | TBD | Pending |
 
 **Coverage:**
-- v1 requirements: 43 total
-- Mapped to phases: 43
-- Unmapped: 0
+- v1.1 requirements: 4 total
+- Mapped to phases: 0
+- Unmapped: 4 ⚠️
 
 ---
-*Requirements defined: 2026-03-21*
-*Last updated: 2026-03-21 — traceability filled in after roadmap creation*
+*Requirements defined: 2026-03-31*
+*Last updated: 2026-03-31 after milestone scope confirmation*
