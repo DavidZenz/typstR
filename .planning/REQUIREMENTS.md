@@ -65,16 +65,16 @@ Mapped during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| VAL-01 | TBD | Pending |
-| DIAG-01 | TBD | Pending |
-| ONB-01 | TBD | Pending |
-| PERF-01 | TBD | Pending |
+| DIAG-01 | Phase 5 | Pending |
+| VAL-01 | Phase 6 | Pending |
+| ONB-01 | Phase 7 | Pending |
+| PERF-01 | Phase 8 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 4 total
-- Mapped to phases: 0
-- Unmapped: 4 ⚠️
+- Mapped to phases: 4
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-31*
-*Last updated: 2026-03-31 after milestone scope confirmation*
+*Last updated: 2026-03-31 after v1.1 roadmap mapping*
