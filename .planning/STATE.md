@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Reliability and Onboarding Polish
-status: Ready to execute
-stopped_at: Completed 08-01-PLAN.md
-last_updated: "2026-04-01T19:22:49.869Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 08-02-PLAN.md
+last_updated: "2026-04-01T19:36:27.004Z"
 progress:
   total_phases: 4
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
 ---
 
 # Project State
@@ -53,6 +53,7 @@ Plan: 2 of 2
 | Phase 06-pre-render-environment-validation P01 | 455s | 2 tasks | 6 files |
 | Phase 07-first-run-onboarding-reliability P01 | 270s | 2 tasks | 4 files |
 | Phase 08-measured-performance-optimization P01 | 677 | 2 tasks | 9 files |
+| Phase 08-measured-performance-optimization P02 | 448 | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,8 @@ Recent decisions affecting current work:
 - [Phase 08-measured-performance-optimization]: Shared hotspot scenario execution now lives in helper-performance so micro, derivation, and regression checks stay aligned.
 - [Phase 08-measured-performance-optimization]: Baseline artifacts are derived from source via temporary v1.0 worktree and committed as auditable medians.
 - [Phase 08-measured-performance-optimization]: Performance contract tests now use scenario-map key resolution with explicit tolerance and gain policy fields.
+- [Phase 08]: Optimized validate_render_environment by short-circuiting diagnostics assembly when all checks pass, preserving failure diagnostics contracts.
+- [Phase 08]: Cut over all create_* wrappers to shared scaffold_project_from_template helper to eliminate duplicated scaffold logic and drift.
 
 ### Pending Todos
 
@@ -89,6 +92,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T19:22:49.865Z
-Stopped at: Completed 08-01-PLAN.md
+Last session: 2026-04-01T19:36:27.000Z
+Stopped at: Completed 08-02-PLAN.md
 Resume file: None

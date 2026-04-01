@@ -16,9 +16,9 @@ typstR is now operating in milestone mode: v1.0 is shipped and archived, and v1.
 - [x] **Phase 3: Typst Templates, Branding, and Additional Formats** - Deliver modular templates and format variants with branding hooks.
 - [x] **Phase 4: Tests, Documentation, and CRAN Hardening** - Finalize quality, docs, and release readiness.
 - [x] **Phase 5: Structured Diagnostics Foundation** - Standardize user-facing diagnostics schema for validation failures.
-- [ ] **Phase 6: Pre-render Environment Validation** - Validate Quarto/Typst/runtime prerequisites before render starts.
-- [ ] **Phase 7: First-run Onboarding Reliability** - Ensure scaffolded starters validate and render successfully without manual fixes.
-- [ ] **Phase 8: Measured Performance Optimization** - Improve selected hotspots with benchmarked gains and unchanged semantics.
+- [x] **Phase 6: Pre-render Environment Validation** - Validate Quarto/Typst/runtime prerequisites before render starts.
+- [x] **Phase 7: First-run Onboarding Reliability** - Ensure scaffolded starters validate and render successfully without manual fixes.
+- [x] **Phase 8: Measured Performance Optimization** - Improve selected hotspots with benchmarked gains and unchanged semantics.
 
 ## Phase Details
 
@@ -120,7 +120,7 @@ Plans:
 
 Plans:
 - [x] 06-01-PLAN.md — Define standalone environment-validation contract, stable diagnostics codes, and structured success report semantics.
-- [ ] 06-02-PLAN.md — Cut over render preflight to shared validator and verify parity across guard/integration tests.
+- [x] 06-02-PLAN.md — Cut over render preflight to shared validator and verify parity across guard/integration tests.
 
 ### Phase 7: First-run Onboarding Reliability
 **Goal**: Users can scaffold any supported format and succeed on the first validation+render run without manual template repair.
@@ -134,7 +134,7 @@ Plans:
 
 Plans:
 - [x] 07-01-PLAN.md — Lock cross-format starter contracts and align hybrid runnable template defaults with inline onboarding guidance.
-- [ ] 07-02-PLAN.md — Prove helper-driven scaffold → validate → render first-run success for working paper, article, and policy brief.
+- [x] 07-02-PLAN.md — Prove helper-driven scaffold → validate → render first-run success for working paper, article, and policy brief.
 
 ### Phase 8: Measured Performance Optimization
 **Goal**: Users observe measurable speed improvements in selected helper/render hotspots with no output semantics changes.
@@ -144,11 +144,11 @@ Plans:
   1. Benchmarked helper/render hotspots show measurable runtime improvement versus v1.0 baseline.
   2. For equivalent inputs, optimized paths preserve output semantics and rendered behavior.
   3. Regression checks detect performance backsliding in selected benchmark scenarios.
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [x] 08-01: TBD (created during /gsd:plan-phase 8)
-
+- [x] 08-02-PLAN.md — Implement measured hotspot optimizations with mapped gain assertions and semantic parity checks.
 ## Progress
 
 **Execution Order:** 5 → 6 → 7 → 8
@@ -160,6 +160,6 @@ Plans:
 | 3. Typst Templates, Branding, and Additional Formats | v1.0 | 5/5 | Complete | 2026-03-23 |
 | 4. Tests, Documentation, and CRAN Hardening | v1.0 | 6/6 | Complete | 2026-03-23 |
 | 5. Structured Diagnostics Foundation | v1.1 | 2/2 | Complete | 2026-04-01 |
-| 6. Pre-render Environment Validation | v1.1 | 0/2 | Not started | - |
-| 7. First-run Onboarding Reliability | v1.1 | 0/2 | Not started | - |
-| 8. Measured Performance Optimization | v1.1 | 0/TBD | Not started | - |
+| 6. Pre-render Environment Validation | v1.1 | 2/2 | Complete | 2026-04-01 |
+| 7. First-run Onboarding Reliability | v1.1 | 2/2 | Complete | 2026-04-01 |
+| 8. Measured Performance Optimization | v1.1 | 2/2 | Complete | 2026-04-01 |
