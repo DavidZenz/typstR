@@ -49,6 +49,16 @@ test_that("onboarding helper matrix covers all scaffold formats", {
 })
 
 
+test_that("onboarding helper matrix defines render wrappers", {
+  specs <- .onboarding_scaffold_specs()
+
+  expect_equal(
+    vapply(specs, `[[`, character(1), "render_fn_name"),
+    c("render_working_paper", "render_pub", "render_pub")
+  )
+})
+
+
 .copy_extension <- function(dest_dir) {
   ext_src <- system.file("quarto/extensions/typstR", package = "typstR")
   if (!nzchar(ext_src)) {
