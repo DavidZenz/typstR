@@ -13,10 +13,21 @@ validate_render_environment <- function(path = ".") {
   diagnostics <- diagnostics_from_environment_checks(checks, path)
 
   if (length(diagnostics) > 0) {
+    primary <- diagnostics[[1]]
+    primary_message <- primary[["message"]]
+    if (!is.character(primary_message) || length(primary_message) != 1 || is.na(primary_message) || !nzchar(primary_message)) {
+      primary_message <- "Render environment validation failed."
+    }
+
+    primary_hint <- primary[["hint"]]
+    if (!is.character(primary_hint) || length(primary_hint) != 1 || is.na(primary_hint) || !nzchar(primary_hint)) {
+      primary_hint <- "Resolve the reported environment issues before rendering."
+    }
+
     emit_diagnostics_error(
       diagnostics = diagnostics,
-      message = "Render environment validation failed.",
-      hint = "Resolve the reported environment issues before rendering."
+      message = primary_message,
+      hint = primary_hint
     )
   }
 

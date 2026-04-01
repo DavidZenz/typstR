@@ -29,6 +29,22 @@
   invisible(ext_dest)
 }
 
+test_that("pre-render environment validation succeeds on scaffolded project", {
+  .skip_if_no_quarto()
+
+  withr::with_tempdir({
+    create_working_paper("validation-project", open = FALSE)
+
+    report <- validate_render_environment("validation-project")
+
+    expect_s3_class(report, "typstR_validation_report")
+    expect_true(report$ok)
+  })
+})
+
+# ---------------------------------------------------------------------------
+# Existing render smoke coverage
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # Test 1: scaffold renders without errors
 # ---------------------------------------------------------------------------

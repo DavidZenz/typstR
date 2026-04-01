@@ -1,7 +1,7 @@
 #' Render a Quarto document to PDF
 #'
-#' Renders a Quarto document using the Quarto CLI. Checks that Quarto is
-#' installed before attempting to render.
+#' Renders a Quarto document using the Quarto CLI after running shared
+#' pre-render environment validation checks.
 #'
 #' @param input Path to a `.qmd` file, a directory containing a `.qmd` file,
 #'   or `NULL` to look in the current directory.
@@ -24,25 +24,9 @@
 #' @export
 render_pub <- function(input = NULL, output_format = NULL, quiet = FALSE,
                        open = interactive()) {
-  # Pre-flight: Quarto availability (locked decision)
-  if (!quarto_available()) {
-    preflight_input <- if (is.null(input)) "." else input
-    message <- "Quarto is not installed or not on PATH."
-    hint <- "Install Quarto from https://quarto.org."
-    diagnostic <- new_diagnostic(
-      code = diagnostics_codebook()[["quarto_unavailable"]],
-      severity = "error",
-      location = list(file = as.character(fs::path_abs(preflight_input))),
-      hint = hint,
-      message = message
-    )
-
-    emit_diagnostics_error(
-      diagnostics = list(diagnostic),
-      message = message,
-      hint = hint
-    )
-  }
+  # Pre-flight: shared environment validation (locked decision)
+  preflight_path <- if (is.null(input)) "." else input
+  validate_render_environment(preflight_path)
 
   # Input auto-detection (locked decision)
   input <- resolve_input(input)
@@ -85,12 +69,3 @@ render_working_paper <- function(input = NULL, quiet = FALSE,
   )
 }
 
-#' Check whether Quarto is available for rendering
-#'
-#' Uses the quarto R package API when it is installed, but returns `FALSE`
-#' cleanly in development/test environments where the R package is absent.
-#'
-#' @noRd
-quarto_available <- function() {
-  requireNamespace("quarto", quietly = TRUE) && quarto::quarto_available()
-}

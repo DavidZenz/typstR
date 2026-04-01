@@ -80,6 +80,26 @@ failing_checks <- function(path) {
   )
 }
 
+new_render_validation_env <- function() {
+  env <- new.env(parent = baseenv())
+  source(resolve_validation_source_file("R/diagnostics.R"), local = env)
+  source(resolve_validation_source_file("R/validation_environment.R"), local = env)
+  source(resolve_validation_source_file("R/utils.R"), local = env)
+  source(resolve_validation_source_file("R/render.R"), local = env)
+  env
+}
+
+copy_extension_into <- function(dest_dir) {
+  ext_src <- system.file("quarto", "extensions", "typstR", package = "typstR")
+  if (!nzchar(ext_src)) {
+    ext_src <- resolve_validation_source_file("inst/quarto/extensions/typstR")
+  }
+
+  dir.create(file.path(dest_dir, "_extensions"), showWarnings = FALSE)
+  fs::dir_copy(ext_src, file.path(dest_dir, "_extensions", "typstR"))
+  invisible(file.path(dest_dir, "_extensions", "typstR", "_extension.yml"))
+}
+
 test_that("validate_render_environment() returns a structured pass report", {
   validate_render_environment <- get_validation_fn("validate_render_environment")
   path <- tempfile("validation-pass-")
@@ -109,6 +129,28 @@ test_that("validate_render_environment() emits aggregate environment diagnostics
     vapply(condition$diagnostics, function(entry) entry$code, character(1)),
     c("DIAG-ENV-001", "DIAG-ENV-002", "DIAG-ENV-003", "DIAG-ENV-004")
   )
+})
+
+test_that("render_pub() and standalone validation emit equivalent diagnostics", {
+  env <- new_render_validation_env()
+  path <- tempfile("validation-render-equivalence-")
+  dir.create(path)
+
+  assign("collect_environment_checks", function(path) failing_checks(path), envir = env)
+
+  standalone_condition <- expect_error(
+    get("validate_render_environment", envir = env)(path),
+    class = "typstR_diagnostics_error"
+  )
+  render_condition <- expect_error(
+    get("render_pub", envir = env)(path, open = FALSE),
+    class = "typstR_diagnostics_error"
+  )
+
+  standalone_codes <- vapply(standalone_condition$diagnostics, function(entry) entry$code, character(1))
+  render_codes <- vapply(render_condition$diagnostics, function(entry) entry$code, character(1))
+
+  expect_identical(render_codes, standalone_codes)
 })
 
 test_that("validation report includes explicit Quarto and Typst evidence", {
@@ -158,4 +200,23 @@ test_that("collect_environment_checks() evaluates extension presence when Quarto
 
   expect_true(extension_probe_called)
   expect_false(checks$extension$ok)
+})
+
+test_that("validate_render_environment() captures real Quarto/Typst evidence when available", {
+  skip_if_not(requireNamespace("quarto", quietly = TRUE) && quarto::quarto_available())
+
+  validate_render_environment <- get_validation_fn("validate_render_environment")
+
+  withr::with_tempdir({
+    copy_extension_into(".")
+
+    report <- validate_render_environment(".")
+
+    expect_s3_class(report, "typstR_validation_report")
+    expect_true(isTRUE(report$checks$quarto$available))
+    expect_true(nzchar(report$checks$quarto$version))
+    expect_true(isTRUE(report$checks$typst$available))
+    expect_true(!is.na(report$checks$quarto_floor$required))
+    expect_true(isTRUE(report$checks$extension$present))
+  })
 })
