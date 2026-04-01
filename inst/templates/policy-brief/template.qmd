@@ -1,4 +1,5 @@
 ---
+# Edit first: update title, authors, and affiliations.
 title: "How Energy Price Shocks Reach Small Manufacturers"
 author:
   - name: "Sofia Novak"
@@ -9,6 +10,7 @@ author:
 affiliations:
   - id: "1"
     name: "Applied Policy Lab"
+# Replace abstract with your project summary before sharing.
 abstract: |
   This policy brief summarizes how higher energy costs affect smaller producers
   and which policy tools can ease short-run adjustment. The example keeps the
@@ -30,6 +32,7 @@ typstR:
 
 ## Key Findings
 
+<!-- Replace this starter narrative with your project-specific text. -->
 - Energy-cost spikes reduce margins fastest for smaller manufacturers with thin
   cash buffers.
 - Short-term liquidity support works best when paired with clear efficiency

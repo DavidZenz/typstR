@@ -1,4 +1,5 @@
 ---
+# Edit first: update title, authors, and affiliations.
 title: "Trade Fragmentation and Supplier Adjustment"
 author:
   - name: "Elena Fischer"
@@ -15,6 +16,7 @@ affiliations:
     name: "Centre for European Industrial Analysis"
   - id: "2"
     name: "University of Bratislava"
+# Replace abstract with your project summary before sharing.
 abstract: |
   This working paper studies how manufacturing firms adjust supplier networks
   after trade policy shocks. Using linked customs and balance-sheet data, the
@@ -31,10 +33,10 @@ typstR:
   jel:
     - F14
     - F13
+  report-number: "WP 001"
   acknowledgements: |
     The authors thank seminar participants at the annual industrial economics
     workshop for useful comments on an earlier draft.
-  report-number: "WP 001"
   funding: |
     This research was supported by the Applied Trade Policy Programme.
   # Branding (uncomment to customize):
@@ -47,6 +49,7 @@ typstR:
 
 ## Introduction
 
+<!-- Replace this starter narrative with your project-specific text. -->
 This starter manuscript asks how firms reallocate sourcing relationships when
 trade costs rise suddenly. The introduction should state the policy question,
 place the paper in the literature, and preview the main contribution. @smith2020

@@ -1,4 +1,5 @@
 ---
+# Edit first: update title, authors, and affiliations.
 title: "Market Concentration and Export Resilience"
 author:
   - name: "Ana Ribeiro"
@@ -15,6 +16,7 @@ affiliations:
     name: "Institute for Quantitative Policy Research"
   - id: "2"
     name: "University of Cologne"
+# Replace abstract with your project summary before sharing.
 abstract: |
   This article-style starter examines whether more concentrated export markets
   recover faster after external shocks. It is intentionally compact while still
@@ -41,6 +43,7 @@ typstR:
 
 ## Introduction
 
+<!-- Replace this starter narrative with your project-specific text. -->
 Use the introduction to define the research question, motivate the article for
 an academic audience, and situate the contribution in the related literature.
 @smith2020
