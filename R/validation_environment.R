@@ -9,8 +9,21 @@
 #'   diagnostics payload.
 #' @export
 validate_render_environment <- function(path = ".") {
-  checks <- collect_environment_checks(path)
-  diagnostics <- diagnostics_from_environment_checks(checks, path)
+  normalized_path <- normalize_validation_path(path)
+  checks <- collect_environment_checks(normalized_path)
+
+  if (environment_checks_pass(checks)) {
+    return(structure(
+      list(
+        ok = TRUE,
+        path = normalized_path,
+        checks = checks
+      ),
+      class = c("typstR_validation_report", "list")
+    ))
+  }
+
+  diagnostics <- diagnostics_from_environment_checks(checks, normalized_path)
 
   if (length(diagnostics) > 0) {
     primary <- diagnostics[[1]]
@@ -34,7 +47,7 @@ validate_render_environment <- function(path = ".") {
   structure(
     list(
       ok = TRUE,
-      path = normalize_validation_path(path),
+      path = normalized_path,
       checks = checks
     ),
     class = c("typstR_validation_report", "list")
@@ -58,9 +71,17 @@ collect_environment_checks <- function(path) {
   )
 }
 
+environment_checks_pass <- function(checks) {
+  all(vapply(checks, function(check) isTRUE(check$ok), logical(1)))
+}
+
 normalize_validation_path <- function(path) {
   if (!is.character(path) || length(path) != 1 || is.na(path) || !nzchar(path)) {
     cli::cli_abort("{.arg path} must be a single non-empty character path.")
+  }
+
+  if (grepl("^(?:/|[A-Za-z]:[\\\\/])", path) && !grepl("[\\\\/]\\.{1,2}(?:[\\\\/]|$)", path)) {
+    return(path)
   }
 
   as.character(fs::path_abs(path))
@@ -167,13 +188,13 @@ parse_typst_version <- function(raw_output) {
 probe_quarto_floor <- function(quarto_check, required) {
   min_version <- parse_quarto_required_floor(required)
 
-  compatible <- if (requireNamespace("quarto", quietly = TRUE)) {
-    tryCatch(
+  if (!isTRUE(quarto_check$available) || !requireNamespace("quarto", quietly = TRUE)) {
+    compatible <- FALSE
+  } else {
+    compatible <- tryCatch(
       isTRUE(quarto::quarto_available(min = min_version)),
       error = function(error) FALSE
     )
-  } else {
-    FALSE
   }
 
   list(
@@ -236,7 +257,6 @@ extension_manifest_source <- function() {
 
 probe_extension <- function(path) {
   manifest <- as.character(fs::path(path, "_extensions", "typstR", "_extension.yml"))
-  manifest <- as.character(fs::path_abs(manifest))
   present <- fs::file_exists(manifest)
 
   list(

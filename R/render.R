@@ -25,22 +25,21 @@
 render_pub <- function(input = NULL, output_format = NULL, quiet = FALSE,
                        open = interactive()) {
   # Pre-flight: shared environment validation (locked decision)
-  preflight_path <- if (is.null(input)) "." else input
-  validate_render_environment(preflight_path)
+  validate_render_environment(if (is.null(input)) "." else input)
 
   # Input auto-detection (locked decision)
-  input <- resolve_input(input)
+  resolved_input <- resolve_input(input)
 
   # Render via quarto R package (never shell out directly)
   quarto::quarto_render(
-    input = input,
+    input = resolved_input,
     output_format = output_format,
     quiet = quiet
   )
 
   # Open PDF in system viewer (locked decision: open = interactive())
   if (open) {
-    pdf_path <- fs::path_ext_set(input, "pdf")
+    pdf_path <- fs::path_ext_set(resolved_input, "pdf")
     open_file(pdf_path)
   }
 
