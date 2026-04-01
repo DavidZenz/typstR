@@ -130,10 +130,11 @@ Plans:
   1. User can scaffold working paper, article, and policy brief starters through typstR create helpers.
   2. Freshly scaffolded projects pass validation on a supported setup without manual template fixes.
   3. Freshly scaffolded projects render successfully on a supported setup without manual template fixes.
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 07-01: TBD (created during /gsd:plan-phase 7)
+- [ ] 07-01-PLAN.md — Lock cross-format starter contracts and align hybrid runnable template defaults with inline onboarding guidance.
+- [ ] 07-02-PLAN.md — Prove helper-driven scaffold → validate → render first-run success for working paper, article, and policy brief.
 
 ### Phase 8: Measured Performance Optimization
 **Goal**: Users observe measurable speed improvements in selected helper/render hotspots with no output semantics changes.
@@ -160,5 +161,5 @@ Plans:
 | 4. Tests, Documentation, and CRAN Hardening | v1.0 | 6/6 | Complete | 2026-03-23 |
 | 5. Structured Diagnostics Foundation | v1.1 | 2/2 | Complete | 2026-04-01 |
 | 6. Pre-render Environment Validation | v1.1 | 0/2 | Not started | - |
-| 7. First-run Onboarding Reliability | v1.1 | 0/TBD | Not started | - |
+| 7. First-run Onboarding Reliability | v1.1 | 0/2 | Not started | - |
 | 8. Measured Performance Optimization | v1.1 | 0/TBD | Not started | - |
