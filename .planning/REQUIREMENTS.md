@@ -9,7 +9,7 @@ Requirements for milestone v1.1 **Reliability and Onboarding Polish**.
 
 ### Validation
 
-- [ ] **VAL-01**: User can run pre-render environment validation that reports Quarto/Typst availability, version-floor compatibility, and extension presence before render begins.
+- [x] **VAL-01**: User can run pre-render environment validation that reports Quarto/Typst availability, version-floor compatibility, and extension presence before render begins.
 
 ### Diagnostics
 
@@ -66,7 +66,7 @@ Mapped during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | DIAG-01 | Phase 5 | Complete |
-| VAL-01 | Phase 6 | Pending |
+| VAL-01 | Phase 6 | Complete |
 | ONB-01 | Phase 7 | Pending |
 | PERF-01 | Phase 8 | Pending |
 

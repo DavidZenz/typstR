@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Reliability and Onboarding Polish
-status: Ready to plan
-stopped_at: Phase 6 planned
-last_updated: "2026-04-01T09:06:13.857Z"
+status: Ready to execute
+stopped_at: Completed 06-01-PLAN.md
+last_updated: "2026-04-01T09:18:57.091Z"
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 4
-  completed_plans: 2
+  completed_plans: 3
 ---
 
 # Project State
@@ -23,8 +23,8 @@ See: .planning/PROJECT.md (updated 2026-04-01)
 
 ## Current Position
 
-Phase: 6
-Plan: 06-01 and 06-02 planned
+Phase: 06 (pre-render-environment-validation) — EXECUTING
+Plan: 2 of 2
 
 ## Performance Metrics
 
@@ -50,6 +50,7 @@ Plan: 06-01 and 06-02 planned
 
 | Phase 05 P01 | 4m | 2 tasks | 5 files |
 | Phase 05 P02 | 2m | 2 tasks | 4 files |
+| Phase 06-pre-render-environment-validation P01 | 455s | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -66,6 +67,9 @@ Recent decisions affecting current work:
 - [Phase 05]: Adopted typstR_diagnostics_error class carrying sorted diagnostics payload for aggregate emission
 - [Phase 05]: Preserve user-facing diagnostics guidance text while making structured payload assertions the primary test contract.
 - [Phase 05]: Keep no-Quarto behavior mockable via quarto_available() seam while emitting DIAG-RUNTIME-001 payloads from render preflight.
+- [Phase 06]: Use DIAG-ENV-001..004 as immutable environment diagnostics while preserving runtime/input mappings
+- [Phase 06]: Return typstR_validation_report with explicit checks evidence on success and emit aggregate diagnostics on failure
+- [Phase 06]: Derive Quarto version floor from extension manifest quarto-required instead of duplicated constants
 
 ### Pending Todos
 
@@ -78,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T09:06:13.853Z
-Stopped at: Phase 6 planned
-Resume file: .planning/phases/06-pre-render-environment-validation/06-01-PLAN.md
+Last session: 2026-04-01T09:18:57.080Z
+Stopped at: Completed 06-01-PLAN.md
+Resume file: None

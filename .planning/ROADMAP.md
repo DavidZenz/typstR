@@ -119,7 +119,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Define standalone environment-validation contract, stable diagnostics codes, and structured success report semantics.
+- [x] 06-01-PLAN.md — Define standalone environment-validation contract, stable diagnostics codes, and structured success report semantics.
 - [ ] 06-02-PLAN.md — Cut over render preflight to shared validator and verify parity across guard/integration tests.
 
 ### Phase 7: First-run Onboarding Reliability
