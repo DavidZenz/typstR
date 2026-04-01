@@ -115,6 +115,28 @@ test_that("validate_render_environment() returns a structured pass report", {
   expect_named(report$checks, c("quarto", "typst", "quarto_floor", "extension"))
 })
 
+test_that("validate_render_environment() skips diagnostics assembly on all-pass checks", {
+  validate_render_environment <- get_validation_fn("validate_render_environment")
+  path <- tempfile("validation-fast-path-")
+  dir.create(path)
+
+  diagnostics_called <- FALSE
+
+  report <- with_validation_bindings(
+    list(
+      collect_environment_checks = function(path) passing_checks(path),
+      diagnostics_from_environment_checks = function(checks, path) {
+        diagnostics_called <<- TRUE
+        list()
+      }
+    ),
+    validate_render_environment(path)
+  )
+
+  expect_s3_class(report, "typstR_validation_report")
+  expect_false(diagnostics_called)
+})
+
 test_that("validate_render_environment() emits aggregate environment diagnostics", {
   validate_render_environment <- get_validation_fn("validate_render_environment")
   path <- tempfile("validation-fail-")
