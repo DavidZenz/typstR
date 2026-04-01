@@ -95,15 +95,8 @@ test_that("emit_diagnostics_error() emits classed condition with diagnostics pay
     )
   )
 
-  captured <- NULL
-
-  expect_error(
-    tryCatch(
-      emit_diagnostics_error(diagnostics),
-      typstR_diagnostics_error = function(cnd) {
-        captured <<- cnd
-      }
-    ),
+  captured <- expect_error(
+    emit_diagnostics_error(diagnostics),
     class = "typstR_diagnostics_error"
   )
 

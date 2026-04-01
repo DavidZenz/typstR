@@ -140,4 +140,102 @@ new_diagnostic <- function(code,
   )
 }
 
+diagnostic_sort_string <- function(value) {
+  if (is.null(value) || length(value) != 1 || is.na(value) || !nzchar(value)) {
+    return("~")
+  }
+
+  value
+}
+
+validate_diagnostics_list <- function(diagnostics) {
+  if (!is.list(diagnostics) || length(diagnostics) == 0) {
+    cli::cli_abort("{.arg diagnostics} must be a non-empty list of diagnostics.")
+  }
+
+  required_fields <- c("code", "severity", "location", "hint")
+  for (index in seq_along(diagnostics)) {
+    diagnostic <- diagnostics[[index]]
+    if (!is.list(diagnostic)) {
+      cli::cli_abort(
+        "Diagnostic entry {.val {index}} must be a list produced by {.fn new_diagnostic}."
+      )
+    }
+
+    missing <- setdiff(required_fields, names(diagnostic))
+    if (length(missing) > 0) {
+      cli::cli_abort(
+        "Diagnostic entry {.val {index}} is missing required fields: {.val {missing}}."
+      )
+    }
+  }
+
+  diagnostics
+}
+
+sort_diagnostics <- function(diagnostics) {
+  diagnostics <- validate_diagnostics_list(diagnostics)
+
+  severity_rank <- c(error = 1L, warning = 2L)
+  severity <- vapply(diagnostics, function(diagnostic) {
+    value <- diagnostic[["severity"]]
+    if (is.null(value) || length(value) != 1 || is.na(value)) {
+      return(NA_character_)
+    }
+
+    as.character(value)
+  }, character(1))
+
+  if (any(!severity %in% names(severity_rank))) {
+    cli::cli_abort(
+      "Each diagnostic must include {.field severity} as {.val error} or {.val warning}."
+    )
+  }
+
+  file_key <- vapply(diagnostics, function(diagnostic) {
+    location <- diagnostic[["location"]]
+    if (!is.list(location)) {
+      return("~")
+    }
+
+    diagnostic_sort_string(location[["file"]])
+  }, character(1))
+
+  field_key <- vapply(diagnostics, function(diagnostic) {
+    location <- diagnostic[["location"]]
+    if (!is.list(location)) {
+      return("~")
+    }
+
+    diagnostic_sort_string(location[["field"]])
+  }, character(1))
+
+  code_key <- vapply(diagnostics, function(diagnostic) {
+    diagnostic_sort_string(diagnostic[["code"]])
+  }, character(1))
+
+  order_index <- order(
+    unname(severity_rank[severity]),
+    file_key,
+    field_key,
+    code_key,
+    seq_along(diagnostics)
+  )
+
+  diagnostics[order_index]
+}
+
+emit_diagnostics_error <- function(diagnostics,
+                                   message = "Validation failed.",
+                                   hint = "Review diagnostics and retry the command.") {
+  sorted <- sort_diagnostics(diagnostics)
+
+  cli::cli_abort(
+    c(message, "i" = hint),
+    class = c("typstR_diagnostics_error", "typstR_error"),
+    diagnostics = sorted
+  )
+}
+
+
 validate_diagnostic_codebook(DIAGNOSTIC_CODEBOOK)
