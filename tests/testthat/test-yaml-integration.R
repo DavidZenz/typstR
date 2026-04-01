@@ -23,16 +23,19 @@
     list(
       label = "working paper",
       fn_name = "create_working_paper",
+      render_fn_name = "render_working_paper",
       project = "working-paper-project"
     ),
     list(
       label = "article",
       fn_name = "create_article",
+      render_fn_name = "render_pub",
       project = "article-project"
     ),
     list(
       label = "policy brief",
       fn_name = "create_policy_brief",
+      render_fn_name = "render_pub",
       project = "policy-brief-project"
     )
   )
@@ -92,16 +95,28 @@ test_that("pre-render validation succeeds across helper-generated onboarding for
 # ---------------------------------------------------------------------------
 # Test 1: scaffold renders without errors
 # ---------------------------------------------------------------------------
-test_that("scaffold renders without errors", {
+test_that("helper-generated onboarding scaffolds render across all supported formats", {
   .skip_if_no_quarto()
 
   withr::with_tempdir({
-    create_working_paper("test-project", open = FALSE)
+    for (spec in .onboarding_scaffold_specs()) {
+      helper <- get(spec$fn_name, inherits = TRUE)
+      helper(spec$project, open = FALSE)
 
-    # Render the scaffold; success = PDF produced
-    render_working_paper("test-project", quiet = TRUE, open = FALSE)
+      qmd <- readLines(file.path(spec$project, "template.qmd"), warn = FALSE)
+      expect_true(
+        any(grepl("<!-- Replace this starter narrative with your project-specific text. -->", qmd, fixed = TRUE)),
+        info = paste(spec$label, "missing onboarding guidance marker")
+      )
 
-    expect_true(file.exists(file.path("test-project", "template.pdf")))
+      render_fn <- get(spec$render_fn_name, inherits = TRUE)
+      expect_no_error(
+        do.call(render_fn, list(input = spec$project, quiet = TRUE, open = FALSE)),
+        info = spec$label
+      )
+
+      expect_true(file.exists(file.path(spec$project, "template.pdf")), info = spec$label)
+    }
   })
 })
 
@@ -240,42 +255,3 @@ are handled correctly by the Pandoc variable interpolation in typst-show.typ.
   })
 })
 
-test_that("article template smoke-renders without errors", {
-  .skip_if_no_quarto()
-
-  withr::with_tempdir({
-    .copy_extension(".")
-    fs::dir_copy(file.path("inst", "templates", "article"), "article-template")
-
-    old <- setwd("article-template")
-    on.exit(setwd(old), add = TRUE)
-
-    expect_no_error(
-      quarto::quarto_render("template.qmd", quiet = TRUE)
-    )
-
-    qmd <- readLines("template.qmd")
-    expect_true(any(grepl("format-variant: article", qmd, fixed = TRUE)))
-    expect_true(file.exists("template.pdf"))
-  })
-})
-
-test_that("policy brief template smoke-renders without errors", {
-  .skip_if_no_quarto()
-
-  withr::with_tempdir({
-    .copy_extension(".")
-    fs::dir_copy(file.path("inst", "templates", "policy-brief"), "brief-template")
-
-    old <- setwd("brief-template")
-    on.exit(setwd(old), add = TRUE)
-
-    expect_no_error(
-      quarto::quarto_render("template.qmd", quiet = TRUE)
-    )
-
-    qmd <- readLines("template.qmd")
-    expect_true(any(grepl("format-variant: brief", qmd, fixed = TRUE)))
-    expect_true(file.exists("template.pdf"))
-  })
-})
