@@ -1,7 +1,6 @@
 # Performance micro-benchmarks for Phase 08 hotspot scenarios.
 
-.perf_scenario_collect_environment_checks <- function() {
-  fixture <- .perf_new_validation_fixture()
+.perf_scenario_collect_environment_checks <- function(project_path) {
   collect_environment_checks <- .perf_get_validation_fn("collect_environment_checks")
 
   .perf_with_validation_bindings(
@@ -18,24 +17,22 @@
       },
       required_quarto_floor = function() ">=1.4.11"
     ),
-    collect_environment_checks(fixture$project)
+    collect_environment_checks(project_path)
   )
 }
 
-.perf_scenario_validate_render_environment <- function() {
-  fixture <- .perf_new_validation_fixture()
+.perf_scenario_validate_render_environment <- function(project_path) {
   validate_render_environment <- .perf_get_validation_fn("validate_render_environment")
 
   .perf_with_validation_bindings(
     list(collect_environment_checks = function(path) .perf_passing_checks(path)),
-    validate_render_environment(fixture$project)
+    validate_render_environment(project_path)
   )
 }
 
-.perf_scenario_create_working_paper <- function() {
-  fixture <- .perf_new_scaffold_fixture()
+.perf_scenario_create_working_paper <- function(project_path) {
   create_working_paper <- .perf_get_create_fn("create_working_paper")
-  create_working_paper(fixture$project, title = "Benchmark project", open = FALSE)
+  create_working_paper(project_path, title = "Benchmark project", open = FALSE)
 }
 
 .perf_assert_low_noise <- function(result, scenario_id, max_ratio = 1.35) {
@@ -45,11 +42,19 @@
   expect_lte(stats$p95 / stats$p50, max_ratio, info = paste(scenario_id, "noise bound exceeded"))
 }
 
+.perf_assert_scaffold_outputs <- function(project_path, label) {
+  expect_true(file.exists(file.path(project_path, "template.qmd")), info = label)
+  expect_true(file.exists(file.path(project_path, "_quarto.yml")), info = label)
+  expect_true(file.exists(file.path(project_path, "references.bib")), info = label)
+  expect_true(file.exists(file.path(project_path, "_extensions", "typstR", "_extension.yml")), info = label)
+}
+
 test_that("micro: D-01 scenario perf-collect-environment-checks is deterministic", {
   .perf_skip_if_bench_missing()
+  fixture <- .perf_new_validation_fixture()
 
   result <- bench::mark(
-    perf_collect_environment_checks = .perf_scenario_collect_environment_checks(),
+    perf_collect_environment_checks = .perf_scenario_collect_environment_checks(fixture$project),
     iterations = 60,
     min_iterations = 30,
     check = FALSE
@@ -60,9 +65,10 @@ test_that("micro: D-01 scenario perf-collect-environment-checks is deterministic
 
 test_that("micro: D-02 scenario perf-validate-render-environment is deterministic", {
   .perf_skip_if_bench_missing()
+  fixture <- .perf_new_validation_fixture()
 
   result <- bench::mark(
-    perf_validate_render_environment = .perf_scenario_validate_render_environment(),
+    perf_validate_render_environment = .perf_scenario_validate_render_environment(fixture$project),
     iterations = 60,
     min_iterations = 30,
     check = FALSE
@@ -75,7 +81,7 @@ test_that("micro: D-04 scenario perf-create-working-paper-baseline is determinis
   .perf_skip_if_bench_missing()
 
   result <- bench::mark(
-    perf_create_working_paper = .perf_scenario_create_working_paper(),
+    perf_create_working_paper = .perf_scenario_create_working_paper(.perf_new_scaffold_fixture()$project),
     iterations = 60,
     min_iterations = 30,
     check = FALSE
@@ -84,7 +90,7 @@ test_that("micro: D-04 scenario perf-create-working-paper-baseline is determinis
   .perf_assert_low_noise(result, "perf-create-working-paper-baseline")
 })
 
-test_that("micro: scaffold helper matrix remains symmetric", {
+test_that("micro: scaffold helper matrix executes symmetric helper calls", {
   specs <- .perf_scaffold_specs()
 
   expect_equal(
@@ -92,17 +98,20 @@ test_that("micro: scaffold helper matrix remains symmetric", {
     c("create_working_paper", "create_article", "create_policy_brief")
   )
 
-  expect_equal(
-    vapply(specs, `[[`, character(1), "label"),
-    c("working paper", "article", "policy brief")
-  )
+  for (spec in specs) {
+    helper <- .perf_get_create_fn(spec$fn_name)
+    fixture <- .perf_new_scaffold_fixture(spec$project_prefix)
+    helper(fixture$project, title = paste("Symmetry", spec$label), open = FALSE)
+    .perf_assert_scaffold_outputs(fixture$project, spec$label)
+  }
 })
 
 test_that("smoke: perf-collect-environment-checks scenario stays low-noise", {
   .perf_skip_if_bench_missing()
+  fixture <- .perf_new_validation_fixture()
 
   result <- bench::mark(
-    perf_collect_environment_checks = .perf_scenario_collect_environment_checks(),
+    perf_collect_environment_checks = .perf_scenario_collect_environment_checks(fixture$project),
     iterations = 8,
     min_iterations = 4,
     check = FALSE
@@ -113,9 +122,10 @@ test_that("smoke: perf-collect-environment-checks scenario stays low-noise", {
 
 test_that("smoke: perf-validate-render-environment scenario stays low-noise", {
   .perf_skip_if_bench_missing()
+  fixture <- .perf_new_validation_fixture()
 
   result <- bench::mark(
-    perf_validate_render_environment = .perf_scenario_validate_render_environment(),
+    perf_validate_render_environment = .perf_scenario_validate_render_environment(fixture$project),
     iterations = 8,
     min_iterations = 4,
     check = FALSE
@@ -129,10 +139,18 @@ test_that("smoke: perf-create-working-paper-baseline scenario matrix still resol
   expect_equal(length(specs), 3L)
   expect_true(all(vapply(specs, function(spec) nzchar(spec$project_prefix), logical(1))))
 
+  # Smoke matrix symmetry for article/policy-brief helper call paths.
+  for (spec in specs[-1]) {
+    helper <- .perf_get_create_fn(spec$fn_name)
+    fixture <- .perf_new_scaffold_fixture(spec$project_prefix)
+    helper(fixture$project, title = paste("Smoke", spec$label), open = FALSE)
+    .perf_assert_scaffold_outputs(fixture$project, spec$label)
+  }
+
   .perf_skip_if_bench_missing()
 
   result <- bench::mark(
-    perf_create_working_paper = .perf_scenario_create_working_paper(),
+    perf_create_working_paper = .perf_scenario_create_working_paper(.perf_new_scaffold_fixture()$project),
     iterations = 6,
     min_iterations = 3,
     check = FALSE

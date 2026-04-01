@@ -16,6 +16,7 @@ Imports:
     fs (>= 1.6.0),
     quarto (>= 1.4)
 Suggests:
+    bench,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
