@@ -18,6 +18,27 @@
   skip_if_not(.quarto_available())
 }
 
+.onboarding_scaffold_specs <- function() {
+  list(
+    list(
+      label = "working paper",
+      fn_name = "create_working_paper",
+      project = "working-paper-project"
+    ),
+    list(
+      label = "article",
+      fn_name = "create_article",
+      project = "article-project"
+    ),
+    list(
+      label = "policy brief",
+      fn_name = "create_policy_brief",
+      project = "policy-brief-project"
+    )
+  )
+}
+
+
 test_that("onboarding helper matrix covers all scaffold formats", {
   specs <- .onboarding_scaffold_specs()
 
@@ -39,16 +60,19 @@ test_that("onboarding helper matrix covers all scaffold formats", {
   invisible(ext_dest)
 }
 
-test_that("pre-render environment validation succeeds on scaffolded project", {
+test_that("pre-render validation succeeds across helper-generated onboarding formats", {
   .skip_if_no_quarto()
 
   withr::with_tempdir({
-    create_working_paper("validation-project", open = FALSE)
+    for (spec in .onboarding_scaffold_specs()) {
+      helper <- get(spec$fn_name, inherits = TRUE)
+      helper(spec$project, open = FALSE)
 
-    report <- validate_render_environment("validation-project")
+      report <- validate_render_environment(spec$project)
 
-    expect_s3_class(report, "typstR_validation_report")
-    expect_true(report$ok)
+      expect_s3_class(report, "typstR_validation_report", info = spec$label)
+      expect_true(isTRUE(report$ok), info = spec$label)
+    }
   })
 })
 
