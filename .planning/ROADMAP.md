@@ -101,10 +101,11 @@ Plans:
   1. Validation failures surface diagnostics that always include code, severity, location, and hint fields.
   2. The same issue class produces the same diagnostic code across repeated runs.
   3. Multiple issues are reported as structured entries rather than collapsed prose.
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 05-01: TBD (created during /gsd:plan-phase 5)
+- [ ] 05-01-PLAN.md — Define diagnostics contract, immutable codebook, and deterministic ordering helpers with dedicated contract tests.
+- [ ] 05-02-PLAN.md — Wire diagnostics into render/input failure paths and migrate message-only tests to class+payload assertions without breaking no-Quarto safety.
 
 ### Phase 6: Pre-render Environment Validation
 **Goal**: Users can run pre-render validation that truthfully reports environment readiness before render begins.
@@ -156,7 +157,7 @@ Plans:
 | 2. Metadata Helpers and YAML Interface | v1.0 | 4/4 | Complete | 2026-03-23 |
 | 3. Typst Templates, Branding, and Additional Formats | v1.0 | 5/5 | Complete | 2026-03-23 |
 | 4. Tests, Documentation, and CRAN Hardening | v1.0 | 6/6 | Complete | 2026-03-23 |
-| 5. Structured Diagnostics Foundation | v1.1 | 0/TBD | Not started | - |
+| 5. Structured Diagnostics Foundation | v1.1 | 0/2 | Not started | - |
 | 6. Pre-render Environment Validation | v1.1 | 0/TBD | Not started | - |
 | 7. First-run Onboarding Reliability | v1.1 | 0/TBD | Not started | - |
 | 8. Measured Performance Optimization | v1.1 | 0/TBD | Not started | - |
