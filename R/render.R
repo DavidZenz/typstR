@@ -26,10 +26,22 @@ render_pub <- function(input = NULL, output_format = NULL, quiet = FALSE,
                        open = interactive()) {
   # Pre-flight: Quarto availability (locked decision)
   if (!quarto_available()) {
-    cli::cli_abort(c(
-      "Quarto is not installed or not on PATH.",
-      "i" = "Install Quarto from {.url https://quarto.org}."
-    ))
+    preflight_input <- if (is.null(input)) "." else input
+    message <- "Quarto is not installed or not on PATH."
+    hint <- "Install Quarto from https://quarto.org."
+    diagnostic <- new_diagnostic(
+      code = diagnostics_codebook()[["quarto_unavailable"]],
+      severity = "error",
+      location = list(file = as.character(fs::path_abs(preflight_input))),
+      hint = hint,
+      message = message
+    )
+
+    emit_diagnostics_error(
+      diagnostics = list(diagnostic),
+      message = message,
+      hint = hint
+    )
   }
 
   # Input auto-detection (locked decision)
