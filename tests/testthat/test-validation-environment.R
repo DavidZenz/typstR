@@ -46,7 +46,7 @@ passing_checks <- function(path) {
     extension = list(
       ok = TRUE,
       present = TRUE,
-      manifest = file.path(path, "_extensions", "typstR", "_extension.yml")
+      manifest = as.character(fs::path_abs(file.path(path, "_extensions", "typstR", "_extension.yml")))
     )
   )
 }
@@ -75,7 +75,7 @@ failing_checks <- function(path) {
     extension = list(
       ok = FALSE,
       present = FALSE,
-      manifest = file.path(path, "_extensions", "typstR", "_extension.yml")
+      manifest = as.character(fs::path_abs(file.path(path, "_extensions", "typstR", "_extension.yml")))
     )
   )
 }
