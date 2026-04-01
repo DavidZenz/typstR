@@ -12,7 +12,11 @@ DIAGNOSTIC_CODEBOOK <- c(
   quarto_unavailable = "DIAG-RUNTIME-001",
   no_qmd_found = "DIAG-INPUT-001",
   multiple_qmd_found = "DIAG-INPUT-002",
-  input_not_found = "DIAG-INPUT-003"
+  input_not_found = "DIAG-INPUT-003",
+  env_quarto_unavailable = "DIAG-ENV-001",
+  env_typst_unavailable = "DIAG-ENV-002",
+  env_quarto_floor_incompatible = "DIAG-ENV-003",
+  env_extension_missing = "DIAG-ENV-004"
 )
 
 DIAGNOSTIC_CODEBOOK_REFERENCE <- DIAGNOSTIC_CODEBOOK
