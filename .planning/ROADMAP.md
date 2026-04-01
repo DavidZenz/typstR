@@ -105,7 +105,7 @@ Plans:
 
 Plans:
 - [x] 05-01-PLAN.md — Define diagnostics contract, immutable codebook, and deterministic ordering helpers with dedicated contract tests.
-- [ ] 05-02-PLAN.md — Wire diagnostics into render/input failure paths and migrate message-only tests to class+payload assertions without breaking no-Quarto safety.
+- [x] 05-02-PLAN.md — Wire diagnostics into render/input failure paths and migrate message-only tests to class+payload assertions without breaking no-Quarto safety.
 
 ### Phase 6: Pre-render Environment Validation
 **Goal**: Users can run pre-render validation that truthfully reports environment readiness before render begins.

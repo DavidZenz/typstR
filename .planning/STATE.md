@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Reliability and Onboarding Polish
-status: Ready to execute
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-04-01T08:20:33.118Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-04-01T08:29:32.689Z"
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
@@ -49,6 +49,7 @@ Plan: 2 of 2
 - Trend: Stable
 
 | Phase 05 P01 | 4m | 2 tasks | 5 files |
+| Phase 05 P02 | 2m | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -63,6 +64,8 @@ Recent decisions affecting current work:
 - [Phase 05]: Locked diagnostics schema and stable codebook in internal diagnostics module
 - [Phase 05]: Added deterministic diagnostics ordering by severity, location, code, and insertion index
 - [Phase 05]: Adopted typstR_diagnostics_error class carrying sorted diagnostics payload for aggregate emission
+- [Phase 05]: Preserve user-facing diagnostics guidance text while making structured payload assertions the primary test contract.
+- [Phase 05]: Keep no-Quarto behavior mockable via quarto_available() seam while emitting DIAG-RUNTIME-001 payloads from render preflight.
 
 ### Pending Todos
 
@@ -75,6 +78,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T08:20:33.115Z
-Stopped at: Completed 05-01-PLAN.md
+Last session: 2026-04-01T08:29:32.685Z
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None
