@@ -157,7 +157,7 @@ Plans:
 | 2. Metadata Helpers and YAML Interface | v1.0 | 4/4 | Complete | 2026-03-23 |
 | 3. Typst Templates, Branding, and Additional Formats | v1.0 | 5/5 | Complete | 2026-03-23 |
 | 4. Tests, Documentation, and CRAN Hardening | v1.0 | 6/6 | Complete | 2026-03-23 |
-| 5. Structured Diagnostics Foundation | v1.1 | 0/2 | Not started | - |
+| 5. Structured Diagnostics Foundation | v1.1 | 1/2 | In Progress | - |
 | 6. Pre-render Environment Validation | v1.1 | 0/TBD | Not started | - |
 | 7. First-run Onboarding Reliability | v1.1 | 0/TBD | Not started | - |
 | 8. Measured Performance Optimization | v1.1 | 0/TBD | Not started | - |
