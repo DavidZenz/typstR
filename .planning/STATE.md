@@ -2,16 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Reliability and Onboarding Polish
-status: planning
-stopped_at: Phase 5 context gathered
-last_updated: "2026-04-01T07:46:02.505Z"
-last_activity: 2026-03-31 — Milestone-grouped roadmap written and v1.1 phase mapping finalized
+status: Ready to execute
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-04-01T08:20:33.118Z"
 progress:
   total_phases: 4
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 50
+  total_plans: 2
+  completed_plans: 1
 ---
 
 # Project State
@@ -21,16 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-31)
 
 **Core value:** Users can go from `create_working_paper("my-paper")` to a polished, branded PDF in minutes — no Typst or LaTeX knowledge required.
-**Current focus:** Phase 5 - Structured Diagnostics Foundation (ready to plan)
+**Current focus:** Phase 05 — structured-diagnostics-foundation
 
 ## Current Position
 
-Phase: 5 of 8 (Structured Diagnostics Foundation)
-Plan: Not planned yet
-Status: Ready to plan
-Last activity: 2026-03-31 — Milestone-grouped roadmap written and v1.1 phase mapping finalized
-
-Progress: [█████░░░░░] 50%
+Phase: 05 (structured-diagnostics-foundation) — EXECUTING
+Plan: 2 of 2
 
 ## Performance Metrics
 
@@ -54,6 +48,8 @@ Progress: [█████░░░░░] 50%
 - Last completed milestone: v1.0 (all 18 plans complete)
 - Trend: Stable
 
+| Phase 05 P01 | 4m | 2 tasks | 5 files |
+
 ## Accumulated Context
 
 ### Decisions
@@ -64,6 +60,9 @@ Recent decisions affecting current work:
 - v1.1 uses continuous numbering from prior milestone: phases start at 5.
 - v1.1 dependency chain is sequential: diagnostics → validation → onboarding → performance.
 - v1.1 requirements are mapped one-to-one by phase: DIAG-01→5, VAL-01→6, ONB-01→7, PERF-01→8.
+- [Phase 05]: Locked diagnostics schema and stable codebook in internal diagnostics module
+- [Phase 05]: Added deterministic diagnostics ordering by severity, location, code, and insertion index
+- [Phase 05]: Adopted typstR_diagnostics_error class carrying sorted diagnostics payload for aggregate emission
 
 ### Pending Todos
 
@@ -76,6 +75,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T07:46:02.500Z
-Stopped at: Phase 5 context gathered
-Resume file: .planning/phases/05-structured-diagnostics-foundation/05-CONTEXT.md
+Last session: 2026-04-01T08:20:33.115Z
+Stopped at: Completed 05-01-PLAN.md
+Resume file: None

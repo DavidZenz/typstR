@@ -13,7 +13,7 @@ Requirements for milestone v1.1 **Reliability and Onboarding Polish**.
 
 ### Diagnostics
 
-- [ ] **DIAG-01**: User receives structured diagnostics for validation issues with stable code, severity, location, and hint fields.
+- [x] **DIAG-01**: User receives structured diagnostics for validation issues with stable code, severity, location, and hint fields.
 
 ### Onboarding
 
@@ -65,7 +65,7 @@ Mapped during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DIAG-01 | Phase 5 | Pending |
+| DIAG-01 | Phase 5 | Complete |
 | VAL-01 | Phase 6 | Pending |
 | ONB-01 | Phase 7 | Pending |
 | PERF-01 | Phase 8 | Pending |

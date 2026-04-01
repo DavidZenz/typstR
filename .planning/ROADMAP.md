@@ -104,7 +104,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Define diagnostics contract, immutable codebook, and deterministic ordering helpers with dedicated contract tests.
+- [x] 05-01-PLAN.md — Define diagnostics contract, immutable codebook, and deterministic ordering helpers with dedicated contract tests.
 - [ ] 05-02-PLAN.md — Wire diagnostics into render/input failure paths and migrate message-only tests to class+payload assertions without breaking no-Quarto safety.
 
 ### Phase 6: Pre-render Environment Validation
