@@ -18,6 +18,16 @@
   skip_if_not(.quarto_available())
 }
 
+test_that("onboarding helper matrix covers all scaffold formats", {
+  specs <- .onboarding_scaffold_specs()
+
+  expect_equal(
+    vapply(specs, `[[`, character(1), "fn_name"),
+    c("create_working_paper", "create_article", "create_policy_brief")
+  )
+})
+
+
 .copy_extension <- function(dest_dir) {
   ext_src <- system.file("quarto/extensions/typstR", package = "typstR")
   if (!nzchar(ext_src)) {
