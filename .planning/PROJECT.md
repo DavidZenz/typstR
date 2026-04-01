@@ -11,7 +11,7 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 ## Current State
 
 - **Version:** v1.1 (Planning started 2026-03-31)
-- **Status:** Phase 05 complete in v1.1; Phase 06 (pre-render environment validation) is next.
+- **Status:** Phase 06 complete in v1.1; Phase 07 (first-run onboarding reliability) is next.
 - **Previous Release:** v1.0 (Released 2026-03-23)
 - **Milestone Archive:** [.planning/milestones/v1.0-ROADMAP.md](.planning/milestones/v1.0-ROADMAP.md)
 
@@ -45,6 +45,7 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 - [x] Documentation: README, 3 vignettes (getting-started, working-papers, customizing-branding)
 - [x] Test suite covering metadata, validation, render helpers, and project creation
 - [x] Structured diagnostics contract for validation failures (stable `code`/`severity`/`location`/`hint`, deterministic ordering) — validated in Phase 05
+- [x] Pre-render environment validation reports Quarto/Typst readiness, version-floor compatibility, and extension presence before render (VAL-01) — validated in Phase 06
 
 ### Active
 
@@ -89,6 +90,7 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 | Modular Typst templates | Separate .typ files for each concern — easier to maintain and customize | ✓ Satisfied |
 | Branding via YAML, not Typst editing | Users should adapt output without touching Typst internals | ✓ Satisfied |
 | Structured diagnostics foundation first in v1.1 | Locking schema and codes before broader validation prevents drift and brittle tests | ✓ Satisfied (Phase 05) |
+| Shared preflight validator across standalone + render paths in v1.1 | One validation path prevents drift between `validate_render_environment()` and `render_pub()` and preserves stable diagnostics semantics | ✓ Satisfied (Phase 06) |
 
 ## Evolution
 
@@ -108,4 +110,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-01 after completing Phase 05*
+*Last updated: 2026-04-01 after completing Phase 06*
