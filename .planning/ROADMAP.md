@@ -116,10 +116,11 @@ Plans:
   2. Validation reports Quarto and Typst availability plus detected versions.
   3. Validation flags Quarto version-floor incompatibility before any render attempt.
   4. Validation flags missing typstR extension presence before render begins.
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 06-01: TBD (created during /gsd:plan-phase 6)
+- [ ] 06-01-PLAN.md — Define standalone environment-validation contract, stable diagnostics codes, and structured success report semantics.
+- [ ] 06-02-PLAN.md — Cut over render preflight to shared validator and verify parity across guard/integration tests.
 
 ### Phase 7: First-run Onboarding Reliability
 **Goal**: Users can scaffold any supported format and succeed on the first validation+render run without manual template repair.
@@ -158,6 +159,6 @@ Plans:
 | 3. Typst Templates, Branding, and Additional Formats | v1.0 | 5/5 | Complete | 2026-03-23 |
 | 4. Tests, Documentation, and CRAN Hardening | v1.0 | 6/6 | Complete | 2026-03-23 |
 | 5. Structured Diagnostics Foundation | v1.1 | 1/2 | In Progress | - |
-| 6. Pre-render Environment Validation | v1.1 | 0/TBD | Not started | - |
+| 6. Pre-render Environment Validation | v1.1 | 0/2 | Not started | - |
 | 7. First-run Onboarding Reliability | v1.1 | 0/TBD | Not started | - |
 | 8. Measured Performance Optimization | v1.1 | 0/TBD | Not started | - |
