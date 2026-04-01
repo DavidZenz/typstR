@@ -1,0 +1,18 @@
+scenarios:
+  - scenario_id: perf-collect-environment-checks
+    v1_baseline_key: v1_quarto_available_check
+    current_baseline_key: current_collect_environment_checks
+    slowdown_tolerance: 0.35
+    gain_target_ratio: 0.9
+
+  - scenario_id: perf-validate-render-environment
+    v1_baseline_key: v1_resolve_input_directory
+    current_baseline_key: current_validate_render_environment
+    slowdown_tolerance: 0.35
+    gain_target_ratio: 0.9
+
+  - scenario_id: perf-create-working-paper-baseline
+    v1_baseline_key: v1_create_working_paper
+    current_baseline_key: current_create_working_paper
+    slowdown_tolerance: 0.45
+    gain_target_ratio: 0.92

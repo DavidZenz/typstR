@@ -1,18 +1,32 @@
-.perf_baseline_read_yaml <- function(path) {
-  expect_true(file.exists(path), info = paste("Missing performance artifact:", path))
-  yaml::read_yaml(path)
+.perf_baseline_path <- function(filename) {
+  candidates <- c(
+    file.path("tests", "testthat", filename),
+    filename,
+    file.path("..", filename),
+    file.path("..", "..", "tests", "testthat", filename),
+    file.path(getwd(), "tests", "testthat", filename)
+  )
+
+  existing <- candidates[file.exists(candidates)]
+  expect_true(length(existing) > 0, info = paste("Missing performance artifact:", filename))
+
+  normalizePath(existing[[1]], winslash = "/", mustWork = TRUE)
+}
+
+.perf_baseline_read_yaml <- function(filename) {
+  yaml::read_yaml(.perf_baseline_path(filename))
 }
 
 .perf_baseline_map <- function() {
-  .perf_baseline_read_yaml("tests/testthat/perf-scenario-map.yml")
+  .perf_baseline_read_yaml("perf-scenario-map.yml")
 }
 
 .perf_v1_baseline <- function() {
-  .perf_baseline_read_yaml("tests/testthat/perf-v1-baseline.yml")
+  .perf_baseline_read_yaml("perf-v1-baseline.yml")
 }
 
 .perf_current_baseline <- function() {
-  .perf_baseline_read_yaml("tests/testthat/perf-baseline.yml")
+  .perf_baseline_read_yaml("perf-baseline.yml")
 }
 
 test_that("smoke: performance scenario map declares required contract fields", {
@@ -70,7 +84,7 @@ test_that("contract: current baseline map defines numeric policy fields", {
     expect_true(is.finite(baseline_row$median_ms), info = entry$scenario_id)
     expect_true(is.numeric(entry$slowdown_tolerance), info = entry$scenario_id)
     expect_true(is.numeric(entry$gain_target_ratio), info = entry$scenario_id)
-    expect_gt(entry$slowdown_tolerance, 0, info = entry$scenario_id)
-    expect_gt(entry$gain_target_ratio, 0, info = entry$scenario_id)
+    expect_true(entry$slowdown_tolerance > 0, info = entry$scenario_id)
+    expect_true(entry$gain_target_ratio > 0, info = entry$scenario_id)
   }
 })

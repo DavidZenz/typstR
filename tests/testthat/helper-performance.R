@@ -179,6 +179,71 @@
   )
 }
 
+.perf_run_collect_environment_checks <- function() {
+  fixture <- .perf_new_validation_fixture()
+  collect_environment_checks <- .perf_get_validation_fn("collect_environment_checks")
+
+  .perf_with_validation_bindings(
+    list(
+      probe_quarto = function() list(ok = TRUE, available = TRUE, version = "1.5.1"),
+      probe_typst = function(quarto_check) {
+        list(ok = TRUE, available = TRUE, version = "0.13.1", raw = "typst 0.13.1", status = 0L)
+      },
+      probe_quarto_floor = function(quarto_check, required) {
+        list(ok = TRUE, required = required, min_version = "1.4.11", compatible = TRUE, available = TRUE)
+      },
+      probe_extension = function(path) {
+        list(ok = TRUE, present = TRUE, manifest = file.path(path, "_extensions", "typstR", "_extension.yml"))
+      },
+      required_quarto_floor = function() ">=1.4.11"
+    ),
+    collect_environment_checks(fixture$project)
+  )
+}
+
+
+ .perf_run_validate_render_environment <- function() {
+  fixture <- .perf_new_validation_fixture()
+  validate_render_environment <- .perf_get_validation_fn("validate_render_environment")
+
+  .perf_with_validation_bindings(
+    list(collect_environment_checks = function(path) .perf_passing_checks(path)),
+    validate_render_environment(fixture$project)
+  )
+}
+
+ .perf_run_create_working_paper <- function() {
+  create_working_paper <- .perf_get_create_fn("create_working_paper")
+  create_working_paper(.perf_new_scaffold_fixture()$project, title = "Benchmark project", open = FALSE)
+}
+
+ .perf_run_scenario <- function(scenario_id) {
+  switch(
+    scenario_id,
+    "perf-collect-environment-checks" = .perf_run_collect_environment_checks(),
+    "perf-validate-render-environment" = .perf_run_validate_render_environment(),
+    "perf-create-working-paper-baseline" = .perf_run_create_working_paper(),
+    stop(sprintf("Unknown performance scenario: %s", scenario_id), call. = FALSE)
+  )
+}
+
+.perf_measure_median_ms <- function(expr, iterations = 15L) {
+  expr <- substitute(expr)
+  eval_env <- parent.frame()
+
+  timings <- replicate(
+    iterations,
+    {
+      start <- proc.time()[["elapsed"]]
+      eval(expr, envir = eval_env)
+      (proc.time()[["elapsed"]] - start) * 1000
+    },
+    simplify = TRUE
+  )
+
+  stats::median(as.numeric(timings), na.rm = TRUE)
+}
+
 .perf_benchmark <- function(expr) {
   expr <- substitute(expr)
 

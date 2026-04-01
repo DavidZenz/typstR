@@ -1,9 +1,24 @@
+.perf_regression_path <- function(filename) {
+  candidates <- c(
+    file.path("tests", "testthat", filename),
+    filename,
+    file.path("..", filename),
+    file.path("..", "..", "tests", "testthat", filename),
+    file.path(getwd(), "tests", "testthat", filename)
+  )
+
+  existing <- candidates[file.exists(candidates)]
+  expect_true(length(existing) > 0, info = paste("Missing performance artifact:", filename))
+
+  normalizePath(existing[[1]], winslash = "/", mustWork = TRUE)
+}
+
 .perf_regression_map <- function() {
-  yaml::read_yaml("tests/testthat/perf-scenario-map.yml")$scenarios
+  yaml::read_yaml(.perf_regression_path("perf-scenario-map.yml"))$scenarios
 }
 
 .perf_regression_current_baseline <- function() {
-  yaml::read_yaml("tests/testthat/perf-baseline.yml")$scenarios
+  yaml::read_yaml(.perf_regression_path("perf-baseline.yml"))$scenarios
 }
 
 test_that("regression: hotspot scenarios do not backslide beyond calibrated tolerance", {

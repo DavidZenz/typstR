@@ -1,0 +1,13 @@
+source_ref: b17dd21
+generated_at: '2026-04-01T19:18:46Z'
+measurement_method: proc.time median over 15 iterations
+scenarios:
+  current_collect_environment_checks:
+    scenario_id: perf-collect-environment-checks
+    median_ms: 9.0
+  current_validate_render_environment:
+    scenario_id: perf-validate-render-environment
+    median_ms: 9.0
+  current_create_working_paper:
+    scenario_id: perf-create-working-paper-baseline
+    median_ms: 25.0
