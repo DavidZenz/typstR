@@ -30,6 +30,7 @@
   }
 
   repo_root <- .repo_root()
+  source(file.path(repo_root, "R", "scaffold_helpers.R"), local = FALSE)
   source(file.path(repo_root, "R", "create_working_paper.R"), local = FALSE)
   source(file.path(repo_root, "R", "create_article.R"), local = FALSE)
   source(file.path(repo_root, "R", "create_policy_brief.R"), local = FALSE)

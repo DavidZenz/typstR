@@ -152,6 +152,7 @@
   }
 
   assign("system.file", local_system_file, envir = env)
+  source(file.path(repo_root, "R", "scaffold_helpers.R"), local = env)
   source(file.path(repo_root, "R", "create_working_paper.R"), local = env)
   source(file.path(repo_root, "R", "create_article.R"), local = env)
   source(file.path(repo_root, "R", "create_policy_brief.R"), local = env)
