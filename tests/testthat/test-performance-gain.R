@@ -27,6 +27,17 @@
   Filter(function(entry) entry$scenario_id %in% wanted, entries)
 }
 
+.perf_gain_scaffold_entries <- function() {
+  entries <- .perf_gain_map()
+  Filter(function(entry) grepl("^perf-create-", entry$scenario_id), entries)
+}
+
+ .perf_gain_entry_for <- function(scenario_id) {
+  entry <- Filter(function(candidate) identical(candidate$scenario_id, scenario_id), .perf_gain_map())
+  expect_true(length(entry) == 1L, info = paste("Missing scenario mapping:", scenario_id))
+  entry[[1]]
+}
+
 .perf_assert_gain_target <- function(entry, benchmark_fun) {
   v1_baseline <- .perf_gain_v1_baseline()
 
@@ -59,13 +70,29 @@ test_that("gain: validation/render hotspots beat mapped v1 baseline targets", {
 test_that("smoke: validation hotspot beats mapped v1 baseline target", {
   .perf_skip_if_bench_missing()
 
-  entry <- Filter(function(candidate) candidate$scenario_id == "perf-collect-environment-checks", .perf_gain_validation_render_entries())[[1]]
+  entry <- .perf_gain_entry_for("perf-collect-environment-checks")
   .perf_assert_gain_target(entry, function(expr) .perf_benchmark_smoke(expr, iterations = 6, min_iterations = 3))
 })
 
 test_that("smoke: render hotspot beats mapped v1 baseline target", {
   .perf_skip_if_bench_missing()
 
-  entry <- Filter(function(candidate) candidate$scenario_id == "perf-validate-render-environment", .perf_gain_validation_render_entries())[[1]]
+  entry <- .perf_gain_entry_for("perf-validate-render-environment")
+  .perf_assert_gain_target(entry, function(expr) .perf_benchmark_smoke(expr, iterations = 6, min_iterations = 3))
+})
+
+
+test_that("gain: scaffold hotspots beat mapped v1 baseline targets", {
+  .perf_skip_if_bench_missing()
+
+  for (entry in .perf_gain_scaffold_entries()) {
+    .perf_assert_gain_target(entry, .perf_benchmark)
+  }
+})
+
+test_that("smoke: scaffold hotspot beats mapped v1 baseline target", {
+  .perf_skip_if_bench_missing()
+
+  entry <- .perf_gain_entry_for("perf-create-working-paper-baseline")
   .perf_assert_gain_target(entry, function(expr) .perf_benchmark_smoke(expr, iterations = 6, min_iterations = 3))
 })

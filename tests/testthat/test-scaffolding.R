@@ -192,3 +192,18 @@ test_that("create_* helpers preserve title override behavior", {
     }
   })
 })
+
+test_that("create_* helpers delegate to shared scaffold helper implementation", {
+  .load_scaffolding_functions()
+
+  for (spec in .scaffold_specs()) {
+    helper <- get(spec$fn_name, inherits = TRUE)
+    helper_body <- paste(deparse(body(helper)), collapse = "\n")
+
+    expect_match(
+      helper_body,
+      "scaffold_project_from_template\\(",
+      info = paste(spec$label, "does not delegate to shared helper")
+    )
+  }
+})
