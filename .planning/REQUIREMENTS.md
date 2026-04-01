@@ -21,7 +21,7 @@ Requirements for milestone v1.1 **Reliability and Onboarding Polish**.
 
 ### Performance
 
-- [ ] **PERF-01**: User sees measurable improvement in selected helper/render hotspots with no output semantics changes.
+- [x] **PERF-01**: User sees measurable improvement in selected helper/render hotspots with no output semantics changes.
 
 ## Future Requirements
 
@@ -68,7 +68,7 @@ Mapped during roadmap creation.
 | DIAG-01 | Phase 5 | Complete |
 | VAL-01 | Phase 6 | Complete |
 | ONB-01 | Phase 7 | Complete |
-| PERF-01 | Phase 8 | Pending |
+| PERF-01 | Phase 8 | Complete |
 
 **Coverage:**
 - v1.1 requirements: 4 total

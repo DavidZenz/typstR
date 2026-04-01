@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Reliability and Onboarding Polish
-status: Ready to plan
-stopped_at: Phase 8 context gathered
-last_updated: "2026-04-01T17:53:42.216Z"
+status: Ready to execute
+stopped_at: Completed 08-01-PLAN.md
+last_updated: "2026-04-01T19:22:49.869Z"
 progress:
   total_phases: 4
   completed_phases: 3
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 8
+  completed_plans: 7
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** Users can go from `create_working_paper("my-paper")` to a polished, branded PDF in minutes — no Typst or LaTeX knowledge required.
-**Current focus:** Phase 07 — first-run-onboarding-reliability
+**Current focus:** Phase 08 — measured-performance-optimization
 
 ## Current Position
 
-Phase: 8
-Plan: Not started
+Phase: 08 (measured-performance-optimization) — EXECUTING
+Plan: 2 of 2
 
 ## Performance Metrics
 
@@ -52,6 +52,7 @@ Plan: Not started
 | Phase 05 P02 | 2m | 2 tasks | 4 files |
 | Phase 06-pre-render-environment-validation P01 | 455s | 2 tasks | 6 files |
 | Phase 07-first-run-onboarding-reliability P01 | 270s | 2 tasks | 4 files |
+| Phase 08-measured-performance-optimization P01 | 677 | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,9 @@ Recent decisions affecting current work:
 - [Phase 06]: Derive Quarto version floor from extension manifest quarto-required instead of duplicated constants
 - [Phase 07-first-run-onboarding-reliability]: Lock onboarding reliability against scaffolded helper output instead of raw template fixtures.
 - [Phase 07-first-run-onboarding-reliability]: Standardize inline guidance markers across formats while preserving format-specific metadata deltas.
+- [Phase 08-measured-performance-optimization]: Shared hotspot scenario execution now lives in helper-performance so micro, derivation, and regression checks stay aligned.
+- [Phase 08-measured-performance-optimization]: Baseline artifacts are derived from source via temporary v1.0 worktree and committed as auditable medians.
+- [Phase 08-measured-performance-optimization]: Performance contract tests now use scenario-map key resolution with explicit tolerance and gain policy fields.
 
 ### Pending Todos
 
@@ -85,6 +89,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T17:53:42.210Z
-Stopped at: Phase 8 context gathered
-Resume file: .planning/phases/08-measured-performance-optimization/08-CONTEXT.md
+Last session: 2026-04-01T19:22:49.865Z
+Stopped at: Completed 08-01-PLAN.md
+Resume file: None

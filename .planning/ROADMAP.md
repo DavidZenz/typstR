@@ -147,7 +147,7 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 08-01: TBD (created during /gsd:plan-phase 8)
+- [x] 08-01: TBD (created during /gsd:plan-phase 8)
 
 ## Progress
 
