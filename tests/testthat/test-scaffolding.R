@@ -62,65 +62,133 @@
   force(code)
 }
 
-test_that("create_working_paper() scaffolds expected files and title override", {
+.scaffold_specs <- function() {
+  list(
+    list(
+      label = "working paper",
+      fn_name = "create_working_paper",
+      project = "wp-project",
+      format_variant = NULL,
+      expects_jel = TRUE,
+      expects_report_number = TRUE
+    ),
+    list(
+      label = "article",
+      fn_name = "create_article",
+      project = "article-project",
+      format_variant = "article",
+      expects_jel = TRUE,
+      expects_report_number = FALSE
+    ),
+    list(
+      label = "policy brief",
+      fn_name = "create_policy_brief",
+      project = "brief-project",
+      format_variant = "brief",
+      expects_jel = FALSE,
+      expects_report_number = TRUE
+    )
+  )
+}
+
+.shared_baseline_markers <- function() {
+  c(
+    "author:",
+    "affiliations:",
+    "abstract: |",
+    "bibliography: references.bib",
+    "format:",
+    "typstR:",
+    "keywords:",
+    "funding: |",
+    "## References"
+  )
+}
+
+.guidance_markers <- function() {
+  c(
+    "# Edit first: update title, authors, and affiliations.",
+    "# Replace abstract with your project summary before sharing.",
+    "<!-- Replace this starter narrative with your project-specific text. -->"
+  )
+}
+
+.scaffold_project <- function(spec, repo_root, title) {
+  .with_template_lookup(spec$fn_name, repo_root, {
+    helper <- get(spec$fn_name, inherits = TRUE)
+    helper(spec$project, title = title, open = FALSE)
+  })
+
+  list(
+    project = spec$project,
+    qmd = readLines(file.path(spec$project, "template.qmd"), warn = FALSE)
+  )
+}
+
+test_that("create_* helpers scaffold shared baseline and only allowed format deltas", {
   repo_root <- .load_scaffolding_functions()
 
   withr::with_tempdir({
-    .with_template_lookup(
-      "create_working_paper",
-      repo_root,
-      create_working_paper("wp-project", title = "My Working Paper", open = FALSE)
-    )
+    for (spec in .scaffold_specs()) {
+      output <- .scaffold_project(spec, repo_root, title = paste("Starter", spec$label))
 
-    expect_true(file.exists("wp-project/template.qmd"))
-    expect_true(file.exists("wp-project/_quarto.yml"))
-    expect_true(file.exists("wp-project/references.bib"))
-    expect_true(dir.exists("wp-project/_extensions/typstR"))
+      expect_true(file.exists(file.path(output$project, "template.qmd")), info = spec$label)
+      expect_true(file.exists(file.path(output$project, "_quarto.yml")), info = spec$label)
+      expect_true(file.exists(file.path(output$project, "references.bib")), info = spec$label)
+      expect_true(dir.exists(file.path(output$project, "_extensions", "typstR")), info = spec$label)
 
-    qmd <- readLines("wp-project/template.qmd")
-    expect_true(any(grepl('title: "My Working Paper"', qmd, fixed = TRUE)))
-    expect_true(any(grepl("report-number", qmd, fixed = TRUE)))
+      for (marker in .shared_baseline_markers()) {
+        expect_true(any(grepl(marker, output$qmd, fixed = TRUE)),
+          info = paste(spec$label, "missing baseline marker", marker)
+        )
+      }
+
+      if (is.null(spec$format_variant)) {
+        expect_false(any(grepl("format-variant:", output$qmd, fixed = TRUE)),
+          info = paste(spec$label, "should not declare format-variant")
+        )
+      } else {
+        expect_true(any(grepl(paste0("format-variant: ", spec$format_variant), output$qmd, fixed = TRUE)),
+          info = paste(spec$label, "missing format-variant")
+        )
+      }
+
+      expect_equal(any(grepl("jel:", output$qmd, fixed = TRUE)), spec$expects_jel,
+        info = paste(spec$label, "JEL expectation mismatch")
+      )
+      expect_equal(any(grepl("report-number:", output$qmd, fixed = TRUE)), spec$expects_report_number,
+        info = paste(spec$label, "report-number expectation mismatch")
+      )
+    }
   })
 })
 
-test_that("create_article() scaffolds expected files and article markers", {
+test_that("create_* helpers scaffold inline onboarding guidance near editable fields", {
   repo_root <- .load_scaffolding_functions()
 
   withr::with_tempdir({
-    .with_template_lookup(
-      "create_article",
-      repo_root,
-      create_article("article-project", title = "My Article", open = FALSE)
-    )
+    for (spec in .scaffold_specs()) {
+      output <- .scaffold_project(spec, repo_root, title = paste("Guided", spec$label))
 
-    expect_true(file.exists("article-project/template.qmd"))
-    expect_true(file.exists("article-project/_quarto.yml"))
-    expect_true(file.exists("article-project/references.bib"))
-    expect_true(dir.exists("article-project/_extensions/typstR"))
-
-    qmd <- readLines("article-project/template.qmd")
-    expect_true(any(grepl('title: "My Article"', qmd, fixed = TRUE)))
-    expect_true(any(grepl("format-variant: article", qmd, fixed = TRUE)))
+      for (marker in .guidance_markers()) {
+        expect_true(any(grepl(marker, output$qmd, fixed = TRUE)),
+          info = paste(spec$label, "missing guidance marker", marker)
+        )
+      }
+    }
   })
 })
 
-test_that("create_policy_brief() scaffolds expected files and brief markers", {
+test_that("create_* helpers preserve title override behavior", {
   repo_root <- .load_scaffolding_functions()
 
   withr::with_tempdir({
-    .with_template_lookup(
-      "create_policy_brief",
-      repo_root,
-      create_policy_brief("brief-project", title = "My Brief", open = FALSE)
-    )
-
-    expect_true(file.exists("brief-project/template.qmd"))
-    expect_true(file.exists("brief-project/_quarto.yml"))
-    expect_true(file.exists("brief-project/references.bib"))
-    expect_true(dir.exists("brief-project/_extensions/typstR"))
-
-    qmd <- readLines("brief-project/template.qmd")
-    expect_true(any(grepl('title: "My Brief"', qmd, fixed = TRUE)))
-    expect_true(any(grepl("format-variant: brief", qmd, fixed = TRUE)))
+    for (spec in .scaffold_specs()) {
+      title <- paste("Custom", tools::toTitleCase(spec$label))
+      output <- .scaffold_project(spec, repo_root, title = title)
+      expect_true(any(grepl(paste0('title: "', title, '"'), output$qmd, fixed = TRUE)),
+        info = paste(spec$label, "title override did not persist")
+      )
+    }
   })
 })
