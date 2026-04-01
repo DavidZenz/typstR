@@ -1,13 +1,3 @@
-diagnostics_env <- function() {
-  env <- new.env(parent = baseenv())
-  source("R/diagnostics.R", local = env)
-  env
-}
-
-get_diagnostics_fn <- function(name) {
-  get(name, envir = diagnostics_env(), inherits = FALSE)
-}
-
 test_that("new_diagnostic() includes required fields and keeps optional fields", {
   new_diagnostic <- get_diagnostics_fn("new_diagnostic")
 

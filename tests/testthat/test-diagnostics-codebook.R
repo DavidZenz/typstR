@@ -1,13 +1,3 @@
-diagnostics_env <- function() {
-  env <- new.env(parent = baseenv())
-  source("R/diagnostics.R", local = env)
-  env
-}
-
-get_diagnostics_fn <- function(name) {
-  get(name, envir = diagnostics_env(), inherits = FALSE)
-}
-
 test_that("diagnostics codebook exposes stable Phase 05 mappings", {
   diagnostics_codebook <- get_diagnostics_fn("diagnostics_codebook")
   codebook <- diagnostics_codebook()
