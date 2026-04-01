@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Reliability and Onboarding Polish
-status: Ready to plan
-stopped_at: Phase 7 planned
-last_updated: "2026-04-01T13:57:09.120Z"
+status: Ready to execute
+stopped_at: Completed 07-01-PLAN.md
+last_updated: "2026-04-01T14:12:28.190Z"
 progress:
   total_phases: 4
   completed_phases: 2
   total_plans: 6
-  completed_plans: 4
+  completed_plans: 5
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** Users can go from `create_working_paper("my-paper")` to a polished, branded PDF in minutes — no Typst or LaTeX knowledge required.
-**Current focus:** Phase 06 — pre-render-environment-validation
+**Current focus:** Phase 07 — first-run-onboarding-reliability
 
 ## Current Position
 
-Phase: 7
-Plan: Not started
+Phase: 07 (first-run-onboarding-reliability) — EXECUTING
+Plan: 2 of 2
 
 ## Performance Metrics
 
@@ -51,6 +51,7 @@ Plan: Not started
 | Phase 05 P01 | 4m | 2 tasks | 5 files |
 | Phase 05 P02 | 2m | 2 tasks | 4 files |
 | Phase 06-pre-render-environment-validation P01 | 455s | 2 tasks | 6 files |
+| Phase 07-first-run-onboarding-reliability P01 | 270s | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -70,6 +71,8 @@ Recent decisions affecting current work:
 - [Phase 06]: Use DIAG-ENV-001..004 as immutable environment diagnostics while preserving runtime/input mappings
 - [Phase 06]: Return typstR_validation_report with explicit checks evidence on success and emit aggregate diagnostics on failure
 - [Phase 06]: Derive Quarto version floor from extension manifest quarto-required instead of duplicated constants
+- [Phase 07-first-run-onboarding-reliability]: Lock onboarding reliability against scaffolded helper output instead of raw template fixtures.
+- [Phase 07-first-run-onboarding-reliability]: Standardize inline guidance markers across formats while preserving format-specific metadata deltas.
 
 ### Pending Todos
 
@@ -82,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T13:57:09.116Z
-Stopped at: Phase 7 planned
-Resume file: .planning/phases/07-first-run-onboarding-reliability/07-01-PLAN.md
+Last session: 2026-04-01T14:12:28.187Z
+Stopped at: Completed 07-01-PLAN.md
+Resume file: None

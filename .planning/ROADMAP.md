@@ -133,7 +133,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 07-01-PLAN.md — Lock cross-format starter contracts and align hybrid runnable template defaults with inline onboarding guidance.
+- [x] 07-01-PLAN.md — Lock cross-format starter contracts and align hybrid runnable template defaults with inline onboarding guidance.
 - [ ] 07-02-PLAN.md — Prove helper-driven scaffold → validate → render first-run success for working paper, article, and policy brief.
 
 ### Phase 8: Measured Performance Optimization

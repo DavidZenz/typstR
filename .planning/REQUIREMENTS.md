@@ -17,7 +17,7 @@ Requirements for milestone v1.1 **Reliability and Onboarding Polish**.
 
 ### Onboarding
 
-- [ ] **ONB-01**: User can scaffold each supported format and get a validation+render-successful starter project on a supported setup without manual template fixes.
+- [x] **ONB-01**: User can scaffold each supported format and get a validation+render-successful starter project on a supported setup without manual template fixes.
 
 ### Performance
 
@@ -67,7 +67,7 @@ Mapped during roadmap creation.
 |-------------|-------|--------|
 | DIAG-01 | Phase 5 | Complete |
 | VAL-01 | Phase 6 | Complete |
-| ONB-01 | Phase 7 | Pending |
+| ONB-01 | Phase 7 | Complete |
 | PERF-01 | Phase 8 | Pending |
 
 **Coverage:**
