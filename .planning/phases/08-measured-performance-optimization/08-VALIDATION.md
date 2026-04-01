@@ -2,7 +2,7 @@
 phase: 08
 slug: measured-performance-optimization
 status: draft
-nyquist_compliant: false
+nyquist_compliant: true
 wave_0_complete: false
 created: 2026-04-01
 ---
@@ -19,18 +19,18 @@ created: 2026-04-01
 |----------|-------|
 | **Framework** | testthat (edition 3) |
 | **Config file** | `tests/testthat.R`, `DESCRIPTION` (`Config/testthat/edition: 3`) |
-| **Quick run command** | `Rscript -e 'testthat::test_file("tests/testthat/test-performance-micro.R")'` |
+| **Quick run command** | `Rscript -e 'elapsed <- system.time(testthat::test_file("tests/testthat/test-performance-gain.R", filter = "^smoke:"))[["elapsed"]]; if (elapsed >= 30) stop(sprintf("smoke verify exceeded 30s: %.2f", elapsed))'` |
 | **Full suite command** | `Rscript -e 'testthat::test_local(".", filter = "performance|render-guards|validation-environment|yaml-integration|scaffolding")'` |
-| **Estimated runtime** | ~60 seconds (Quarto absent) / ~180 seconds (Quarto present) |
+| **Estimated runtime** | ~25 seconds (task smoke) / ~60 seconds (Quarto absent full suite) / ~180 seconds (Quarto present full suite) |
 
 ---
 
 ## Sampling Rate
 
-- **After every task commit:** `Rscript -e 'testthat::test_file("tests/testthat/test-validation-environment.R"); testthat::test_file("tests/testthat/test-render-guards.R")'`
+- **After every task commit (Nyquist fast gate):** `Rscript -e 'elapsed <- system.time({ testthat::test_file("tests/testthat/test-performance-micro.R", filter = "^smoke:"); testthat::test_file("tests/testthat/test-performance-baseline-contract.R", filter = "^smoke:"); testthat::test_file("tests/testthat/test-performance-gain.R", filter = "^smoke:") })[["elapsed"]]; if (elapsed >= 30) stop(sprintf("task smoke gate exceeded 30s: %.2f", elapsed))'`
 - **After every plan wave:** `Rscript -e 'testthat::test_local(".", filter = "validation-environment|render-guards|yaml-integration|scaffolding|performance")'`
 - **Before `$gsd-verify-work`:** `Rscript -e 'testthat::test_local(".", filter = "performance|render-guards|validation-environment|yaml-integration|scaffolding")'`
-- **Max feedback latency:** 180 seconds
+- **Max feedback latency:** 30 seconds per-task smoke gate; 180 seconds for wave/phase full suites
 
 ---
 
@@ -38,10 +38,10 @@ created: 2026-04-01
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 08-01-01 | 01 | 1 | PERF-01 | benchmark (micro) | `Rscript -e 'testthat::test_file("tests/testthat/test-performance-micro.R")'` | ❌ W0 | ⬜ pending |
-| 08-01-02 | 01 | 1 | PERF-01 | semantic regression | `Rscript -e 'testthat::test_file("tests/testthat/test-validation-environment.R"); testthat::test_file("tests/testthat/test-render-guards.R")'` | ✅ | ⬜ pending |
-| 08-02-01 | 02 | 2 | PERF-01 | benchmark regression | `Rscript -e 'testthat::test_file("tests/testthat/test-performance-regression.R")'` | ❌ W0 | ⬜ pending |
-| 08-02-02 | 02 | 2 | PERF-01 | guarded integration | `Rscript -e 'testthat::test_file("tests/testthat/test-yaml-integration.R")'` | ✅ (guarded) | ⬜ pending |
+| 08-01-01 | 01 | 1 | PERF-01 | micro smoke gate | `Rscript -e 'elapsed <- system.time(testthat::test_file("tests/testthat/test-performance-micro.R", filter = "^smoke:"))[["elapsed"]]; if (elapsed >= 30) stop(sprintf("smoke verify exceeded 30s: %.2f", elapsed))'` | ❌ planned | ⬜ pending |
+| 08-01-02 | 01 | 1 | PERF-01 | baseline contract smoke gate | `Rscript -e 'elapsed <- system.time(testthat::test_file("tests/testthat/test-performance-baseline-contract.R", filter = "^smoke:"))[["elapsed"]]; if (elapsed >= 30) stop(sprintf("smoke verify exceeded 30s: %.2f", elapsed))'` | ❌ planned | ⬜ pending |
+| 08-02-01 | 02 | 2 | PERF-01 | gain smoke gate (validation/render) | `Rscript -e 'elapsed <- system.time(testthat::test_file("tests/testthat/test-performance-gain.R", filter = "^smoke: (validation|render)"))[["elapsed"]]; if (elapsed >= 30) stop(sprintf("smoke verify exceeded 30s: %.2f", elapsed))'` | ❌ planned | ⬜ pending |
+| 08-02-02 | 02 | 2 | PERF-01 | gain smoke gate (scaffold) | `Rscript -e 'elapsed <- system.time(testthat::test_file("tests/testthat/test-performance-gain.R", filter = "^smoke: scaffold"))[["elapsed"]]; if (elapsed >= 30) stop(sprintf("smoke verify exceeded 30s: %.2f", elapsed))'` | ❌ planned | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -70,7 +70,7 @@ created: 2026-04-01
 - [ ] Sampling continuity: no 3 consecutive tasks without automated verify
 - [ ] Wave 0 covers all MISSING references
 - [ ] No watch-mode flags
-- [ ] Feedback latency < 180s
+- [ ] Feedback latency < 30s for per-task smoke gates
 - [ ] `nyquist_compliant: true` set in frontmatter
 
 **Approval:** pending
