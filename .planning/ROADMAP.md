@@ -15,7 +15,7 @@ typstR is now operating in milestone mode: v1.0 is shipped and archived, and v1.
 - [x] **Phase 2: Metadata Helpers and YAML Interface** - Express publication metadata in R/YAML and carry it into output.
 - [x] **Phase 3: Typst Templates, Branding, and Additional Formats** - Deliver modular templates and format variants with branding hooks.
 - [x] **Phase 4: Tests, Documentation, and CRAN Hardening** - Finalize quality, docs, and release readiness.
-- [ ] **Phase 5: Structured Diagnostics Foundation** - Standardize user-facing diagnostics schema for validation failures.
+- [x] **Phase 5: Structured Diagnostics Foundation** - Standardize user-facing diagnostics schema for validation failures.
 - [ ] **Phase 6: Pre-render Environment Validation** - Validate Quarto/Typst/runtime prerequisites before render starts.
 - [ ] **Phase 7: First-run Onboarding Reliability** - Ensure scaffolded starters validate and render successfully without manual fixes.
 - [ ] **Phase 8: Measured Performance Optimization** - Improve selected hotspots with benchmarked gains and unchanged semantics.
@@ -158,7 +158,7 @@ Plans:
 | 2. Metadata Helpers and YAML Interface | v1.0 | 4/4 | Complete | 2026-03-23 |
 | 3. Typst Templates, Branding, and Additional Formats | v1.0 | 5/5 | Complete | 2026-03-23 |
 | 4. Tests, Documentation, and CRAN Hardening | v1.0 | 6/6 | Complete | 2026-03-23 |
-| 5. Structured Diagnostics Foundation | v1.1 | 1/2 | In Progress | - |
+| 5. Structured Diagnostics Foundation | v1.1 | 2/2 | Complete | 2026-04-01 |
 | 6. Pre-render Environment Validation | v1.1 | 0/2 | Not started | - |
 | 7. First-run Onboarding Reliability | v1.1 | 0/TBD | Not started | - |
 | 8. Measured Performance Optimization | v1.1 | 0/TBD | Not started | - |
