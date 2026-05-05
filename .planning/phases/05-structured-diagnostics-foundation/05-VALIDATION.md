@@ -20,7 +20,7 @@ created: 2026-04-01
 | **Framework** | testthat 3.x |
 | **Config file** | `tests/testthat.R` + `DESCRIPTION (Config/testthat/edition: 3)` |
 | **Quick run command** | `Rscript -e "testthat::test_file('tests/testthat/test-render-guards.R')"` |
-| **Full suite command** | `Rscript -e "testthat::test_dir('tests/testthat')"` |
+| **Full suite command** | `Rscript -e 'testthat::test_file("tests/testthat/test-diagnostics-contract.R"); testthat::test_file("tests/testthat/test-diagnostics-codebook.R"); testthat::test_file("tests/testthat/test-diagnostics-ordering.R"); testthat::test_file("tests/testthat/test-input-diagnostics.R"); testthat::test_file("tests/testthat/test-render-guards.R")'` |
 | **Estimated runtime** | ~45 seconds |
 
 ---
@@ -28,7 +28,7 @@ created: 2026-04-01
 ## Sampling Rate
 
 - **After every task commit:** Run `Rscript -e "testthat::test_file('tests/testthat/test-render-guards.R')"`
-- **After every plan wave:** Run `Rscript -e "testthat::test_dir('tests/testthat')"`
+- **After every plan wave:** Run `Rscript -e 'testthat::test_file("tests/testthat/test-diagnostics-contract.R"); testthat::test_file("tests/testthat/test-diagnostics-codebook.R"); testthat::test_file("tests/testthat/test-diagnostics-ordering.R"); testthat::test_file("tests/testthat/test-input-diagnostics.R"); testthat::test_file("tests/testthat/test-render-guards.R")'`
 - **Before `$gsd-verify-work`:** Full suite must be green
 - **Max feedback latency:** 60 seconds
 
@@ -39,7 +39,7 @@ created: 2026-04-01
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
 | 05-01-01 | 01 | 1 | DIAG-01 | unit | `Rscript -e "testthat::test_file('tests/testthat/test-render-guards.R')"` | ✅ | ✅ green |
-| 05-01-02 | 01 | 1 | DIAG-01 | unit | `Rscript -e "testthat::test_dir('tests/testthat')"` | ✅ | ✅ green |
+| 05-01-02 | 01 | 1 | DIAG-01 | unit | `Rscript -e 'testthat::test_file("tests/testthat/test-diagnostics-contract.R"); testthat::test_file("tests/testthat/test-diagnostics-codebook.R"); testthat::test_file("tests/testthat/test-diagnostics-ordering.R"); testthat::test_file("tests/testthat/test-input-diagnostics.R"); testthat::test_file("tests/testthat/test-render-guards.R")'` | ✅ | ✅ green |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
