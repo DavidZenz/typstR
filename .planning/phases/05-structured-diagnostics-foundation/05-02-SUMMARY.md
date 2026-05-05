@@ -97,6 +97,11 @@ None - no external service configuration required.
 - Guard and input tests now anchor on classed payload contracts, reducing brittleness of message-only assertions.
 - No-Quarto-safe behavior remains intact (render integration tests continue to skip cleanly when Quarto CLI is unavailable).
 
+## Requirement Traceability
+- Requirement owned: DIAG-01
+- Verification status: passed
+- Audit note: implementation and verification evidence are complete in this phase.
+
 ---
 *Phase: 05-structured-diagnostics-foundation*
 *Completed: 2026-04-01*

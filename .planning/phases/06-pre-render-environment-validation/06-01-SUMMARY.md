@@ -97,6 +97,11 @@ None - no external service configuration required.
 - `validate_render_environment()` now exists as the canonical primitive for pre-render environment checks.
 - Phase 06-02 can cut over `render_pub()` preflight to this shared validator without introducing parallel logic.
 
+## Requirement Traceability
+- Requirement owned: VAL-01
+- Verification status: passed
+- Audit note: implementation and verification evidence are complete in this phase.
+
 
 ## Self-Check: PASSED
 

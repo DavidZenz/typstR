@@ -103,6 +103,11 @@ None - no external service configuration required.
 - Diagnostics contract substrate is now in place for 05-02 call-site integration (`render_pub()` and `resolve_input()`).
 - Existing no-Quarto-safe behavior remains untouched in this plan.
 
+## Requirement Traceability
+- Requirement owned: DIAG-01
+- Verification status: passed
+- Audit note: implementation and verification evidence are complete in this phase.
+
 ---
 *Phase: 05-structured-diagnostics-foundation*
 *Completed: 2026-04-01*
