@@ -19,7 +19,7 @@ typstR is now operating in milestone mode: v1.0 is shipped and archived, and v1.
 - [x] **Phase 6: Pre-render Environment Validation** - Validate Quarto/Typst/runtime prerequisites before render starts.
 - [x] **Phase 7: First-run Onboarding Reliability** - Ensure scaffolded starters validate and render successfully without manual fixes.
 - [x] **Phase 8: Measured Performance Optimization** - Improve selected hotspots with benchmarked gains and unchanged semantics.
-- [ ] **Phase 9: Audit Traceability and Validation Artifact Closure** - Close milestone-audit evidence gaps and align verification artifacts with delivered requirements.
+- [x] **Phase 9: Audit Traceability and Validation Artifact Closure** - Close milestone-audit evidence gaps and align verification artifacts with delivered requirements.
 - [ ] **Phase 10: Supported-Environment Verification Closure** - Capture Quarto-enabled and bench-enabled runtime evidence needed to close milestone verification.
 
 ## Phase Details
@@ -164,8 +164,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 09-01-PLAN.md — Normalize Phase 05-08 summary traceability so each requirement is audit-readable and runtime deferrals stay explicit.
-- [ ] 09-02-PLAN.md — Align validation, verification, requirements, roadmap, and milestone-audit artifacts to leave only Phase 10 runtime evidence open.
+- [x] 09-01-PLAN.md — Normalize Phase 05-08 summary traceability so each requirement is audit-readable and runtime deferrals stay explicit.
+- [x] 09-02-PLAN.md — Align validation, verification, requirements, roadmap, and milestone-audit artifacts to leave only Phase 10 runtime evidence open.
 
 ### Phase 10: Supported-Environment Verification Closure
 **Goal**: Supported-environment runtime evidence is captured for onboarding and performance requirements that were environment-gated during local audit.
@@ -191,5 +191,5 @@ Plans:
 | 6. Pre-render Environment Validation | v1.1 | 2/2 | Complete | 2026-04-01 |
 | 7. First-run Onboarding Reliability | v1.1 | 2/2 | Complete | 2026-04-01 |
 | 8. Measured Performance Optimization | v1.1 | 2/2 | Complete | 2026-04-01 |
-| 9. Audit Traceability and Validation Artifact Closure | v1.1 | 0/0 | Planned | — |
+| 9. Audit Traceability and Validation Artifact Closure | v1.1 | 2/2 | Complete | 2026-05-05 |
 | 10. Supported-Environment Verification Closure | v1.1 | 0/0 | Planned | — |

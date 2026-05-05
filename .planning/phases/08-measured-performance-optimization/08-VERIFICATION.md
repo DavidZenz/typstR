@@ -96,6 +96,8 @@ No blocker/warning anti-patterns found in phase-modified code (`TODO/FIXME/place
 
 ### Human Verification Required
 
+Bookkeeping evidence is complete; only supported-environment runtime execution remains for this phase.
+
 ### 1. Bench-backed gain assertions
 
 **Test:** Run `Rscript -e 'testthat::test_file("tests/testthat/test-performance-gain.R")'` on a machine with `{bench}` installed.
@@ -110,7 +112,7 @@ No blocker/warning anti-patterns found in phase-modified code (`TODO/FIXME/place
 
 ### Gaps Summary
 
-No implementation gaps were found in artifact existence, structure, or wiring. Remaining risk is environment-gated execution: benchmark gain/no-backslide contracts and Quarto-path semantic checks are present but could not be executed locally. Phase is functionally wired and regression-safe under current guards, but full PERF-01 outcome still needs supported-environment confirmation.
+No implementation gaps were found in artifact existence, structure, or wiring. Bookkeeping evidence is complete, and only supported-environment runtime execution remains: benchmark gain/no-backslide contracts and Quarto-path semantic checks are present but could not be executed locally. Phase is functionally wired and regression-safe under current guards, but full PERF-01 outcome still needs supported-environment confirmation.
 
 ---
 

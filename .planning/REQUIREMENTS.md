@@ -63,19 +63,19 @@ Explicitly excluded from v1.1 to prevent scope creep.
 
 Mapped during roadmap creation.
 
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| DIAG-01 | Phase 9 | Pending |
-| VAL-01 | Phase 9 | Pending |
-| ONB-01 | Phase 10 | Pending |
-| PERF-01 | Phase 10 | Pending |
+| Requirement | Delivery phase | Closure phase | Status |
+|-------------|----------------|---------------|--------|
+| DIAG-01 | Phase 05 | Phase 09 | Implemented + audit-evidenced |
+| VAL-01 | Phase 06 | Phase 09 | Implemented + audit-evidenced |
+| ONB-01 | Phase 07 | Phase 10 | Runtime evidence pending |
+| PERF-01 | Phase 08 | Phase 10 | Runtime evidence pending |
 
 **Coverage:**
 - v1.1 requirements: 4 total
 - Mapped to phases: 4
-- Pending closure phases: 4
+- Pending closure phases: 2
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-31*
-*Last updated: 2026-05-05 after milestone gap planning*
+*Last updated: 2026-05-05 after Phase 09 audit bookkeeping closure*

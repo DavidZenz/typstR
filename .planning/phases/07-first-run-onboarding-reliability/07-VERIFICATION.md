@@ -88,6 +88,8 @@ human_verification:
 
 ### Human Verification Required
 
+Bookkeeping evidence is complete; only supported-environment runtime execution remains for this phase.
+
 ### 1. Quarto-enabled validation matrix execution
 
 **Test:** Run `Rscript -e 'testthat::test_file("tests/testthat/test-yaml-integration.R")'` on a machine with Quarto CLI available.
@@ -102,7 +104,7 @@ human_verification:
 
 ### Gaps Summary
 
-No code-level gaps or broken wiring were found in Phase 07 artifacts. The remaining verification boundary is environment availability: supported-setup (Quarto-enabled) execution is required to conclusively mark ONB-01 as fully satisfied in runtime terms.
+No code-level gaps or broken wiring were found in Phase 07 artifacts. Bookkeeping evidence is complete, and only supported-environment runtime execution remains: supported-setup (Quarto-enabled) execution is still required to conclusively mark ONB-01 as fully satisfied in runtime terms.
 
 ---
 
