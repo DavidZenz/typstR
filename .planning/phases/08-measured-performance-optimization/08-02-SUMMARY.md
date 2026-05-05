@@ -113,6 +113,11 @@ None - no external service configuration required.
 - PERF-01 optimization/gain assertions are now wired end-to-end against committed v1/current baseline artifacts and scenario-map policy fields.
 - Bench and Quarto availability in CI/supported environments will convert guarded skips into executable runtime gain/integration checks.
 
+## Requirement Traceability
+- Requirement owned: PERF-01
+- Verification status: human_needed
+- Remaining evidence: {bench}-enabled gain/regression execution and Quarto-enabled semantic checks are deferred to Phase 10.
+
 ---
 *Phase: 08-measured-performance-optimization*
 *Completed: 2026-04-01*

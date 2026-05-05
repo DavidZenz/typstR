@@ -93,6 +93,11 @@ None - no external service configuration required.
 - Plan 07-02 can rely on stricter scaffold contract coverage as a stable baseline for helper-driven validation/render integration.
 - No blockers identified for advancing Phase 07 onboarding reliability work.
 
+## Requirement Traceability
+- Requirement owned: ONB-01
+- Verification status: human_needed
+- Remaining evidence: Quarto-enabled scaffold -> validate -> render execution is deferred to Phase 10.
+
 ---
 *Phase: 07-first-run-onboarding-reliability*
 *Completed: 2026-04-01*

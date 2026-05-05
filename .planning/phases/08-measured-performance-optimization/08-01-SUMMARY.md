@@ -128,6 +128,11 @@ None - no external service configuration required.
 - Phase 08-02 can now optimize hotspot implementations against committed current/v1 baselines and map-defined gain targets.
 - No-backslide policy wiring is in place; once `bench` is installed in CI/dev, regression tests will execute instead of skipping.
 
+## Requirement Traceability
+- Requirement owned: PERF-01
+- Verification status: human_needed
+- Remaining evidence: {bench}-enabled gain/regression execution and Quarto-enabled semantic checks are deferred to Phase 10.
+
 ---
 *Phase: 08-measured-performance-optimization*
 *Completed: 2026-04-01*

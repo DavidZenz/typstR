@@ -85,6 +85,11 @@ None - no external service configuration required.
 - Phase 08 can rely on a stronger onboarding baseline where all supported scaffold formats are validated/rendered through the same helper-driven integration contract.
 - Manual Quarto-enabled verification remains straightforward: rerun `test-yaml-integration.R` and confirm matrix tests execute (pass) instead of skip.
 
+## Requirement Traceability
+- Requirement owned: ONB-01
+- Verification status: human_needed
+- Remaining evidence: Quarto-enabled scaffold -> validate -> render execution is deferred to Phase 10.
+
 ---
 *Phase: 07-first-run-onboarding-reliability*
 *Completed: 2026-04-01*
