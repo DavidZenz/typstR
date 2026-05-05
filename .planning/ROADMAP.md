@@ -2,12 +2,12 @@
 
 ## Overview
 
-typstR is now operating in milestone mode: v1.0 is shipped and archived, and v1.1 focuses on reliability and onboarding polish. v1.1 phases are sequenced to deliver a diagnostics-first validation flow, then onboarding hardening, then measured performance improvements.
+typstR is now operating in milestone mode: v1.0 is shipped and archived, and v1.1 focuses on reliability and onboarding polish. v1.1 phases now include a short gap-closure tail to finish audit traceability and supported-environment verification before milestone archive.
 
 ## Milestones
 
 - SHIPPED **v1.0 Foundation and CRAN Release** — Phases 1-4 (shipped 2026-03-23)
-- ACTIVE **v1.1 Reliability and Onboarding Polish** — Phases 5-8 (in progress)
+- ACTIVE **v1.1 Reliability and Onboarding Polish** — Phases 5-10 (in progress)
 
 ## Phases
 
@@ -19,6 +19,8 @@ typstR is now operating in milestone mode: v1.0 is shipped and archived, and v1.
 - [x] **Phase 6: Pre-render Environment Validation** - Validate Quarto/Typst/runtime prerequisites before render starts.
 - [x] **Phase 7: First-run Onboarding Reliability** - Ensure scaffolded starters validate and render successfully without manual fixes.
 - [x] **Phase 8: Measured Performance Optimization** - Improve selected hotspots with benchmarked gains and unchanged semantics.
+- [ ] **Phase 9: Audit Traceability and Validation Artifact Closure** - Close milestone-audit evidence gaps and align verification artifacts with delivered requirements.
+- [ ] **Phase 10: Supported-Environment Verification Closure** - Capture Quarto-enabled and bench-enabled runtime evidence needed to close milestone verification.
 
 ## Phase Details
 
@@ -91,7 +93,7 @@ Plans:
 
 ### v1.1 Reliability and Onboarding Polish (Active)
 
-**Milestone Goal:** Users get truthful pre-render diagnostics, reliable first-run scaffolds, and faster hotspots without output changes.
+**Milestone Goal:** Users get truthful pre-render diagnostics, reliable first-run scaffolds, and faster hotspots without output changes, with audit-complete evidence for milestone archive.
 
 ### Phase 5: Structured Diagnostics Foundation
 **Goal**: Users receive structured diagnostics with stable fields for validation issues.
@@ -149,9 +151,31 @@ Plans:
 Plans:
 - [x] 08-01: TBD (created during /gsd:plan-phase 8)
 - [x] 08-02-PLAN.md — Implement measured hotspot optimizations with mapped gain assertions and semantic parity checks.
+
+### Phase 9: Audit Traceability and Validation Artifact Closure
+**Goal**: Milestone audit evidence is complete and traceable across requirements, summaries, verifications, and validation artifacts.
+**Depends on**: Phase 8
+**Requirements**: DIAG-01, VAL-01, ONB-01, PERF-01
+**Gap Closure**: Closes milestone-audit traceability and validation-artifact gaps from `v1.1-MILESTONE-AUDIT.md`.
+**Success Criteria** (what must be TRUE):
+  1. Phase 05-08 summaries expose requirement-completion metadata required by milestone audit.
+  2. Verification and validation artifacts no longer fail the milestone audit for missing bookkeeping evidence.
+  3. Re-auditing can treat previously delivered requirements as fully evidenced once runtime checks are satisfied.
+**Plans**: 0 plans
+
+### Phase 10: Supported-Environment Verification Closure
+**Goal**: Supported-environment runtime evidence is captured for onboarding and performance requirements that were environment-gated during local audit.
+**Depends on**: Phase 9
+**Requirements**: ONB-01, PERF-01
+**Gap Closure**: Closes supported-environment flow gaps from `v1.1-MILESTONE-AUDIT.md`.
+**Success Criteria** (what must be TRUE):
+  1. Quarto-enabled onboarding validation/render matrix executes and passes for all supported formats.
+  2. Bench-backed gain and no-backslide checks execute and pass on a supported setup.
+  3. Human verification evidence is recorded so milestone audit can pass without environment-gated caveats.
+**Plans**: 0 plans
 ## Progress
 
-**Execution Order:** 5 → 6 → 7 → 8
+**Execution Order:** 5 → 6 → 7 → 8 → 9 → 10
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -163,3 +187,5 @@ Plans:
 | 6. Pre-render Environment Validation | v1.1 | 2/2 | Complete | 2026-04-01 |
 | 7. First-run Onboarding Reliability | v1.1 | 2/2 | Complete | 2026-04-01 |
 | 8. Measured Performance Optimization | v1.1 | 2/2 | Complete | 2026-04-01 |
+| 9. Audit Traceability and Validation Artifact Closure | v1.1 | 0/0 | Planned | — |
+| 10. Supported-Environment Verification Closure | v1.1 | 0/0 | Planned | — |

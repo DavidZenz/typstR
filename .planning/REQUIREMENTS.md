@@ -17,11 +17,11 @@ Requirements for milestone v1.1 **Reliability and Onboarding Polish**.
 
 ### Onboarding
 
-- [x] **ONB-01**: User can scaffold each supported format and get a validation+render-successful starter project on a supported setup without manual template fixes.
+- [ ] **ONB-01**: User can scaffold each supported format and get a validation+render-successful starter project on a supported setup without manual template fixes.
 
 ### Performance
 
-- [x] **PERF-01**: User sees measurable improvement in selected helper/render hotspots with no output semantics changes.
+- [ ] **PERF-01**: User sees measurable improvement in selected helper/render hotspots with no output semantics changes.
 
 ## Future Requirements
 
@@ -65,16 +65,17 @@ Mapped during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DIAG-01 | Phase 5 | Complete |
-| VAL-01 | Phase 6 | Complete |
-| ONB-01 | Phase 7 | Complete |
-| PERF-01 | Phase 8 | Complete |
+| DIAG-01 | Phase 9 | Pending |
+| VAL-01 | Phase 9 | Pending |
+| ONB-01 | Phase 10 | Pending |
+| PERF-01 | Phase 10 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 4 total
 - Mapped to phases: 4
+- Pending closure phases: 4
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-31*
-*Last updated: 2026-03-31 after v1.1 roadmap mapping*
+*Last updated: 2026-05-05 after milestone gap planning*
