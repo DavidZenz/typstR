@@ -161,7 +161,11 @@ Plans:
   1. Phase 05-08 summaries expose requirement-completion metadata required by milestone audit.
   2. Verification and validation artifacts no longer fail the milestone audit for missing bookkeeping evidence.
   3. Re-auditing can treat previously delivered requirements as fully evidenced once runtime checks are satisfied.
-**Plans**: 0 plans
+**Plans**: 2 plans
+
+Plans:
+- [ ] 09-01-PLAN.md — Normalize Phase 05-08 summary traceability so each requirement is audit-readable and runtime deferrals stay explicit.
+- [ ] 09-02-PLAN.md — Align validation, verification, requirements, roadmap, and milestone-audit artifacts to leave only Phase 10 runtime evidence open.
 
 ### Phase 10: Supported-Environment Verification Closure
 **Goal**: Supported-environment runtime evidence is captured for onboarding and performance requirements that were environment-gated during local audit.
