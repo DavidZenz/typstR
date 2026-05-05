@@ -1,8 +1,8 @@
 ---
 phase: 05
 slug: structured-diagnostics-foundation
-status: draft
-nyquist_compliant: false
+status: passed
+nyquist_compliant: true
 wave_0_complete: true
 created: 2026-04-01
 ---
@@ -38,8 +38,8 @@ created: 2026-04-01
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 05-01-01 | 01 | 1 | DIAG-01 | unit | `Rscript -e "testthat::test_file('tests/testthat/test-render-guards.R')"` | ✅ | ⬜ pending |
-| 05-01-02 | 01 | 1 | DIAG-01 | unit | `Rscript -e "testthat::test_dir('tests/testthat')"` | ✅ | ⬜ pending |
+| 05-01-01 | 01 | 1 | DIAG-01 | unit | `Rscript -e "testthat::test_file('tests/testthat/test-render-guards.R')"` | ✅ | ✅ green |
+| 05-01-02 | 01 | 1 | DIAG-01 | unit | `Rscript -e "testthat::test_dir('tests/testthat')"` | ✅ | ✅ green |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -59,11 +59,11 @@ All phase behaviors have automated verification.
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 60s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 60s
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+**Approval:** approved. Phase 05 verification already passed, and the validation bookkeeping now matches the existing automated evidence.

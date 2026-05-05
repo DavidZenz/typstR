@@ -1,9 +1,9 @@
 ---
 phase: 06
 slug: pre-render-environment-validation
-status: draft
-nyquist_compliant: false
-wave_0_complete: false
+status: passed
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-04-01
 ---
 
@@ -38,10 +38,10 @@ created: 2026-04-01
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 06-01-01 | 01 | 1 | VAL-01 | unit | `Rscript -e 'testthat::test_file("tests/testthat/test-validation-environment.R")'` | ❌ W0 | ⬜ pending |
-| 06-01-02 | 01 | 1 | VAL-01 | unit | `Rscript -e 'testthat::test_file("tests/testthat/test-diagnostics-codebook.R")'` | ✅ | ⬜ pending |
-| 06-02-01 | 02 | 2 | VAL-01 | unit/integration | `Rscript -e 'testthat::test_file("tests/testthat/test-render-guards.R")'` | ✅ | ⬜ pending |
-| 06-02-02 | 02 | 2 | VAL-01 | integration (guarded) | `Rscript -e 'testthat::test_file("tests/testthat/test-yaml-integration.R")'` | ✅ | ⬜ pending |
+| 06-01-01 | 01 | 1 | VAL-01 | unit | `Rscript -e 'testthat::test_file("tests/testthat/test-validation-environment.R")'` | ✅ | ✅ green |
+| 06-01-02 | 01 | 1 | VAL-01 | unit | `Rscript -e 'testthat::test_file("tests/testthat/test-diagnostics-codebook.R")'` | ✅ | ✅ green |
+| 06-02-01 | 02 | 2 | VAL-01 | unit/integration | `Rscript -e 'testthat::test_file("tests/testthat/test-render-guards.R")'` | ✅ | ✅ green |
+| 06-02-02 | 02 | 2 | VAL-01 | integration (guarded) | `Rscript -e 'testthat::test_file("tests/testthat/test-yaml-integration.R")'` | ✅ | ✅ green |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -49,8 +49,7 @@ created: 2026-04-01
 
 ## Wave 0 Requirements
 
-- [ ] `tests/testthat/test-validation-environment.R` — contract tests for standalone environment validation (`VAL-01`)
-- [ ] `tests/testthat/helper-validation.R` — shared sourcing/mocks for environment validation tests
+Existing infrastructure covers all phase requirements.
 
 ---
 
@@ -62,11 +61,11 @@ All phase behaviors have automated verification (Quarto-present checks remain gu
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 60s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 60s
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+**Approval:** approved. Phase 06 verification already passed, and the validation bookkeeping now matches the existing automated evidence.
