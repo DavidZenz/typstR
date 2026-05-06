@@ -20,7 +20,7 @@ typstR is now operating in milestone mode: v1.0 is shipped and archived, and v1.
 - [x] **Phase 7: First-run Onboarding Reliability** - Ensure scaffolded starters validate and render successfully without manual fixes.
 - [x] **Phase 8: Measured Performance Optimization** - Improve selected hotspots with benchmarked gains and unchanged semantics.
 - [x] **Phase 9: Audit Traceability and Validation Artifact Closure** - Close milestone-audit evidence gaps and align verification artifacts with delivered requirements.
-- [ ] **Phase 10: Supported-Environment Verification Closure** - Capture Quarto-enabled and bench-enabled runtime evidence needed to close milestone verification.
+- [x] **Phase 10: Supported-Environment Verification Closure** - Capture Quarto-enabled and bench-enabled runtime evidence needed to close milestone verification.
 
 ## Phase Details
 
@@ -179,8 +179,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] `10-01-PLAN.md` — Execute Quarto-enabled onboarding scaffold -> validate -> render evidence and close the remaining `ONB-01` runtime gap.
-- [ ] `10-02-PLAN.md` — Execute bench-enabled performance evidence, refresh the milestone audit, and close the remaining `PERF-01` runtime gap.
+- [x] `10-01-PLAN.md` — Execute Quarto-enabled onboarding scaffold -> validate -> render evidence and close the remaining `ONB-01` runtime gap.
+- [x] `10-02-PLAN.md` — Execute bench-enabled performance evidence, refresh the milestone audit, and close the remaining `PERF-01` runtime gap.
 ## Progress
 
 **Execution Order:** 5 → 6 → 7 → 8 → 9 → 10
@@ -196,4 +196,4 @@ Plans:
 | 7. First-run Onboarding Reliability | v1.1 | 2/2 | Complete | 2026-04-01 |
 | 8. Measured Performance Optimization | v1.1 | 2/2 | Complete | 2026-04-01 |
 | 9. Audit Traceability and Validation Artifact Closure | v1.1 | 2/2 | Complete | 2026-05-05 |
-| 10. Supported-Environment Verification Closure | v1.1 | 0/2 | Planned | — |
+| 10. Supported-Environment Verification Closure | v1.1 | 2/2 | Complete | 2026-05-06 |

@@ -113,14 +113,14 @@ now <- format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
 current_payload <- list(
   source_ref = if (nzchar(source_ref)) source_ref else "unknown",
   generated_at = now,
-  measurement_method = "proc.time median over 15 iterations",
+  measurement_method = "bench-backed p50 over 15 iterations when available; proc.time fallback",
   scenarios = current_scenarios
 )
 
 v1_payload <- list(
   source_tag = "v1.0",
   generated_at = now,
-  measurement_method = "proc.time median over 15 iterations",
+  measurement_method = "bench-backed p50 over 15 iterations when available; proc.time fallback",
   scenarios = v1_scenarios
 )
 

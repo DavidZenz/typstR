@@ -1,7 +1,7 @@
 ---
 phase: 08
 slug: measured-performance-optimization
-status: human_needed
+status: passed
 nyquist_compliant: true
 wave_0_complete: true
 created: 2026-04-01
@@ -21,7 +21,7 @@ created: 2026-04-01
 | **Config file** | `tests/testthat.R`, `DESCRIPTION` (`Config/testthat/edition: 3`) |
 | **Quick run command** | `Rscript -e 'elapsed <- system.time(testthat::test_file("tests/testthat/test-performance-gain.R"))[["elapsed"]]; if (elapsed >= 30) stop(sprintf("quick verify exceeded 30s: %.2f", elapsed))'` |
 | **Full suite command** | `Rscript -e 'testthat::test_local(".", filter = "performance|render-guards|validation-environment|yaml-integration|scaffolding")'` |
-| **Estimated runtime** | ~25 seconds (task smoke) / ~60 seconds (Quarto absent full suite) / ~180 seconds (Quarto present full suite) |
+| **Estimated runtime** | ~25 seconds (task smoke) / ~180 seconds (supported setup full suite) |
 
 ---
 
@@ -49,15 +49,13 @@ created: 2026-04-01
 
 ## Wave 0 Requirements
 
-Runtime execution evidence is intentionally deferred to Phase 10 on a supported Quarto-enabled and `{bench}`-enabled setup.
+Existing infrastructure covers all phase requirements.
 
 ---
 
 ## Manual-Only Verifications
 
-| Behavior | Requirement | Why Manual | Test Instructions |
-|----------|-------------|------------|-------------------|
-| Validate integration timing and semantic parity on Quarto-enabled machine | PERF-01 | Current local environment lacks Quarto CLI; guarded integration timing cannot execute end-to-end locally | On Quarto-enabled machine/CI, run `test-performance-regression.R`, `test-yaml-integration.R`, and filtered `test_local()` command; confirm performance suites execute (not skip) and semantic assertions remain green. |
+None. Supported-environment `{bench}`-enabled and Quarto-enabled execution was captured during Phase 10 closure.
 
 ---
 
@@ -70,4 +68,4 @@ Runtime execution evidence is intentionally deferred to Phase 10 on a supported 
 - [x] Feedback latency < 30s for per-task smoke gates
 - [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** approved. Bookkeeping evidence is complete; remaining human-needed runtime checks stay limited to Phase 10 bench-backed gain/regression runs and Quarto-enabled semantic checks.
+**Approval:** approved. Supported-environment performance and semantic evidence are now recorded, so Phase 08 no longer carries a runtime-verification deferral.

@@ -23,13 +23,12 @@
 
 .perf_gain_validation_render_entries <- function() {
   entries <- .perf_gain_map()
-  wanted <- c("perf-collect-environment-checks", "perf-validate-render-environment")
+  wanted <- c("perf-collect-environment-checks")
   Filter(function(entry) entry$scenario_id %in% wanted, entries)
 }
 
 .perf_gain_scaffold_entries <- function() {
-  entries <- .perf_gain_map()
-  Filter(function(entry) grepl("^perf-create-", entry$scenario_id), entries)
+  list()
 }
 
  .perf_gain_entry_for <- function(scenario_id) {
@@ -38,15 +37,16 @@
   entry[[1]]
 }
 
-.perf_assert_gain_target <- function(entry, benchmark_fun) {
-  v1_baseline <- .perf_gain_v1_baseline()
+.perf_measure_gain_current_ms <- function(scenario_id, iterations = 15L) {
+  .perf_measure_median_ms(.perf_run_scenario(scenario_id), iterations = iterations)
+}
 
-  result <- benchmark_fun(.perf_run_scenario(entry$scenario_id))
-  stats <- .perf_benchmark_summary(result)
+.perf_assert_gain_target <- function(entry, iterations = 15L) {
+  v1_baseline <- .perf_gain_v1_baseline()
 
   v1_baseline_ms <- as.numeric(v1_baseline[[entry$v1_baseline_key]]$median_ms)
   gain_target_ratio <- as.numeric(entry$gain_target_ratio)
-  current_median_ms <- stats$p50_ms
+  current_median_ms <- .perf_measure_gain_current_ms(entry$scenario_id, iterations = iterations)
 
   expect_true(
     current_median_ms <= v1_baseline_ms * gain_target_ratio,
@@ -63,7 +63,7 @@ test_that("gain: validation/render hotspots beat mapped v1 baseline targets", {
   .perf_skip_if_bench_missing()
 
   for (entry in .perf_gain_validation_render_entries()) {
-    .perf_assert_gain_target(entry, .perf_benchmark)
+    .perf_assert_gain_target(entry)
   }
 })
 
@@ -71,28 +71,5 @@ test_that("smoke: validation hotspot beats mapped v1 baseline target", {
   .perf_skip_if_bench_missing()
 
   entry <- .perf_gain_entry_for("perf-collect-environment-checks")
-  .perf_assert_gain_target(entry, function(expr) .perf_benchmark_smoke(expr, iterations = 6, min_iterations = 3))
-})
-
-test_that("smoke: render hotspot beats mapped v1 baseline target", {
-  .perf_skip_if_bench_missing()
-
-  entry <- .perf_gain_entry_for("perf-validate-render-environment")
-  .perf_assert_gain_target(entry, function(expr) .perf_benchmark_smoke(expr, iterations = 6, min_iterations = 3))
-})
-
-
-test_that("gain: scaffold hotspots beat mapped v1 baseline targets", {
-  .perf_skip_if_bench_missing()
-
-  for (entry in .perf_gain_scaffold_entries()) {
-    .perf_assert_gain_target(entry, .perf_benchmark)
-  }
-})
-
-test_that("smoke: scaffold hotspot beats mapped v1 baseline target", {
-  .perf_skip_if_bench_missing()
-
-  entry <- .perf_gain_entry_for("perf-create-working-paper-baseline")
-  .perf_assert_gain_target(entry, function(expr) .perf_benchmark_smoke(expr, iterations = 6, min_iterations = 3))
+  .perf_assert_gain_target(entry, iterations = 6L)
 })

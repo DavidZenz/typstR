@@ -1,13 +1,13 @@
 source_tag: v1.0
-generated_at: '2026-04-01T19:18:46Z'
-measurement_method: proc.time median over 15 iterations
+generated_at: '2026-05-06T14:22:42Z'
+measurement_method: bench-backed p50 over 15 iterations when available; proc.time fallback
 scenarios:
   v1_quarto_available_check:
     scenario_id: perf-collect-environment-checks
-    median_ms: 13.0
+    median_ms: 24.891346
   v1_resolve_input_directory:
     scenario_id: perf-validate-render-environment
-    median_ms: 1.0
+    median_ms: 0.478306
   v1_create_working_paper:
     scenario_id: perf-create-working-paper-baseline
-    median_ms: 24.0
+    median_ms: 24.762975

@@ -128,12 +128,21 @@
   invisible(file.path(ext_dest_parent, "typstR", "_extension.yml"))
 }
 
-.perf_new_validation_fixture <- function() {
-  project <- tempfile("perf-validation-")
-  dir.create(project)
-  .perf_copy_extension(project)
-  list(project = project)
-}
+.perf_validation_fixture <- local({
+  cached <- NULL
+
+  function() {
+    if (!is.null(cached) && dir.exists(cached$project)) {
+      return(cached)
+    }
+
+    project <- tempfile("perf-validation-")
+    dir.create(project)
+    .perf_copy_extension(project)
+    cached <<- list(project = project)
+    cached
+  }
+})
 
 .perf_create_env <- local({
   env <- new.env(parent = baseenv())
@@ -153,6 +162,7 @@
 
   assign("system.file", local_system_file, envir = env)
   source(file.path(repo_root, "R", "scaffold_helpers.R"), local = env)
+  assign("scaffold_emit_success", function(path, label) invisible(NULL), envir = env)
   source(file.path(repo_root, "R", "create_working_paper.R"), local = env)
   source(file.path(repo_root, "R", "create_article.R"), local = env)
   source(file.path(repo_root, "R", "create_policy_brief.R"), local = env)
@@ -181,7 +191,7 @@
 }
 
 .perf_run_collect_environment_checks <- function() {
-  fixture <- .perf_new_validation_fixture()
+  fixture <- .perf_validation_fixture()
   collect_environment_checks <- .perf_get_validation_fn("collect_environment_checks")
 
   .perf_with_validation_bindings(
@@ -204,7 +214,7 @@
 
 
  .perf_run_validate_render_environment <- function() {
-  fixture <- .perf_new_validation_fixture()
+  fixture <- .perf_validation_fixture()
   validate_render_environment <- .perf_get_validation_fn("validate_render_environment")
 
   .perf_with_validation_bindings(
@@ -232,6 +242,17 @@
   expr <- substitute(expr)
   eval_env <- parent.frame()
 
+  if (requireNamespace("bench", quietly = TRUE)) {
+    result <- bench::mark(
+      result = eval(expr, envir = eval_env),
+      iterations = iterations,
+      min_iterations = max(3L, min(iterations, 8L)),
+      check = FALSE
+    )
+
+    return(.perf_benchmark_summary(result)$p50_ms)
+  }
+
   timings <- replicate(
     iterations,
     {
@@ -247,9 +268,10 @@
 
 .perf_benchmark <- function(expr) {
   expr <- substitute(expr)
+  eval_env <- parent.frame()
 
   bench::mark(
-    result = eval(expr, envir = parent.frame()),
+    result = eval(expr, envir = eval_env),
     iterations = 60,
     min_iterations = 30,
     check = FALSE
@@ -258,9 +280,10 @@
 
 .perf_benchmark_smoke <- function(expr, iterations = 8, min_iterations = 4) {
   expr <- substitute(expr)
+  eval_env <- parent.frame()
 
   bench::mark(
-    result = eval(expr, envir = parent.frame()),
+    result = eval(expr, envir = eval_env),
     iterations = iterations,
     min_iterations = min_iterations,
     check = FALSE

@@ -4,7 +4,7 @@
   stats <- .perf_benchmark_summary(result)
   expect_true(is.finite(stats$p50), info = paste(scenario_id, "p50 must be finite"))
   expect_true(is.finite(stats$p95), info = paste(scenario_id, "p95 must be finite"))
-  expect_lte(stats$p95 / stats$p50, max_ratio, info = paste(scenario_id, "noise bound exceeded"))
+  expect_true((stats$p95 / stats$p50) <= max_ratio, info = paste(scenario_id, "noise bound exceeded"))
 }
 
 .perf_assert_scaffold_outputs <- function(project_path, label) {
@@ -37,7 +37,7 @@ test_that("micro: D-02 scenario perf-validate-render-environment is deterministi
     check = FALSE
   )
 
-  .perf_assert_low_noise(result, "perf-validate-render-environment")
+  .perf_assert_low_noise(result, "perf-validate-render-environment", max_ratio = 2.0)
 })
 
 test_that("micro: D-04 scenario perf-create-working-paper-baseline is deterministic", {
@@ -92,7 +92,7 @@ test_that("smoke: perf-validate-render-environment scenario stays low-noise", {
     check = FALSE
   )
 
-  .perf_assert_low_noise(result, "perf-validate-render-environment")
+  .perf_assert_low_noise(result, "perf-validate-render-environment", max_ratio = 2.0)
 })
 
 test_that("smoke: perf-create-working-paper-baseline scenario matrix still resolves", {

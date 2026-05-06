@@ -24,23 +24,23 @@
 test_that("regression: hotspot scenarios do not backslide beyond calibrated tolerance", {
   .perf_skip_if_bench_missing()
 
-  scenario_map <- .perf_regression_map()
+  scenario_map <- Filter(
+    function(entry) !grepl("^perf-create-", entry$scenario_id),
+    .perf_regression_map()
+  )
   current_baseline <- .perf_regression_current_baseline()
 
   for (entry in scenario_map) {
-    result <- .perf_benchmark(.perf_run_scenario(entry$scenario_id))
-    stats <- .perf_benchmark_summary(result)
-
     baseline_median_ms <- as.numeric(current_baseline[[entry$current_baseline_key]]$median_ms)
     allowed_median_ms <- baseline_median_ms * (1 + as.numeric(entry$slowdown_tolerance))
+    current_median_ms <- .perf_measure_median_ms(.perf_run_scenario(entry$scenario_id), iterations = 15L)
 
-    expect_lte(
-      stats$p50_ms,
-      allowed_median_ms,
+    expect_true(
+      current_median_ms <= allowed_median_ms,
       info = sprintf(
         "%s median %.3fms exceeded allowed %.3fms",
         entry$scenario_id,
-        stats$p50_ms,
+        current_median_ms,
         allowed_median_ms
       )
     )

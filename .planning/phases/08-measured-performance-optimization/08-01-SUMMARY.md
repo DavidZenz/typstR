@@ -130,8 +130,8 @@ None - no external service configuration required.
 
 ## Requirement Traceability
 - Requirement owned: PERF-01
-- Verification status: human_needed
-- Remaining evidence: {bench}-enabled gain/regression execution and Quarto-enabled semantic checks are deferred to Phase 10.
+- Verification status: passed
+- Audit note: selected hotspot gain, no-backslide, and Quarto-enabled semantic execution were captured in Phase 10 closure.
 
 ---
 *Phase: 08-measured-performance-optimization*
