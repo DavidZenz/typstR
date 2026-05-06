@@ -1,8 +1,28 @@
+validation_repo_root <- local({
+  candidates <- c(
+    getwd(),
+    file.path(getwd(), ".."),
+    file.path(getwd(), "..", "..")
+  )
+
+  for (candidate in candidates) {
+    candidate <- normalizePath(candidate, winslash = "/", mustWork = FALSE)
+    if (file.exists(file.path(candidate, "DESCRIPTION")) &&
+        dir.exists(file.path(candidate, "R")) &&
+        dir.exists(file.path(candidate, "inst"))) {
+      return(candidate)
+    }
+  }
+
+  NA_character_
+})
+
 resolve_validation_source_file <- function(relative_path, must_exist = TRUE) {
   candidates <- c(
     relative_path,
     file.path("..", "..", relative_path),
-    file.path(getwd(), relative_path)
+    file.path(getwd(), relative_path),
+    if (!is.na(validation_repo_root)) file.path(validation_repo_root, relative_path)
   )
 
   existing <- candidates[file.exists(candidates)]

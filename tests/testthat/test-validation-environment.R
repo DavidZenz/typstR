@@ -228,11 +228,15 @@ test_that("validate_render_environment() captures real Quarto/Typst evidence whe
   skip_if_not(requireNamespace("quarto", quietly = TRUE) && quarto::quarto_available())
 
   validate_render_environment <- get_validation_fn("validate_render_environment")
+  manifest_path <- resolve_validation_source_file("inst/quarto/extensions/typstR/_extension.yml")
 
   withr::with_tempdir({
     copy_extension_into(".")
 
-    report <- validate_render_environment(".")
+    report <- with_validation_bindings(
+      list(extension_manifest_source = function() manifest_path),
+      validate_render_environment(".")
+    )
 
     expect_s3_class(report, "typstR_validation_report")
     expect_true(isTRUE(report$checks$quarto$available))
