@@ -176,7 +176,11 @@ Plans:
   1. Quarto-enabled onboarding validation/render matrix executes and passes for all supported formats.
   2. Bench-backed gain and no-backslide checks execute and pass on a supported setup.
   3. Human verification evidence is recorded so milestone audit can pass without environment-gated caveats.
-**Plans**: 0 plans
+**Plans**: 2 plans
+
+Plans:
+- [ ] `10-01-PLAN.md` — Execute Quarto-enabled onboarding scaffold -> validate -> render evidence and close the remaining `ONB-01` runtime gap.
+- [ ] `10-02-PLAN.md` — Execute bench-enabled performance evidence, refresh the milestone audit, and close the remaining `PERF-01` runtime gap.
 ## Progress
 
 **Execution Order:** 5 → 6 → 7 → 8 → 9 → 10
@@ -192,4 +196,4 @@ Plans:
 | 7. First-run Onboarding Reliability | v1.1 | 2/2 | Complete | 2026-04-01 |
 | 8. Measured Performance Optimization | v1.1 | 2/2 | Complete | 2026-04-01 |
 | 9. Audit Traceability and Validation Artifact Closure | v1.1 | 2/2 | Complete | 2026-05-05 |
-| 10. Supported-Environment Verification Closure | v1.1 | 0/0 | Planned | — |
+| 10. Supported-Environment Verification Closure | v1.1 | 0/2 | Planned | — |
