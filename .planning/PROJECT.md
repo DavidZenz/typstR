@@ -10,20 +10,14 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 
 ## Current State
 
-- **Version:** v1.1 (Planning started 2026-03-31)
-- **Status:** Phase 08 complete in v1.1 (human UAT follow-up pending on Quarto/bench-enabled setup); milestone execution is complete and ready for milestone closeout.
+- **Version:** v1.1 shipped (2026-05-06)
+- **Status:** Milestone archived. No active milestone is open; the next step is defining the next version's requirements.
 - **Previous Release:** v1.0 (Released 2026-03-23)
-- **Milestone Archive:** [.planning/milestones/v1.0-ROADMAP.md](.planning/milestones/v1.0-ROADMAP.md)
+- **Milestone Archives:** [v1.0-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.0-ROADMAP.md), [v1.1-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.1-ROADMAP.md)
 
-## Current Milestone: v1.1 Reliability and Onboarding Polish
+## Current Milestone
 
-**Goal:** Make common setup/manuscript mistakes fail fast with actionable guidance while keeping typstR release-ready and easier for first-time users.
-
-**Target features:**
-- Expand pre-render validation coverage for common manuscript and setup errors.
-- Add structured diagnostics with concrete remediation hints.
-- Improve scaffold defaults and starter content for higher first-run success.
-- Apply targeted performance improvements in helper/render paths where measurable.
+No active milestone. Start the next one with `$gsd-new-milestone` once the next set of requirements is ready.
 
 ## Requirements
 
@@ -49,11 +43,11 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 - [x] First-run onboarding reliability contract across workingpaper/article/brief scaffold paths (ONB-01) — validated in Phase 07, with Quarto-enabled human UAT persisted
 - [x] Measured performance optimization contract with baseline-mapped gain/no-backslide assertions (PERF-01) — validated in Phase 08, with supported-environment human UAT persisted
 
+- [x] Reliability/onboarding polish milestone archived with passed milestone audit and shipped supported-environment evidence — v1.1
+
 ### Active
 
-- [ ] Catch common setup/manuscript mistakes before Quarto render with actionable fixes
-- [ ] Expand `validate_manuscript()` checks for metadata, file inputs, and consistency
-- [ ] Improve scaffolding defaults/starter documents for smoother onboarding
+- None yet. Define the next milestone requirements before reopening Active scope.
 
 ### Out of Scope
 
@@ -94,6 +88,7 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 | Shared preflight validator across standalone + render paths in v1.1 | One validation path prevents drift between `validate_render_environment()` and `render_pub()` and preserves stable diagnostics semantics | ✓ Satisfied (Phase 06) |
 | Helper-driven onboarding matrix across all formats in v1.1 | Testing scaffold → validate → render through real create/render helpers reduces false confidence from template-only smoke checks | ✓ Satisfied (Phase 07) |
 | Baseline-mapped performance contract for v1.1 | Explicit v1.0/current baseline artifacts plus executable gain/no-backslide assertions make optimization claims auditable and regression-safe | ✓ Satisfied (Phase 08) |
+| Close milestone only after supported-environment evidence is captured | Runtime-gated claims for onboarding and performance should not archive on trust alone | ✓ Satisfied (Phases 09-10) |
 
 ## Evolution
 
@@ -113,4 +108,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-01 after completing Phase 08*
+*Last updated: 2026-05-07 after archiving milestone v1.1*

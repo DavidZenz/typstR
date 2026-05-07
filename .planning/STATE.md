@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Reliability and Onboarding Polish
-status: Milestone complete
-stopped_at: Completed 10-02-SUMMARY.md
-last_updated: "2026-05-06T14:22:42Z"
+status: Milestone archived
+stopped_at: Archived milestone v1.1
+last_updated: "2026-05-07T05:27:46Z"
 progress:
   total_phases: 6
   completed_phases: 6
@@ -17,15 +17,15 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-01)
+See: .planning/PROJECT.md (updated 2026-05-07)
 
 **Core value:** Users can go from `create_working_paper("my-paper")` to a polished, branded PDF in minutes — no Typst or LaTeX knowledge required.
-**Current focus:** Milestone closeout
+**Current focus:** Awaiting next milestone definition
 
 ## Current Position
 
-Phase: 10 — COMPLETE
-Plan: 2 of 2
+Phase: None active
+Plan: None active
 
 ## Performance Metrics
 
@@ -92,12 +92,12 @@ None yet.
 
 ### Blockers/Concerns
 
-- No active phase blockers remain; milestone archive is the next step.
+- No active blockers remain; milestone `v1.1` is archived and the repo is ready for next-milestone planning.
 
 ## Session Continuity
 
-Last session: 2026-05-05T20:14:40.108Z
-Stopped at: Completed 10-02-SUMMARY.md
+Last session: 2026-05-07T05:27:46Z
+Stopped at: Archived milestone v1.1
 Resume file: None
 
-**Completed Phase:** 10 (supported-environment-verification-closure) — 2 plans — 2026-05-06T14:22:42Z
+**Completed Milestone:** v1.1 (reliability-and-onboarding-polish) — Phases 05-10 — archived 2026-05-07T05:27:46Z

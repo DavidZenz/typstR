@@ -2,12 +2,12 @@
 
 ## Overview
 
-typstR is now operating in milestone mode: v1.0 is shipped and archived, and v1.1 focuses on reliability and onboarding polish. v1.1 phases now include a short gap-closure tail to finish audit traceability and supported-environment verification before milestone archive.
+typstR is operating in archived-milestone mode: v1.0 and v1.1 are both shipped, and the roadmap is ready for the next milestone definition.
 
 ## Milestones
 
 - SHIPPED **v1.0 Foundation and CRAN Release** — Phases 1-4 (shipped 2026-03-23)
-- ACTIVE **v1.1 Reliability and Onboarding Polish** — Phases 5-10 (in progress)
+- SHIPPED **v1.1 Reliability and Onboarding Polish** — Phases 5-10 (shipped 2026-05-06)
 
 ## Phases
 
@@ -91,7 +91,8 @@ Plans:
 
 </details>
 
-### v1.1 Reliability and Onboarding Polish (Active)
+<details>
+<summary>SHIPPED v1.1 Reliability and Onboarding Polish (Phases 5-10) — 2026-05-06</summary>
 
 **Milestone Goal:** Users get truthful pre-render diagnostics, reliable first-run scaffolds, and faster hotspots without output changes, with audit-complete evidence for milestone archive.
 
@@ -181,6 +182,8 @@ Plans:
 Plans:
 - [x] `10-01-PLAN.md` — Execute Quarto-enabled onboarding scaffold -> validate -> render evidence and close the remaining `ONB-01` runtime gap.
 - [x] `10-02-PLAN.md` — Execute bench-enabled performance evidence, refresh the milestone audit, and close the remaining `PERF-01` runtime gap.
+
+</details>
 ## Progress
 
 **Execution Order:** 5 → 6 → 7 → 8 → 9 → 10
