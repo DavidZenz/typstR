@@ -49,6 +49,9 @@ Goal: Establish a distinct visual identity for the typstR site and provide deepe
 **Goal**: Users can easily choose the right format for their needs.
 **Depends on**: Phase 15
 **Requirements**: EXT-02
+**Plans**: 2 plans
+- [ ] 16-01-PLAN.md — Format Comparison Article
+- [ ] 16-02-PLAN.md — Milestone Audit and Closure
 **Success Criteria**:
   1. "Format Comparison" matrix exists and is reachable via the navbar.
   2. Matrix correctly compares all three formats (workingpaper, article, brief).
