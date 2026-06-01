@@ -2,11 +2,11 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Documentation and Website Polish
-status: Defining requirements
+status: Ready for Phase 11
 stopped_at: null
-last_updated: "2026-06-01T11:21:37+02:00"
+last_updated: "2026-06-01T12:00:00+02:00"
 progress:
-  total_phases: 0
+  total_phases: 3
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-01)
 
 **Core value:** Users can go from `create_working_paper("my-paper")` to a polished, branded PDF in minutes — no Typst or LaTeX knowledge required.
-**Current focus:** Defining milestone v1.2 requirements
+**Current focus:** Phase 11 — Documentation Content Foundation (v1.2 roadmap defined, execution not yet started)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 11 — Documentation Content Foundation (not started)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-06-01 — Milestone v1.2 started
+Status: Ready for Phase 11
+Last activity: 2026-06-01 — v1.2 roadmap created (phases 11-13)
 
 ## Performance Metrics
 
@@ -87,19 +87,24 @@ Recent decisions affecting current work:
 - Treat Phase 05 and 06 as fully evidenced now that passed verification, summary metadata, and validation bookkeeping all agree.
 - Phase 07 is fully runtime-evidenced on a supported Quarto-enabled setup.
 - Phase 08 is fully runtime-evidenced on a supported `{bench}`-enabled and Quarto-enabled setup.
+- [v1.2 Roadmap]: Phases 11-13 follow a strict content-before-config-before-CI sequence; no phase may begin until its predecessor's local validation gate is passed.
+- [v1.2 Roadmap]: `man/*.Rd` gitignore removal is a Phase 11 prerequisite — must be resolved before Phase 13 CI workflow is written.
+- [v1.2 Roadmap]: `usethis::use_pkgdown_github_pages()` is the canonical scaffold entry point for Phase 12-13 config; do not hand-roll `.Rbuildignore`, workflow permissions, or deploy target.
+- [v1.2 Roadmap]: `getting-started.Rmd` must be wired manually via `navbar.components.intro` — pkgdown does not auto-promote it.
+- [v1.2 Roadmap]: Site launches with Bootstrap 5 defaults and `development: mode: release` to suppress dev badge; logo/favicon/CSS branding deferred to v2.
 
 ### Pending Todos
 
-None yet.
+- Decide version number strategy before Phase 13 site launch: bump to `1.2.0`, use `1.2.0.9000` → `1.2.0`, or keep `0.0.0.9000` + suppress badge in `_pkgdown.yml`. (See research/SUMMARY.md §5 gaps.)
 
 ### Blockers/Concerns
 
-- No active blockers identified for milestone `v1.2`; requirements definition is in progress.
+- No active blockers. Research is HIGH confidence on all phase decisions; no unknowns remain.
 
 ## Session Continuity
 
-Last session: 2026-06-01T11:21:37+02:00
-Stopped at: Milestone v1.2 started
+Last session: 2026-06-01T12:00:00+02:00
+Stopped at: v1.2 roadmap created — phases 11-13 defined and written to ROADMAP.md
 Resume file: None
 
 **Completed Milestone:** v1.1 (reliability-and-onboarding-polish) — Phases 05-10 — archived 2026-05-07T05:27:46Z

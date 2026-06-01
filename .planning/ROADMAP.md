@@ -2,12 +2,15 @@
 
 ## Overview
 
-typstR is operating in archived-milestone mode: v1.0 and v1.1 are both shipped, and the roadmap is ready for the next milestone definition.
+**Active milestone:** v1.2 — Documentation and Website Polish (Phases 11-13)
+
+Goal: A live, polished pkgdown site at `https://davidzenz.github.io/typstR/` that lets a researcher follow a canonical install → scaffold → render onboarding path without friction. No new R package features ship in this milestone.
 
 ## Milestones
 
 - SHIPPED **v1.0 Foundation and CRAN Release** — Phases 1-4 (shipped 2026-03-23)
 - SHIPPED **v1.1 Reliability and Onboarding Polish** — Phases 5-10 (shipped 2026-05-06)
+- ACTIVE **v1.2 Documentation and Website Polish** — Phases 11-13
 
 ## Phases
 
@@ -21,6 +24,9 @@ typstR is operating in archived-milestone mode: v1.0 and v1.1 are both shipped, 
 - [x] **Phase 8: Measured Performance Optimization** - Improve selected hotspots with benchmarked gains and unchanged semantics.
 - [x] **Phase 9: Audit Traceability and Validation Artifact Closure** - Close milestone-audit evidence gaps and align verification artifacts with delivered requirements.
 - [x] **Phase 10: Supported-Environment Verification Closure** - Capture Quarto-enabled and bench-enabled runtime evidence needed to close milestone verification.
+- [ ] **Phase 11: Documentation Content Foundation** - Polish all source artifacts pkgdown consumes into a coherent, onboarding-first single voice.
+- [ ] **Phase 12: Site Configuration and Local Validation** - Build and locally validate a fully configured pkgdown site with zero warnings.
+- [ ] **Phase 13: CI/CD Deployment and Live Site** - Deploy the site via GitHub Actions and confirm the live public URL.
 
 ## Phase Details
 
@@ -184,9 +190,51 @@ Plans:
 - [x] `10-02-PLAN.md` — Execute bench-enabled performance evidence, refresh the milestone audit, and close the remaining `PERF-01` runtime gap.
 
 </details>
+
+## Phase Details — v1.2 Documentation and Website Polish
+
+### Phase 11: Documentation Content Foundation
+**Goal**: All source artifacts that pkgdown consumes exist, are complete, and tell one coherent onboarding-first story.
+**Depends on**: Phase 10
+**Requirements**: DOCS-01, DOCS-02, DOCS-03, DOCS-04, DOCS-05, SHIP-04
+**Success Criteria** (what must be TRUE):
+  1. README communicates typstR's value, install path, and system requirements within the first screenful — no scrolling required.
+  2. A new user can follow one canonical install → scaffold → render flow that appears consistently across the README, pkgdown home page, and the getting-started article.
+  3. All three vignettes build successfully via `pkgdown::build_articles()` in a local shell with no Quarto in PATH — no chunk produces a "command not found" or render error.
+  4. Every exported function help page has a meaningful title, description, all `@param` entries, and at least one `@examples` block; `devtools::check_man()` returns clean.
+  5. A `NEWS.md` exists with entries summarizing v1.0, v1.1, and v1.2 milestones using the `# typstR X.Y` heading format pkgdown expects.
+  6. All generated `man/*.Rd` files are committed to git (removed from `.gitignore`) and CRAN-sensitive pkgdown build artifacts are excluded from the package tarball via `.Rbuildignore`.
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 12: Site Configuration and Local Validation
+**Goal**: A fully configured `_pkgdown.yml` drives a local site build that navigates cleanly through all nav entry points with zero pkgdown warnings and no dev badge visible.
+**Depends on**: Phase 11
+**Requirements**: SITE-02, SITE-03, SITE-04, SITE-05, SHIP-01, SHIP-02
+**Success Criteria** (what must be TRUE):
+  1. `pkgdown::check_pkgdown()` returns zero warnings after the final `_pkgdown.yml` edits.
+  2. `pkgdown::build_site(preview = FALSE)` completes locally without errors; `docs/index.html` opens and renders correctly in a browser.
+  3. The site navbar exposes exactly: Home, Get Started (wired to the getting-started article), Reference, Articles, and Changelog — with no dead links.
+  4. The Reference index displays five named function groups (Scaffolding, Metadata helpers, Publication helpers, Rendering, Validation and diagnostics); every exported function appears in exactly one group; no "unmatched" warning is emitted.
+  5. All three vignettes appear in the Articles section in onboarding-first order; no "unlisted article" warning is emitted.
+  6. The site renders without the pkgdown development-mode badge (suppressed via `development: mode: release` in `_pkgdown.yml`).
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 13: CI/CD Deployment and Live Site
+**Goal**: The pkgdown site is publicly reachable at `https://davidzenz.github.io/typstR/` and re-deploys automatically on every push to `main`.
+**Depends on**: Phase 12
+**Requirements**: SITE-01, SHIP-03
+**Success Criteria** (what must be TRUE):
+  1. A GitHub Actions run triggered by a push to `main` completes without errors and deploys to the `gh-pages` branch.
+  2. `https://davidzenz.github.io/typstR/` loads a valid home page with the correct package content.
+  3. All top-level nav links (Home, Get Started, Reference, Articles, Changelog) resolve to the correct pages on the live site.
+  4. All three article pages load and display correctly on the live site.
+**Plans**: TBD
+
 ## Progress
 
-**Execution Order:** 5 → 6 → 7 → 8 → 9 → 10
+**Execution Order:** 11 → 12 → 13
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -200,3 +248,6 @@ Plans:
 | 8. Measured Performance Optimization | v1.1 | 2/2 | Complete | 2026-04-01 |
 | 9. Audit Traceability and Validation Artifact Closure | v1.1 | 2/2 | Complete | 2026-05-05 |
 | 10. Supported-Environment Verification Closure | v1.1 | 2/2 | Complete | 2026-05-06 |
+| 11. Documentation Content Foundation | v1.2 | 0/? | Not started | - |
+| 12. Site Configuration and Local Validation | v1.2 | 0/? | Not started | - |
+| 13. CI/CD Deployment and Live Site | v1.2 | 0/? | Not started | - |
