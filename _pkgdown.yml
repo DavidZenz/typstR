@@ -1,6 +1,9 @@
 url: https://davidzenz.github.io/typstR/
 template:
   bootstrap: 5
+  bslib:
+    primary: "#002147"
+  light-switch: true
 development:
   mode: release
 navbar:
