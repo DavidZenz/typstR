@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 `typstR` is built around one fast path: scaffold a working paper, edit one
-Quarto file, and render a PDF when Quarto is available.
+Quarto project, and render a PDF when Quarto is available.
 
 ## Create a project
 
@@ -35,6 +35,19 @@ This creates a small project with:
 - `_quarto.yml` for project settings
 - `references.bib` for bibliography entries
 - the bundled `typstR` extension used by the template
+
+## Know the three files you will edit most
+
+The working-paper starter is intentionally small, and each file has a distinct
+job:
+
+- `template.qmd` is the manuscript you edit day to day
+- `_quarto.yml` stores project-level Quarto settings
+- `references.bib` is where you add bibliography entries
+
+If you only remember one thing from this vignette, remember that the normal flow
+is `template.qmd` for content, `_quarto.yml` for project settings, and
+`references.bib` for citations.
 
 ## Edit `template.qmd`
 
@@ -73,6 +86,22 @@ manuscript_meta(
   affiliations = list(home_institute)
 )
 ```
+
+## Check `_quarto.yml` and `references.bib`
+
+The generated `_quarto.yml` keeps the project wiring minimal:
+
+```yaml
+project:
+  type: default
+```
+
+You usually do not need to change it on day one, but it is the place to look
+when you later want project-wide Quarto behavior.
+
+The starter `references.bib` includes one example entry so you can see the
+expected BibTeX shape immediately. Add your own entries there and keep
+`bibliography: references.bib` in the manuscript YAML.
 
 ## Add manuscript content
 
@@ -114,7 +143,7 @@ if (quarto::quarto_available()) {
 ## Next steps
 
 Once the basic workflow is working, the other vignettes cover the two main
-follow-up tasks:
+follow-up tasks instead of repeating the scaffold/render introduction:
 
 - `vignette("working-papers", package = "typstR")` for working-paper metadata
 - `vignette("customizing-branding", package = "typstR")` for branding fields

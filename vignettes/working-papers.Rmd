@@ -20,6 +20,10 @@ This vignette focuses on the metadata surface of the working paper format. The
 goal is to keep the Quarto file readable while still capturing the fields that
 usually appear on an academic title page.
 
+For the base install -> scaffold -> render workflow, start with
+`vignette("getting-started", package = "typstR")`. This article assumes you
+already have a working paper scaffold and want to refine the metadata layer.
+
 ## Start with authors and affiliations
 
 Use `author()` and `affiliation()` to build structured metadata:
@@ -100,5 +104,5 @@ The scaffolder already includes `references.bib`, so the usual workflow is:
 - acknowledgements, funding, and report number support
 - room for working-paper branding without editing Typst files directly
 
-For the full scaffold-to-render flow, see
+For the full scaffold-to-render flow, return to
 `vignette("getting-started", package = "typstR")`.

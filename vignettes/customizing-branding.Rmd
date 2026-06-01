@@ -18,6 +18,11 @@ knitr::opts_chunk$set(
 workflow is to edit those fields in Quarto, not to patch the shipped Typst
 template.
 
+For the base install -> scaffold -> render workflow, start with
+`vignette("getting-started", package = "typstR")`. This article assumes you
+already have a working paper scaffold and only want to tune the YAML-facing
+branding controls.
+
 ## Start from the commented branding block
 
 The working paper starter ships with these commented fields:
@@ -88,3 +93,6 @@ render_working_paper("my-paper/template.qmd")
 If the output does not look right, inspect the YAML field names first. The most
 common mistake is using a near miss such as `accent_color` instead of
 `accent-color`.
+
+For the end-to-end onboarding flow, return to
+`vignette("getting-started", package = "typstR")`.
