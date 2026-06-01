@@ -244,7 +244,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 13-01-PLAN.md — Workflow Scaffolding.
+- [x] 13-01-PLAN.md — Workflow Scaffolding.
 - [ ] 13-02-PLAN.md — Deployment and Live Verification.
 
 ## Progress
@@ -265,4 +265,4 @@ Plans:
 | 10. Supported-Environment Verification Closure | v1.1 | 2/2 | Complete | 2026-05-06 |
 | 11. Documentation Content Foundation | v1.2 | 4/4 | Complete | 2026-06-01 |
 | 12. Site Configuration and Local Validation | v1.2 | 3/3 | Complete | 2026-06-01 |
-| 13. CI/CD Deployment and Live Site | v1.2 | 0/2 | Not started | - |
+| 13. CI/CD Deployment and Live Site | v1.2 | 1/2 | Executing | - |

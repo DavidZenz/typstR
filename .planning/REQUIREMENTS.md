@@ -17,7 +17,8 @@ Requirements for the v1.2 documentation and website polish milestone. Each will 
 
 ### Site Experience
 
-- [ ] **SITE-01**: Users can access a publishable pkgdown website at the project's public docs URL.
+- [x] **SITE-01
+**: Users can access a publishable pkgdown website at the project's public docs URL.
 - [x] **SITE-02**: Users can navigate the site through clear top-level entry points for Home, Get Started, Reference, Articles, and Changelog.
 - [x] **SITE-03**: Users can browse the reference index through named groups that match the package's main jobs instead of a flat alphabetical list.
 - [x] **SITE-04**: Users can find all three existing vignettes from the site navigation in onboarding-first order.
@@ -27,7 +28,8 @@ Requirements for the v1.2 documentation and website polish milestone. Each will 
 
 - [x] **SHIP-01**: Maintainers can generate the site from the existing repository structure without manual copying of reference pages, articles, or assets.
 - [x] **SHIP-02**: Maintainers can validate the pkgdown configuration locally with zero pkgdown warnings before enabling deployment.
-- [ ] **SHIP-03**: Maintainers can publish the site automatically from GitHub Actions and GitHub Pages on pushes to `main`.
+- [x] **SHIP-03
+**: Maintainers can publish the site automatically from GitHub Actions and GitHub Pages on pushes to `main`.
 - [ ] **SHIP-04**: Maintainers can keep the site build CRAN-safe by excluding pkgdown-only artifacts from the package tarball while preserving all required source docs in git.
 
 ## v2 Requirements
