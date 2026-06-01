@@ -24,7 +24,7 @@ Goal: A live, polished pkgdown site at `https://davidzenz.github.io/typstR/` tha
 - [x] **Phase 8: Measured Performance Optimization** - Improve selected hotspots with benchmarked gains and unchanged semantics.
 - [x] **Phase 9: Audit Traceability and Validation Artifact Closure** - Close milestone-audit evidence gaps and align verification artifacts with delivered requirements.
 - [x] **Phase 10: Supported-Environment Verification Closure** - Capture Quarto-enabled and bench-enabled runtime evidence needed to close milestone verification.
-- [ ] **Phase 11: Documentation Content Foundation** - Polish all source artifacts pkgdown consumes into a coherent, onboarding-first single voice.
+- [x] **Phase 11: Documentation Content Foundation** - Polish all source artifacts pkgdown consumes into a coherent, onboarding-first single voice.
 - [ ] **Phase 12: Site Configuration and Local Validation** - Build and locally validate a fully configured pkgdown site with zero warnings.
 - [ ] **Phase 13: CI/CD Deployment and Live Site** - Deploy the site via GitHub Actions and confirm the live public URL.
 
@@ -211,7 +211,7 @@ Plans:
 - [x] 11-01-PLAN.md — Split README, pkgdown home, and the vignette corpus around one canonical working-paper onboarding story.
 - [x] 11-02-PLAN.md — Add a RED-state exported-help-page audit that enumerates the real exported reference surface.
 - [x] 11-03-PLAN.md — Add NEWS.md and lock the git/build-ignore split for committed man pages and CRAN-safe pkgdown artifacts.
-- [ ] 11-04-PLAN.md — Refresh source-driven reference docs and regenerate committed Rd pages behind the audit and ignore-rule gates.
+- [x] 11-04-PLAN.md — Refresh source-driven reference docs and regenerate committed Rd pages behind the audit and ignore-rule gates.
 
 ### Phase 12: Site Configuration and Local Validation
 **Goal**: A fully configured `_pkgdown.yml` drives a local site build that navigates cleanly through all nav entry points with zero pkgdown warnings and no dev badge visible.
@@ -254,6 +254,6 @@ Plans:
 | 8. Measured Performance Optimization | v1.1 | 2/2 | Complete | 2026-04-01 |
 | 9. Audit Traceability and Validation Artifact Closure | v1.1 | 2/2 | Complete | 2026-05-05 |
 | 10. Supported-Environment Verification Closure | v1.1 | 2/2 | Complete | 2026-05-06 |
-| 11. Documentation Content Foundation | v1.2 | 3/4 | In progress | - |
+| 11. Documentation Content Foundation | v1.2 | 4/4 | Complete | 2026-06-01 |
 | 12. Site Configuration and Local Validation | v1.2 | 0/? | Not started | - |
 | 13. CI/CD Deployment and Live Site | v1.2 | 0/? | Not started | - |

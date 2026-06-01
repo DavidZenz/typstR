@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Documentation and Website Polish
-status: executing
-stopped_at: Plan 11-03 completed
-last_updated: "2026-06-01T12:32:03Z"
-last_activity: 2026-06-01 -- Plan 11-03 completed; moving to Plan 11-04
+status: phase-complete
+stopped_at: Phase 11 completed
+last_updated: "2026-06-01T12:34:14Z"
+last_activity: 2026-06-01 -- Phase 11 completed; Phase 12 planning next
 progress:
   total_phases: 3
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 4
-  completed_plans: 3
-  percent: 75
+  completed_plans: 4
+  percent: 100
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-01)
 
 **Core value:** Users can go from `create_working_paper("my-paper")` to a polished, branded PDF in minutes — no Typst or LaTeX knowledge required.
-**Current focus:** Phase 11 — Documentation Content Foundation
+**Current focus:** Phase 12 — Site Configuration and Local Validation
 
 ## Current Position
 
-Phase: 11 — Documentation Content Foundation (executing)
-Plan: 4 of 4
-Status: Plan 11-03 complete; Plan 11-04 next
-Last activity: 2026-06-01 -- Plan 11-03 completed; moving to Plan 11-04
+Phase: 12 — Site Configuration and Local Validation (not planned)
+Plan: Not started
+Status: Phase 11 complete; Phase 12 planning next
+Last activity: 2026-06-01 -- Phase 11 completed; Phase 12 planning next
 
 ## Performance Metrics
 
@@ -105,10 +105,10 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: Current
-Stopped at: Plan 11-03 completed
+Stopped at: Phase 11 completed
 Resume file: None
 
 **Completed Milestone:** v1.1 (reliability-and-onboarding-polish) — Phases 05-10 — archived 2026-05-07T05:27:46Z
 
-**Planned Phase:** 11 (Documentation Content Foundation) — 4 plans — 2026-06-01T12:22:03.717Z
-**Executing Plan:** 11-04 (Reference doc refresh and Rd regeneration) — 2026-06-01T12:32:03Z
+**Completed Phase:** 11 (Documentation Content Foundation) — 4 plans — 2026-06-01T12:34:14Z
+**Next Suggested Step:** /gsd-plan-phase 12
