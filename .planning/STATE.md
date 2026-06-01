@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Documentation and Website Polish
 status: Ready for Phase 11
-stopped_at: null
-last_updated: "2026-06-01T12:00:00+02:00"
+stopped_at: Phase 11 context gathered
+last_updated: "2026-06-01T11:44:14.879Z"
+last_activity: 2026-06-01 — v1.2 roadmap created (phases 11-13)
 progress:
   total_phases: 3
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
-  percent: 0
 ---
 
 # Project State
@@ -103,8 +103,8 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-06-01T12:00:00+02:00
-Stopped at: v1.2 roadmap created — phases 11-13 defined and written to ROADMAP.md
-Resume file: None
+Last session: --stopped-at
+Stopped at: Phase 11 context gathered
+Resume file: --resume-file
 
 **Completed Milestone:** v1.1 (reliability-and-onboarding-polish) — Phases 05-10 — archived 2026-05-07T05:27:46Z
