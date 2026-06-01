@@ -1,0 +1,23 @@
+/* Responsive headers */
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+h3 { font-size: 1.5rem; }
+
+/* Professional code blocks */
+pre.downlit, pre.usage {
+  border-left: 4px solid #002147;
+  background-color: #f8f9fa;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Custom link hover */
+a:hover {
+  color: #002147;
+  text-decoration: underline;
+}
+
+/* Sidebar tweaks */
+.sidebar h2 {
+  font-size: 1.2rem;
+  border-bottom: none;
+}
