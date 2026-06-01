@@ -1,38 +1,53 @@
 # typstR
 
-`typstR` is an R package for researchers and policy teams who want a fast path from a Quarto manuscript to a polished Typst PDF. It bundles publication-ready templates, metadata helpers, and scaffold functions so the default workflow stays simple: create a working paper project, edit one `.qmd`, and render a branded PDF without touching Typst internals.
+`typstR` helps researchers and policy teams go from a Quarto manuscript to a polished Typst PDF without learning Typst internals. It ships a working-paper-first scaffold, publication metadata helpers, and render wrappers so the default path stays simple: scaffold a project, edit one `.qmd`, and render when you are ready.
 
-## Installation
+## Install typstR
 
 ```r
 remotes::install_github("DavidZenz/typstR")
 ```
 
-## Quick start
+> `typstR` installs like any other R package. You only need Quarto when you
+> render a document.
 
-Create a new working paper project:
+## First run: scaffold -> edit -> render
+
+Start with the working paper scaffold:
 
 ```r
 library(typstR)
 
 create_working_paper("my-paper")
-```
-
-This creates a project directory with `template.qmd`, `_quarto.yml`, `references.bib`, and the bundled `typstR` Quarto extension.
-
-Edit the manuscript in `my-paper/template.qmd`. The starter file already includes a title block, author metadata, abstract, bibliography, and the `typstR:` YAML block for fields such as keywords, JEL codes, acknowledgements, funding, and report number.
-
-When the manuscript is ready, render it to PDF:
-
-```r
+# edit my-paper/template.qmd
 render_working_paper("my-paper/template.qmd")
 ```
 
-That working-paper path is the main onboarding flow for the package: scaffold, edit the generated Quarto file, and render a publication-ready PDF.
+That working-paper path is the main onboarding flow for the package. It gives
+you one concrete manuscript shape to learn first, then lets you branch into
+other formats later.
+
+## What gets scaffolded
+
+`create_working_paper("my-paper")` creates a compact project with:
+
+- `template.qmd` for the manuscript you actually edit
+- `_quarto.yml` for project-level Quarto settings
+- `references.bib` for citations
+- `_extensions/typstR/` for the bundled format extension
+
+The starter manuscript already includes a title block, author metadata,
+abstract, bibliography wiring, and the `typstR:` YAML block for fields such as
+keywords, JEL codes, acknowledgements, funding, and report number.
+
+For the full walkthrough of what to edit in `template.qmd`, `_quarto.yml`, and
+`references.bib`, start with
+`vignette("getting-started", package = "typstR")`.
 
 ## Other publication formats
 
-`typstR` also ships scaffolders for two adjacent formats:
+After the working-paper flow is familiar, `typstR` also ships scaffolders for
+two adjacent formats:
 
 ```r
 create_article("my-article")
@@ -43,10 +58,12 @@ Use `create_article()` for article-style manuscripts without a report-number blo
 
 ## Metadata and publication helpers
 
-The exported helpers are designed to keep manuscript metadata readable and reusable:
+The exported helpers keep manuscript metadata readable and reusable:
 
 - `author()`, `affiliation()`, and `manuscript_meta()` build structured author and affiliation metadata.
 - `funding()`, `data_availability()`, and `code_availability()` capture standard publication statements.
 - `keywords()`, `jel_codes()`, and `report_number()` provide typed publication metadata.
 - `fig_note()`, `tab_note()`, and `appendix_title()` support common manuscript annotations.
 - `render_pub()` and `render_working_paper()` wrap Quarto rendering from R.
+
+For the documentation hub version of this workflow, use `pkgdown/index.md`.
