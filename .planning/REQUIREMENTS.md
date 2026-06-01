@@ -10,7 +10,7 @@ Requirements for the v1.3 branding and documentation depth milestone.
 ### Visual Branding
 
 - [x] **BRAND-01**: The pkgdown site displays a custom typstR logo in the navbar and a matching favicon in the browser tab.
-- [ ] **BRAND-02**: The pkgdown site uses branded accent colors (aligned with typstR's aesthetic) for links, sidebar highlights, and callouts, implemented via `pkgdown/extra.css`.
+- [x] **BRAND-02**: The pkgdown site uses branded accent colors (aligned with typstR's aesthetic) for links, sidebar highlights, and callouts, implemented via `pkgdown/extra.css`.
 
 ### Documentation Depth
 
