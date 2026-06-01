@@ -241,7 +241,11 @@ Plans:
   2. `https://davidzenz.github.io/typstR/` loads a valid home page with the correct package content.
   3. All top-level nav links (Home, Get Started, Reference, Articles, Changelog) resolve to the correct pages on the live site.
   4. All three article pages load and display correctly on the live site.
-**Plans**: 3 plans
+**Plans**: 2 plans
+
+Plans:
+- [ ] 13-01-PLAN.md — Workflow Scaffolding.
+- [ ] 13-02-PLAN.md — Deployment and Live Verification.
 
 ## Progress
 
@@ -261,4 +265,4 @@ Plans:
 | 10. Supported-Environment Verification Closure | v1.1 | 2/2 | Complete | 2026-05-06 |
 | 11. Documentation Content Foundation | v1.2 | 4/4 | Complete | 2026-06-01 |
 | 12. Site Configuration and Local Validation | v1.2 | 3/3 | Complete | 2026-06-01 |
-| 13. CI/CD Deployment and Live Site | v1.2 | 0/3 | Not started | - |
+| 13. CI/CD Deployment and Live Site | v1.2 | 0/2 | Not started | - |
