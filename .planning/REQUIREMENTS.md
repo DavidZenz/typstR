@@ -14,7 +14,8 @@ Requirements for the v1.3 branding and documentation depth milestone.
 
 ### Documentation Depth
 
-- [ ] **EXT-01**: Users can reference an "Advanced Examples" article that demonstrates complex tables (using `gt` or `tinytable`), multi-line equations, and cross-reference patterns.
+- [x] **EXT-01
+**: Users can reference an "Advanced Examples" article that demonstrates complex tables (using `gt` or `tinytable`), multi-line equations, and cross-reference patterns.
 - [ ] **EXT-02**: Users can consult a "Format Comparison" matrix that explicitly compares features (anonymization, report numbers, disclaimers) across the three supported publication types.
 
 ## v2 Requirements (Deferred)
