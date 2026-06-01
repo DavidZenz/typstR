@@ -9,7 +9,6 @@ Description: Create publication-ready scientific documents using Quarto and Typs
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 SystemRequirements: quarto
 Imports:
     cli (>= 3.6.0),
@@ -26,3 +25,4 @@ VignetteBuilder: knitr
 Config/testthat/edition: 3
 URL: https://github.com/DavidZenz/typstR
 BugReports: https://github.com/DavidZenz/typstR/issues
+Config/roxygen2/version: 8.0.0

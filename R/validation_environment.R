@@ -7,6 +7,10 @@
 #' @return A `typstR_validation_report` object when all checks pass.
 #'   On failure, aborts with class `typstR_diagnostics_error` and structured
 #'   diagnostics payload.
+#' @examples
+#' \dontrun{
+#' validate_render_environment("my-working-paper")
+#' }
 #' @export
 validate_render_environment <- function(path = ".") {
   normalized_path <- normalize_validation_path(path)

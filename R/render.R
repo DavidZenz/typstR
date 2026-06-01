@@ -1,7 +1,7 @@
 #' Render a Quarto document to PDF
 #'
-#' Renders a Quarto document using the Quarto CLI after running shared
-#' pre-render environment validation checks.
+#' Renders a Quarto document using the Quarto CLI after running the shared
+#' environment validation checks that typstR uses before rendering.
 #'
 #' @param input Path to a `.qmd` file, a directory containing a `.qmd` file,
 #'   or `NULL` to look in the current directory.
@@ -48,8 +48,8 @@ render_pub <- function(input = NULL, output_format = NULL, quiet = FALSE,
 
 #' Render a working paper to PDF
 #'
-#' Convenience wrapper that renders a document using the `typstR-workingpaper`
-#' format.
+#' Convenience wrapper that renders a document using the `typstR-typst`
+#' working-paper format.
 #'
 #' @inheritParams render_pub
 #' @return `NULL`, invisibly.
@@ -67,4 +67,3 @@ render_working_paper <- function(input = NULL, quiet = FALSE,
     open = open
   )
 }
-

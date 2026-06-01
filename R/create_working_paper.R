@@ -1,7 +1,8 @@
 #' Create a working paper project
 #'
-#' Scaffolds a new working paper project directory with a Quarto document,
-#' bibliography, project configuration, and the typstR Quarto extension.
+#' Scaffolds a new working paper project directory with the files used in the
+#' standard typstR onboarding flow: `template.qmd`, `_quarto.yml`,
+#' `references.bib`, and the bundled typstR Quarto extension.
 #'
 #' @param path Path to the new project directory. Must not already exist.
 #' @param title Optional title to pre-fill in the template YAML.
@@ -15,6 +16,8 @@
 #'   title = "Trade, Policy, and Growth",
 #'   open = FALSE
 #' )
+#'
+#' render_working_paper("my-working-paper/template.qmd", quiet = TRUE, open = FALSE)
 #' }
 #' @export
 create_working_paper <- function(path, title = NULL, open = interactive()) {
