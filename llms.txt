@@ -1,0 +1,136 @@
+# typstR
+
+`typstR` gives research and policy teams a working-paper-first path from
+Quarto source to a polished Typst PDF. The package ships scaffold
+helpers, publication metadata helpers, and bundled templates so you can
+stay in a normal Quarto workflow while using a publication-ready format.
+
+## Start here
+
+Install the package in R:
+
+``` r
+
+remotes::install_github("DavidZenz/typstR")
+```
+
+> You can install `typstR` immediately in R. Quarto is only required
+> when you render a document.
+
+The default onboarding path is:
+
+``` r
+
+library(typstR)
+
+create_working_paper("my-paper")
+# edit my-paper/template.qmd
+render_working_paper("my-paper/template.qmd")
+```
+
+That single working-paper flow is the canonical first run for the
+package.
+
+## What to edit after scaffolding
+
+[`create_working_paper()`](https://davidzenz.github.io/typstR/reference/create_working_paper.md)
+creates four key pieces:
+
+- `template.qmd` for the manuscript body and YAML front matter
+- `_quarto.yml` for project-level Quarto settings
+- `references.bib` for citations
+- `_extensions/typstR/` for the bundled format extension
+
+If you want the full walkthrough of how those files fit together, start
+with [Getting
+started](https://davidzenz.github.io/typstR/articles/getting-started.md).
+
+## Where to go next
+
+| If you need… | Start here |
+|----|----|
+| The full install -\> scaffold -\> render walkthrough | [Getting started](https://davidzenz.github.io/typstR/articles/getting-started.md) |
+| More detail on title-page metadata and working-paper fields | [Working Papers](https://davidzenz.github.io/typstR/articles/working-papers.md) |
+| Practical YAML knobs for logos, fonts, and color | [Customizing Branding](https://davidzenz.github.io/typstR/articles/customizing-branding.md) |
+| Function-level help for scaffold and render wrappers | [Reference](https://davidzenz.github.io/typstR/reference/index.md) |
+
+## Other format entry points
+
+Once the working-paper path is clear, you can branch into adjacent
+formats:
+
+``` r
+
+create_article("my-article")
+create_policy_brief("my-brief")
+```
+
+Use
+[`create_article()`](https://davidzenz.github.io/typstR/reference/create_article.md)
+for article-style manuscripts and
+[`create_policy_brief()`](https://davidzenz.github.io/typstR/reference/create_policy_brief.md)
+for shorter policy-facing outputs.
+
+# Package index
+
+## Scaffolding
+
+- [`create_article()`](https://davidzenz.github.io/typstR/reference/create_article.md)
+  : Create an article project
+- [`create_policy_brief()`](https://davidzenz.github.io/typstR/reference/create_policy_brief.md)
+  : Create a policy brief project
+- [`create_working_paper()`](https://davidzenz.github.io/typstR/reference/create_working_paper.md)
+  : Create a working paper project
+
+## Metadata helpers
+
+- [`affiliation()`](https://davidzenz.github.io/typstR/reference/affiliation.md)
+  : Create an affiliation metadata object
+- [`author()`](https://davidzenz.github.io/typstR/reference/author.md) :
+  Create an author metadata object
+- [`manuscript_meta()`](https://davidzenz.github.io/typstR/reference/manuscript_meta.md)
+  : Create a manuscript metadata object
+- [`funding()`](https://davidzenz.github.io/typstR/reference/funding.md)
+  : Specify a funding statement for a manuscript
+- [`keywords()`](https://davidzenz.github.io/typstR/reference/keywords.md)
+  : Specify keywords for a manuscript
+- [`jel_codes()`](https://davidzenz.github.io/typstR/reference/jel_codes.md)
+  : Specify JEL classification codes for a manuscript
+- [`report_number()`](https://davidzenz.github.io/typstR/reference/report_number.md)
+  : Specify a report number for a manuscript
+- [`appendix_title()`](https://davidzenz.github.io/typstR/reference/appendix_title.md)
+  : Emit a formatted appendix section title
+- [`code_availability()`](https://davidzenz.github.io/typstR/reference/code_availability.md)
+  : Specify a code availability statement for a manuscript
+- [`data_availability()`](https://davidzenz.github.io/typstR/reference/data_availability.md)
+  : Specify a data availability statement for a manuscript
+
+## Publication helpers
+
+- [`fig_note()`](https://davidzenz.github.io/typstR/reference/fig_note.md)
+  : Emit a figure note in markdown format
+- [`tab_note()`](https://davidzenz.github.io/typstR/reference/tab_note.md)
+  : Emit a table note in markdown format
+
+## Rendering
+
+- [`render_pub()`](https://davidzenz.github.io/typstR/reference/render_pub.md)
+  : Render a Quarto document to PDF
+- [`render_working_paper()`](https://davidzenz.github.io/typstR/reference/render_working_paper.md)
+  : Render a working paper to PDF
+
+## Validation and diagnostics
+
+- [`validate_render_environment()`](https://davidzenz.github.io/typstR/reference/validate_render_environment.md)
+  : Validate render environment prerequisites
+
+# Articles
+
+### Articles
+
+- [Getting
+  Started](https://davidzenz.github.io/typstR/articles/getting-started.md):
+- [Working
+  Papers](https://davidzenz.github.io/typstR/articles/working-papers.md):
+- [Customizing
+  Branding](https://davidzenz.github.io/typstR/articles/customizing-branding.md):
