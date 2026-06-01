@@ -25,7 +25,7 @@ Goal: A live, polished pkgdown site at `https://davidzenz.github.io/typstR/` tha
 - [x] **Phase 9: Audit Traceability and Validation Artifact Closure** - Close milestone-audit evidence gaps and align verification artifacts with delivered requirements.
 - [x] **Phase 10: Supported-Environment Verification Closure** - Capture Quarto-enabled and bench-enabled runtime evidence needed to close milestone verification.
 - [x] **Phase 11: Documentation Content Foundation** - Polish all source artifacts pkgdown consumes into a coherent, onboarding-first single voice.
-- [ ] **Phase 12: Site Configuration and Local Validation** - Build and locally validate a fully configured pkgdown site with zero warnings.
+- [x] **Phase 12: Site Configuration and Local Validation** - Build and locally validate a fully configured pkgdown site with zero warnings.
 - [ ] **Phase 13: CI/CD Deployment and Live Site** - Deploy the site via GitHub Actions and confirm the live public URL.
 
 ## Phase Details
@@ -230,7 +230,7 @@ Plans:
 Plans:
 - [x] 12-01-PLAN.md — Housekeeping and Scaffolding (usethis, DESCRIPTION, .gitignore).
 - [x] 12-02-PLAN.md — Site Configuration (_pkgdown.yml, navbar, reference grouping, articles).
-- [ ] 12-03-PLAN.md — Local Validation (check_pkgdown, build_site, manual review).
+- [x] 12-03-PLAN.md — Local Validation (check_pkgdown, build_site, manual review).
 
 ### Phase 13: CI/CD Deployment and Live Site
 **Goal**: The pkgdown site is publicly reachable at `https://davidzenz.github.io/typstR/` and re-deploys automatically on every push to `main`.
@@ -260,5 +260,5 @@ Plans:
 | 9. Audit Traceability and Validation Artifact Closure | v1.1 | 2/2 | Complete | 2026-05-05 |
 | 10. Supported-Environment Verification Closure | v1.1 | 2/2 | Complete | 2026-05-06 |
 | 11. Documentation Content Foundation | v1.2 | 4/4 | Complete | 2026-06-01 |
-| 12. Site Configuration and Local Validation | v1.2 | 2/3 | In progress | - |
+| 12. Site Configuration and Local Validation | v1.2 | 3/3 | Complete | 2026-06-01 |
 | 13. CI/CD Deployment and Live Site | v1.2 | 0/3 | Not started | - |

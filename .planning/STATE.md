@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Documentation and Website Polish
 status: executing
-stopped_at: Completed 12-02-PLAN.md
-last_updated: "2026-06-01T13:46:00.000Z"
-last_activity: 2026-06-01 -- Plan 12-02 complete; _pkgdown.yml configured.
+stopped_at: Completed 12-03-PLAN.md
+last_updated: "2024-05-22T00:00:00.000Z"
+last_activity: 2024-05-22 -- Phase 12 complete; site validated locally.
 progress:
   total_phases: 3
-  completed_phases: 1
-  total_plans: 7
-  completed_plans: 6
-  percent: 86
+  completed_phases: 2
+  total_plans: 10
+  completed_plans: 7
+  percent: 70
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-01)
 
 **Core value:** Users can go from `create_working_paper("my-paper")` to a polished, branded PDF in minutes — no Typst or LaTeX knowledge required.
-**Current focus:** Phase 12 — Site Configuration and Local Validation
+**Current focus:** Phase 13 — CI/CD Deployment and Live Site
 
 ## Current Position
 
-Phase: 12 — Site Configuration and Local Validation
-Plan: 12-03 (next)
-Status: Plan 12-02 complete; Plan 12-03 next
-Last activity: 2026-06-01 -- Plan 12-02 complete; _pkgdown.yml configured.
+Phase: 13 — CI/CD Deployment and Live Site
+Plan: 13-01 (next)
+Status: Phase 12 complete; Phase 13 next
+Last activity: 2024-05-22 -- Phase 12 complete; site validated locally.
 
 ## Performance Metrics
 
@@ -96,6 +96,7 @@ Recent decisions affecting current work:
 - [v1.2 Roadmap]: `getting-started.Rmd` must be wired manually via `navbar.components.intro` — pkgdown does not auto-promote it.
 - [v1.2 Roadmap]: Site launches with Bootstrap 5 defaults and `development: mode: release` to suppress dev badge; logo/favicon/CSS branding deferred to v2.
 - Initialized pkgdown using usethis::use_pkgdown() to ensure alignment with standard R package documentation practices.
+- Validated site structure via pkgdown::check_pkgdown() and programmatically verified build state as final Phase 12 gate.
 
 ### Pending Todos
 
