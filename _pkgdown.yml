@@ -1,52 +1,52 @@
 url: https://davidzenz.github.io/typstR/
-
 template:
   bootstrap: 5
-
 development:
   mode: release
-
 navbar:
   structure:
-    left: [home, intro, reference, articles, news]
+    left:
+    - home
+    - intro
+    - reference
+    - articles
+    - news
   components:
     intro:
-      text: "Get Started"
-      href: "articles/getting-started.html"
-
+      text: Get Started
+      href: articles/getting-started.html
 reference:
-  - title: Scaffolding
-    contents:
-      - create_article
-      - create_policy_brief
-      - create_working_paper
-  - title: Metadata helpers
-    contents:
-      - affiliation
-      - author
-      - manuscript_meta
-      - funding
-      - keywords
-      - jel_codes
-      - report_number
-      - appendix_title
-      - code_availability
-      - data_availability
-  - title: Publication helpers
-    contents:
-      - fig_note
-      - tab_note
-  - title: Rendering
-    contents:
-      - render_pub
-      - render_working_paper
-  - title: Validation and diagnostics
-    contents:
-      - validate_render_environment
-
+- title: Scaffolding
+  contents:
+  - create_article
+  - create_policy_brief
+  - create_working_paper
+- title: Metadata helpers
+  contents:
+  - affiliation
+  - author
+  - manuscript_meta
+  - funding
+  - keywords
+  - jel_codes
+  - report_number
+  - appendix_title
+  - code_availability
+  - data_availability
+- title: Publication helpers
+  contents:
+  - fig_note
+  - tab_note
+- title: Rendering
+  contents:
+  - render_pub
+  - render_working_paper
+- title: Validation and diagnostics
+  contents: validate_render_environment
 articles:
-  - title: Articles
-    contents:
-      - getting-started
-      - working-papers
-      - customizing-branding
+- title: Articles
+  contents:
+  - getting-started
+  - working-papers
+  - customizing-branding
+
