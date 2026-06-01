@@ -2,22 +2,22 @@
 
 ## Overview
 
-**Active milestone:** v1.3 — Branding and Documentation Depth
+**Active milestone:** v2 (or next planned)
 
-Goal: Establish a distinct visual identity for the typstR site and provide deeper technical guidance through complex examples and format comparisons.
+Goal: To be determined.
 
 ## Milestones
 
 - SHIPPED **v1.0 Foundation and CRAN Release** — Phases 1-4 (shipped 2026-03-23)
 - SHIPPED **v1.1 Reliability and Onboarding Polish** — Phases 5-10 (shipped 2026-05-06)
 - SHIPPED **v1.2 Documentation and Website Polish** — Phases 11-13 (shipped 2026-06-01)
-- ACTIVE **v1.3 Branding and Documentation Depth** — Phases 14-16
+- SHIPPED **v1.3 Branding and Documentation Depth** — Phases 14-16 (shipped 2026-06-01)
 
 ## Phases
 
 - [x] **Phase 14: Visual Branding and Identity** - Implement logo, favicon, and custom CSS accents.
 - [x] **Phase 15: Advanced Documentation Examples** - Create the advanced examples article covering tables, math, and cross-refs.
-- [ ] **Phase 16: Format Comparison and Milestone Audit** - Create the format comparison matrix and finalize the milestone.
+- [x] **Phase 16: Format Comparison and Milestone Audit** - Create the format comparison matrix and finalize the milestone.
 
 ## Phase Details
 
@@ -51,7 +51,7 @@ Goal: Establish a distinct visual identity for the typstR site and provide deepe
 **Requirements**: EXT-02
 **Plans**: 2 plans
 - [x] 16-01-PLAN.md — Format Comparison Article
-- [ ] 16-02-PLAN.md — Milestone Audit and Closure
+- [x] 16-02-PLAN.md — Milestone Audit and Closure
 **Success Criteria**:
   1. "Format Comparison" matrix exists and is reachable via the navbar.
   2. Matrix correctly compares all three formats (workingpaper, article, brief).
@@ -78,4 +78,4 @@ Goal: Establish a distinct visual identity for the typstR site and provide deepe
 | 13. CI/CD Deployment and Live Site | v1.2 | 2/2 | Complete | 2026-06-01 |
 | 14. Visual Branding and Identity | v1.3 | 3/3 | Complete | 2026-06-01 |
 | 15. Advanced Documentation Examples | v1.3 | 2/2 | Complete | 2026-06-01 |
-| 16. Format Comparison and Milestone Audit | v1.3 | 1/2 | In progress | 2026-06-01 |
+| 16. Format Comparison and Milestone Audit | v1.3 | 2/2 | Complete | 2026-06-01 |
