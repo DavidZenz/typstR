@@ -76,7 +76,7 @@ Which phases cover which requirements.
 | SITE-04 | Phase 12 | Complete |
 | SITE-05 | Phase 12 | Complete |
 | SHIP-01 | Phase 12 | Complete |
-| SHIP-02 | Phase 12 | Pending |
+| SHIP-02 | Phase 12 | Complete |
 | SHIP-03 | Phase 13 | Pending |
 | SHIP-04 | Phase 11 | Complete |
 
