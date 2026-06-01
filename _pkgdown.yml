@@ -43,3 +43,9 @@ reference:
   - title: Validation and diagnostics
     contents:
       - validate_render_environment
+
+articles:
+  - contents:
+      - getting-started
+      - working-papers
+      - customizing-branding
