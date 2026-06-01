@@ -1,3 +1,283 @@
+# Technology Stack — typstR v1.2 (Documentation and Website Polish)
+
+**Project:** typstR  
+**Milestone:** v1.2 (Documentation and Website Polish)  
+**Researched:** 2026-06-01  
+**Scope:** pkgdown website publishing, onboarding documentation polish, CI-based site deployment  
+**Overall confidence:** HIGH (pkgdown/usethis/r-lib/actions are the unambiguous standard for this domain)
+
+---
+
+## v1.2 Stack Decisions (Opinionated)
+
+1. **pkgdown + GitHub Actions is the only realistic choice.** It is the canonical R package docs system; used by every tidyverse/r-lib package; zero lock-in.
+2. **No new runtime dependencies.** Everything documentation-related is dev-only (`Suggests`).
+3. **Bootstrap 5 from day one.** Bootstrap 3 is legacy; pkgdown current default uses Bootstrap 5.
+4. **usethis one-liner bootstraps the entire setup.** `use_pkgdown_github_pages()` creates `_pkgdown.yml`, the GHA workflow, and configures the repo in one call.
+5. **Existing vignettes remain `.Rmd` / knitr.** pkgdown picks them up as Articles automatically — no format migration needed.
+6. **DESCRIPTION gets `pkgdown` in `Suggests` only.** Users never need pkgdown; it is a maintainer tool.
+
+---
+
+## Recommended Stack Changes for v1.2
+
+### New Dev/Tooling Additions
+
+| Tool | Where | Version Constraint | Purpose | Integration Note |
+|---|---|---|---|---|
+| **pkgdown** | `Suggests` | `>= 2.0.0` | Builds the static HTML docs site from roxygen man pages, README, and vignettes | Place `_pkgdown.yml` at repo root; `docs/` is the build output dir |
+| **usethis** | dev (one-time setup, not in DESCRIPTION) | current CRAN | `use_pkgdown_github_pages()` wires up `_pkgdown.yml` + GHA workflow + GitHub repo settings | Run once locally; not a persistent dependency |
+| **r-lib/actions pkgdown.yaml** | `.github/workflows/pkgdown.yaml` | v2 | Official GitHub Actions workflow: installs R, builds site, pushes to `gh-pages` branch | `.github/` already in `.Rbuildignore`; safe |
+
+### No Changes to Runtime DESCRIPTION Imports
+
+The following already-shipped `Imports` are **unchanged**:
+
+```
+cli (>= 3.6.0), fs (>= 1.6.0), quarto (>= 1.4), yaml (>= 2.3.10)
+```
+
+The following already-present `Suggests` are **unchanged** (and serve double duty for pkgdown):
+
+```
+knitr, rmarkdown   ← vignette builder; also used by pkgdown article rendering
+testthat, withr, bench, yaml
+```
+
+### DESCRIPTION delta for v1.2
+
+```yaml
+Suggests:
+  bench,
+  knitr,
+  pkgdown (>= 2.0.0),   # ← ADD; dev/docs only
+  rmarkdown,
+  testthat (>= 3.0.0),
+  withr,
+  yaml
+```
+
+That is the only DESCRIPTION change needed.
+
+---
+
+## New Files to Create
+
+| File | Content | Notes |
+|---|---|---|
+| `_pkgdown.yml` | Site config: URL, Bootstrap 5 template, navbar, reference groupings | Root of repo; excluded from package build via `.Rbuildignore` entry `^_pkgdown\\.yml$` |
+| `.github/workflows/pkgdown.yaml` | r-lib/actions canonical workflow | Already have `^\.github$` in `.Rbuildignore`; no change needed |
+| `pkgdown/extra.css` (optional) | Minor brand tweaks (colors matching typstR visual identity) | Only if visual polish is in scope; not required for functional site |
+
+---
+
+## Publishing Workflow
+
+### Canonical Approach: GitHub Pages via `gh-pages` branch
+
+```
+push to main
+  → GHA pkgdown.yaml triggers
+  → installs R + pandoc + package deps
+  → pkgdown::build_site_github_pages()
+  → JamesIves/github-pages-deploy-action pushes docs/ → gh-pages branch
+  → site live at https://davidzenz.github.io/typstR/
+```
+
+**The complete GHA workflow (r-lib canonical):**
+
+```yaml
+# .github/workflows/pkgdown.yaml
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+name: pkgdown.yaml
+
+permissions: read-all
+
+jobs:
+  pkgdown:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-pandoc@v2
+      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::pkgdown, local::.
+          needs: website
+      - name: Build site
+        run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
+        shell: Rscript {0}
+      - name: Deploy to GitHub Pages
+        if: github.event_name != 'pull_request'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          clean: false
+          branch: gh-pages
+          folder: docs
+```
+
+**Note on Quarto/Typst in CI:** The pkgdown build does NOT render `.qmd` documents — only `.Rmd` vignettes via knitr. The existing vignettes are already `.Rmd`. This means the GHA pkgdown runner **does not need Quarto or Typst installed**, keeping the CI image lean and reproducible.
+
+### Alternative: Netlify
+Rejected. Adds a third-party dependency, requires account/token management, and provides no meaningful advantage over GitHub Pages for an R package documentation site. GitHub Pages is zero-cost, version-controlled, and the universal standard.
+
+---
+
+## `_pkgdown.yml` Site Structure
+
+```yaml
+url: https://davidzenz.github.io/typstR
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left: [intro, articles, reference]
+    right: [search, github]
+  components:
+    intro:
+      text: Get Started
+      href: articles/getting-started.html
+    articles:
+      text: Articles
+      menu:
+        - text: Working Papers
+          href: articles/working-papers.html
+        - text: Customizing Branding
+          href: articles/customizing-branding.html
+    github:
+      icon: fa-github
+      href: https://github.com/DavidZenz/typstR
+
+reference:
+  - title: "Scaffold"
+    desc: "Create new manuscript projects"
+    contents:
+      - create_working_paper
+      - create_article
+      - create_policy_brief
+  - title: "Metadata helpers"
+    desc: "Build structured author and manuscript metadata"
+    contents:
+      - author
+      - affiliation
+      - manuscript_meta
+      - funding
+      - data_availability
+      - code_availability
+  - title: "Publication helpers"
+    desc: "Typed metadata and manuscript annotations"
+    contents:
+      - keywords
+      - jel_codes
+      - report_number
+      - fig_note
+      - tab_note
+      - appendix_title
+  - title: "Render"
+    desc: "Render manuscripts to PDF"
+    contents:
+      - render_pub
+      - render_working_paper
+  - title: "Validation and diagnostics"
+    desc: "Pre-render environment checks and validation"
+    contents:
+      - starts_with("check_")
+      - starts_with("validate_")
+```
+
+---
+
+## Integration Points with Current Repo
+
+| Existing Asset | pkgdown Behavior | Action Needed |
+|---|---|---|
+| `README.md` | Becomes the site home page (`index.html`) verbatim | Polish prose/links for web rendering; ensure no raw file paths |
+| `vignettes/getting-started.Rmd` | Article at `/articles/getting-started.html` | Already exists; review for onboarding clarity |
+| `vignettes/working-papers.Rmd` | Article at `/articles/working-papers.html` | Already exists |
+| `vignettes/customizing-branding.Rmd` | Article at `/articles/customizing-branding.html` | Already exists |
+| `man/*.Rd` (roxygen-generated) | All become `/reference/<fn>.html` | Already generated; review `@description` / `@examples` prose |
+| `DESCRIPTION` URL field | Used for site header "Source" link | Already set to `https://github.com/DavidZenz/typstR` |
+| `.Rbuildignore` | `^_pkgdown\\.yml$` and `^docs$` need entries | Add both; `.github` already present |
+
+---
+
+## What NOT to Add
+
+| Do NOT add | Why not | What to do instead |
+|---|---|---|
+| **Netlify / Vercel hosting** | Zero advantage over GitHub Pages for an R package site; adds account dependency | GitHub Pages via `gh-pages` branch is canonical and free |
+| **bslib custom theming** | Deep visual customization is not the goal; Bootstrap 5 defaults are clean and readable | Use standard `template: bootstrap: 5`; one small `extra.css` for brand color if needed |
+| **pkgverse / hexSticker as build dependency** | Logo generation is a one-time manual task, not a build step | Create hex sticker manually outside the CI pipeline |
+| **`rmarkdown` move to `Imports`** | Already in `Suggests`; pkgdown only needs it at build time | Leave in `Suggests` |
+| **Quarto-rendered articles in pkgdown** | pkgdown does not natively render `.qmd`; would require quarto in CI and adds significant complexity | Keep vignettes as `.Rmd`; link to rendered PDF outputs as external assets if needed |
+| **Custom pkgdown templates package** | Creating a separate template package is premature for a single-site use | Use `_pkgdown.yml` config + optional `pkgdown/extra.css` |
+| **`downlit` / `memoise` explicit deps** | pkgdown already pulls them in transitively | Do not add to DESCRIPTION |
+| **`gh` CLI automation in CI** | `GITHUB_TOKEN` in the r-lib workflow handles all GitHub Pages auth automatically | No PAT secrets needed beyond the built-in `GITHUB_TOKEN` |
+
+---
+
+## `.Rbuildignore` Additions Required
+
+```r
+# Add these two lines (^\.github$ already present):
+usethis::use_build_ignore("_pkgdown.yml")
+usethis::use_build_ignore("docs")
+usethis::use_build_ignore("pkgdown")  # if pkgdown/extra.css added
+```
+
+Or manually add to `.Rbuildignore`:
+```
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+```
+
+---
+
+## Confidence by Area
+
+| Area | Confidence | Why |
+|---|---|---|
+| pkgdown as the tool | HIGH | Unambiguous standard; used by all r-lib/tidyverse packages; official CRAN docs tooling |
+| GitHub Pages via r-lib/actions workflow | HIGH | Canonical workflow from r-lib/actions repo; verified against current workflow file |
+| Bootstrap 5 as default | HIGH | pkgdown docs confirm Bootstrap 5 is current standard; Bootstrap 3 is legacy |
+| No runtime deps needed | HIGH | Documentation tooling is inherently dev-only in the R ecosystem |
+| Vignette `.Rmd` format compatibility | HIGH | pkgdown Article system is built on knitr/.Rmd; matches existing vignette format exactly |
+| Reference grouping patterns | HIGH | Verified against pkgdown `reference:` YAML schema |
+
+---
+
+## Sources
+
+- pkgdown documentation (Context7 / r-lib/pkgdown):  
+  https://pkgdown.r-lib.org/  
+  https://github.com/r-lib/pkgdown
+- r-lib/actions canonical pkgdown workflow:  
+  https://github.com/r-lib/actions/tree/v2/examples (pkgdown.yaml)
+- usethis `use_pkgdown_github_pages()` docs (Context7 / r-lib/usethis):  
+  https://usethis.r-lib.org/reference/use_pkgdown.html
+- pkgdown Bootstrap 5 configuration:  
+  https://pkgdown.r-lib.org/articles/customise.html
+- pkgdown `_pkgdown.yml` reference sections:  
+  https://pkgdown.r-lib.org/reference/build_reference.html
+
+---
+
 # Technology Stack — typstR v1.1 (Reliability + Onboarding Polish)
 
 **Project:** typstR  

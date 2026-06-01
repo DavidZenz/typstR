@@ -1,257 +1,325 @@
-# Architecture Patterns
+# Architecture: typstR v1.2 Docs Site Integration
 
-**Domain:** typstR v1.1 (Reliability and Onboarding Polish, brownfield)
-**Researched:** 2026-03-31
+**Domain:** R package documentation — pkgdown static site over an existing R package
+**Researched:** 2026-06-01
+**Overall confidence:** HIGH (pkgdown is well-documented; all integration mechanics verified via Context7 against r-lib/pkgdown source)
 
-## Recommended Architecture
+---
 
-v1.1 should add a **reliability orchestration layer in the R package** without changing typstR’s core output model (Quarto extension + Typst templates). The design goal is fail-fast behavior with actionable remediation, while preserving existing public workflows (`create_*()`, `render_pub()`, `render_working_paper()`).
+## 1. How pkgdown Consumes the Existing Repository
 
-### System Shape for v1.1
+pkgdown is a site generator that reads artifacts already present in a well-formed R package. It does **not** require a parallel content layer — it derives the site from sources that already exist or must be maintained anyway.
 
-```text
-Caller
-  ├─ create_working_paper()/create_article()/create_policy_brief()
-  │    └─ scaffold_project() [new internal helper]
-  │         ├─ copy inst/templates/<variant>
-  │         ├─ copy inst/quarto/extensions/typstR
-  │         ├─ apply starter defaults (title + guidance)
-  │         └─ run quick readiness checks (diagnostic warnings only)
-  │
-  └─ render_pub()/render_working_paper()
-       ├─ resolve_input()
-       ├─ validate_manuscript() [new exported API]
-       │    └─ emits structured diagnostics (error/warn/info + fixes)
-       ├─ quarto::quarto_render()
-       └─ post-render verification (expected output + open behavior)
+| pkgdown Site Section | Source in typstR repo | Transformation |
+|---|---|---|
+| **Home page** (`index.html`) | `README.md` | Rendered as-is into Bootstrap HTML |
+| **Reference index** (`reference/index.html`) | `man/*.Rd` (all 21 files) | Grouped and linked; grouping config in `_pkgdown.yml` |
+| **Reference pages** (`reference/<fn>.html`) | Individual `.Rd` files | One HTML per exported topic |
+| **Articles index** (`articles/index.html`) | `vignettes/*.Rmd` (3 files) | Auto-discovered by pkgdown |
+| **Article pages** (`articles/<name>.html`) | Each `.Rmd` vignette | Rendered via knitr at site-build time |
+| **Package metadata** (footer, navbar title) | `DESCRIPTION` (Title, Version, Authors@R, URL, BugReports) | Injected into every page template |
+| **Search index** (`search.json`) | All reference + article text | Auto-generated |
+
+**Key fact (verified):** pkgdown's `build_articles()` supports Quarto (`.qmd`) vignettes from pkgdown ≥ 1.5 / Quarto ≥ 1.5, but typstR's existing vignettes are `.Rmd` and use `output: rmarkdown::html_vignette`. These are fully supported by current pkgdown and require no migration.
+
+---
+
+## 2. Complete File Inventory: New vs. Modified
+
+### NEW files (do not exist; must be created)
+
+| File | Purpose | Phase |
+|---|---|---|
+| `_pkgdown.yml` | Master site config: navbar, reference grouping, bootstrap theme, footer | Core setup |
+| `.github/workflows/pkgdown.yaml` | CI workflow: build site on push to main, deploy to `gh-pages` branch | Deployment |
+| `man/figures/logo.png` | Package logo — appears in navbar; referenced by README badge | Optional polish |
+| `pkgdown/extra.css` | Optional custom CSS overrides (only if visual tweaks are needed) | Optional polish |
+
+### MODIFIED files (exist; need targeted changes)
+
+| File | What Changes | Why |
+|---|---|---|
+| `DESCRIPTION` | Add `pkgdown` to `Suggests:` | Required for `R CMD check` to not warn when pkgdown is called in CI |
+| `DESCRIPTION` | Add second URL entry for docs site (e.g. `https://davidzenz.github.io/typstR`) | Makes pkgdown link to live site and improves CRAN discoverability |
+| `.Rbuildignore` | Add `^docs$`, `^_pkgdown\.yml$`, `^pkgdown$` | These must not ship inside the built R package tarball |
+| `.gitignore` | Add `docs/` | Local `build_site()` output should not be committed; CI deploys from `gh-pages` branch |
+| `README.md` | Polish content and structure (becomes home page verbatim) | The README is the home page — any roughness is visible at the top of the site |
+| `vignettes/getting-started.Rmd` | Content polish; verify all render calls are guarded with `eval = FALSE` | Vignettes run at site-build time; Quarto/Typst are not available in CI |
+| `vignettes/working-papers.Rmd` | Content polish; same eval guard check | Same constraint |
+| `vignettes/customizing-branding.Rmd` | Content polish; same eval guard check | Same constraint |
+| `man/*.Rd` (via `R/` edits) | Roxygen doc polish — titles, descriptions, `@examples` sections | Reference pages are generated from these; gaps show on the published site |
+
+### GENERATED artifacts (never hand-edit; gitignored for local builds)
+
+```
+docs/                        ← local build output (gitignored; CI deploys from gh-pages branch)
+  index.html                 ← from README.md
+  reference/
+    index.html               ← grouped function listing (grouping from _pkgdown.yml)
+    create_working_paper.html
+    author.html
+    ... (one per Rd file)
+  articles/
+    index.html
+    getting-started.html
+    working-papers.html
+    customizing-branding.html
+  search.json
+  pkgdown.js
 ```
 
-### Component Boundaries
+---
 
-| Component | Responsibility | Communicates With |
-|-----------|---------------|-------------------|
-| `R/diagnostics.R` (new) | Canonical diagnostic model (`code`, `severity`, `message`, `hint`, `context`) and formatting helpers | `R/validation.R`, `R/render.R`, `R/create_*.R` |
-| `R/validation.R` (new) | Pre-render checks for runtime, project structure, YAML fields, metadata consistency, file references | `R/utils.R` (path/yaml helpers), `R/diagnostics.R`, `R/render.R` |
-| `R/render.R` (existing, modified) | Orchestration: resolve input, run validation gate, invoke Quarto, surface failures truthfully | `R/validation.R`, `quarto` package, `R/utils.R` |
-| `R/create_*.R` (existing, modified) | User entry points for scaffolding; delegate shared logic to one helper to prevent drift | `R/scaffold.R` (new internal) or `R/utils.R`, `inst/templates/`, `_extensions/` |
-| `inst/templates/*` (existing, modified) | Starter content optimized for first successful render and clear user edits | `create_*()` |
-| `inst/quarto/extensions/typstR/typst-show.typ` + `formats/*.typ` (existing) | Rendering contract target for validation rules (field names and accepted variants) | Quarto + Typst runtime |
+## 3. Data / Content Flow
 
-## Data Flow
-
-### Flow 1: Validation (new primary reliability path)
-
-1. `validate_manuscript(input)` resolves a concrete `.qmd` path.
-2. Build one `manuscript_context` object (single pass):
-   - project root
-   - `_extensions/typstR` presence
-   - parsed YAML front matter
-   - discovered referenced files (`bibliography`, `logo`, etc.)
-   - selected variant (`typstR.format-variant`)
-3. Run check modules against the shared context (no repeated parsing/walking).
-4. Return `typstR_diagnostics` object:
-   - machine-readable for tests/automation
-   - human-readable via CLI bullets
-5. Rendering gate consumes diagnostics:
-   - errors: abort with remediation
-   - warnings: continue (unless strict mode)
-
-### Flow 2: Render control flow (existing path, hardened)
-
-```text
-render_pub()
-  -> quarto availability/version checks
-  -> resolve_input()
-  -> validate_manuscript()
-  -> if diagnostics$error_count > 0: abort with actionable report
-  -> quarto::quarto_render()
-  -> verify expected artifact exists
-  -> open file (if requested and available)
+```
+                        ┌─────────────────────────────────────────────────────┐
+                        │              typstR repository                       │
+                        │                                                     │
+  Author writes         │  R/              roxygen2         man/*.Rd          │
+  @title/@param ──────► │  *.R  ─────────────────────────► *.Rd  ────────────┼──► reference/*.html
+  @examples             │                                                     │
+                        │  README.md ─────────────────────────────────────────┼──► index.html
+                        │                                                     │
+  Author writes         │  vignettes/     knitr render      articles/         │
+  vignette content ───► │  *.Rmd ─────────────────────────► *.html  ──────────┼──► articles/*.html
+                        │                                                     │
+  Author configures     │  _pkgdown.yml ──► grouping + navbar + theme         │
+                        │                                                     │
+                        │  DESCRIPTION ───► metadata (title, version,         │
+                        │                  authors, URLs)                     │
+                        └────────────────────┬────────────────────────────────┘
+                                             │
+                                    pkgdown::build_site()
+                                             │
+                              ┌──────────────▼──────────────┐
+                              │     docs/ (static HTML)      │
+                              │     (local preview only)     │
+                              └──────────────┬──────────────┘
+                                             │
+                               .github/workflows/pkgdown.yaml
+                                             │
+                              ┌──────────────▼──────────────┐
+                              │  gh-pages branch (GitHub)   │
+                              │  Served at:                  │
+                              │  davidzenz.github.io/typstR  │
+                              └─────────────────────────────┘
 ```
 
-### Flow 3: Scaffolding control flow (onboarding hardening)
+**Trigger chain for CI:**
+Push to `main` → GitHub Actions runs `pkgdown::build_site_github_pages()` → commits built HTML to `gh-pages` branch → GitHub Pages serves it.
 
-```text
-create_*()
-  -> scaffold_project(variant, path, title, open)
-  -> copy starter template + extension
-  -> apply title replacement with success check
-  -> print next-step commands (edit + render)
-  -> optional post-scaffold readiness check (warning-only diagnostics)
+---
+
+## 4. `_pkgdown.yml` Structure
+
+This is the single most important new file. Its structure drives the entire site.
+
+```yaml
+url: https://davidzenz.github.io/typstR
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left:  [intro, reference, articles]
+    right: [search, github]
+  components:
+    intro:
+      text: Get started
+      href: articles/getting-started.html
+
+reference:
+  - title: "Scaffolding"
+    desc: "Create new publication projects."
+    contents:
+      - create_working_paper
+      - create_article
+      - create_policy_brief
+
+  - title: "Metadata helpers"
+    desc: "Build author, affiliation, and manuscript metadata."
+    contents:
+      - author
+      - affiliation
+      - manuscript_meta
+      - funding
+      - data_availability
+      - code_availability
+
+  - title: "Publication helpers"
+    desc: "Typed fields, annotations, and identifiers."
+    contents:
+      - keywords
+      - jel_codes
+      - report_number
+      - fig_note
+      - tab_note
+      - appendix_title
+
+  - title: "Rendering"
+    desc: "Render manuscripts to PDF."
+    contents:
+      - render_pub
+      - render_working_paper
+
+  - title: "Validation and diagnostics"
+    desc: "Check system readiness and validate manuscript metadata."
+    contents:
+      - check_typst
+      - check_quarto
+      - check_typstR
+      - validate_manuscript
+
+articles:
+  - title: "Guides"
+    navbar: ~
+    contents:
+      - getting-started
+      - working-papers
+      - customizing-branding
 ```
 
-## Integration Points for v1.1 Scope
+**Note on reference grouping:** All 21 `.Rd` files must appear in exactly one `contents:` list or pkgdown warns. The `print.*` S3 method pages (`print.typstR_affiliation`, `print.typstR_author`, `print.typstR_meta`) can be omitted by adding `@keywords internal` to their roxygen source — pkgdown silently omits internal topics from the reference index. This is the preferred approach over listing them in a cluttered "Internals" group.
 
-### 1) Expanded Pre-render Validation Coverage
+---
 
-**Where it should live:** `R/validation.R` with small single-purpose checks.
+## 5. Ordering Constraints and Build Dependencies
 
-**Checks to implement first (highest value):**
-- runtime checks: Quarto present, minimum supported version (from `_extension.yml` contract)
-- project structure checks: `.qmd` exists, `_extensions/typstR` exists
-- file reference checks: `bibliography`, `typstR.logo`, other file-path metadata
-- metadata consistency checks:
-  - `author` present/non-empty
-  - affiliation references resolve
-  - `typstR.format-variant` in allowed set (`workingpaper`, `article`, `brief`)
-  - field type checks for `keywords`, `jel`, booleans, margins
-- render-intent checks:
-  - warn when `render_working_paper()` is used with non-working-paper variant
+These are hard sequencing constraints — violating them causes build failures or wasted rework.
 
-### 2) Structured Diagnostics + Remediation
+```
+[1] Roxygen doc polish (R/ → man/)
+      │
+      Depends on: none
+      Required before: pkgdown reference build (reference pages come from man/)
+      Validation: devtools::document(), check for warnings
 
-**Where it should live:** `R/diagnostics.R` plus thin adapters in `validation` and `render`.
+[2] README polish
+      │
+      Depends on: none (independent)
+      Required before: pkgdown home page looks right
+      Validation: manual review; check that all code blocks use backtick fencing
 
-**Recommended diagnostic shape:**
+[3] Vignette eval-guard audit + content polish
+      │
+      Depends on: none (independent)
+      Required before: pkgdown::build_articles() succeeds in CI
+      Validation: pkgdown::build_articles() locally with no Quarto/Typst in PATH
 
-| Field | Purpose |
-|------|---------|
-| `code` | Stable identifier (e.g., `missing_extension`, `invalid_format_variant`) |
-| `severity` | `error` / `warning` / `info` |
-| `message` | What failed |
-| `hint` | Exact remediation step |
-| `file` / `field` | Precise location |
-| `evidence` | Observed value/state |
+[4] DESCRIPTION update (add pkgdown to Suggests, add docs URL)
+      │
+      Depends on: knowing the final GH Pages URL
+      Required before: R CMD check is clean after adding pkgdown dep
 
-This avoids brittle string matching in tests and prevents “plausible but vague” errors.
+[5] _pkgdown.yml creation
+      │
+      Depends on: [1] (need final function inventory to group correctly)
+      Required before: any pkgdown::build_site() call
+      Validation: pkgdown::check_pkgdown()
 
-### 3) Scaffold Defaults / Starter Content Improvements
+[6] .Rbuildignore + .gitignore updates
+      │
+      Depends on: [5] (need to know what files pkgdown introduces at root)
+      Required before: R CMD check passes cleanly
+      Validation: R CMD check --as-cran
 
-**Where it should live:** `inst/templates/*` content + shared scaffold helper used by all `create_*()` functions.
+[7] Local site build + visual QA
+      │
+      Depends on: [1]–[6] all complete
+      Required before: CI workflow setup (catches problems cheaply)
+      Validation: pkgdown::build_site(preview = FALSE); open docs/index.html in browser
 
-**Integration guidance:**
-- extract repeated scaffolding logic into one internal helper (single source of truth)
-- keep format-specific starter text in template files only
-- enforce post-copy invariants centrally (expected files present, title replacement actually applied)
-- add explicit “first render success” hints in scaffold output
+[8] .github/workflows/pkgdown.yaml creation
+      │
+      Depends on: [7] (local build confirmed clean)
+      Required before: automated deployment
+      Validation: push to main; check Actions tab; verify gh-pages branch populated
 
-### 4) Targeted Performance Improvements (Only Where Measured)
+[9] GitHub Pages configuration
+      │
+      Depends on: [8] (gh-pages branch must exist)
+      Required before: site is publicly accessible
+      Validation: visit https://davidzenz.github.io/typstR
+```
 
-**Where it should live:**
-- validation context builder (`R/validation.R`) — parse once, reuse
-- render orchestration (`R/render.R`) — avoid duplicate checks/path scans
-- scaffold helper — reduce repeated file-system calls and duplicated logic
+---
 
-**Measurement requirement:** add benchmark coverage (micro for hot helpers, integration timing for render+validate path) before and after changes.
+## 6. Component Boundaries
 
-## Build Order (Dependency-aware Decomposition)
+| Component | Responsibility | Does NOT own |
+|---|---|---|
+| `R/*.R` + `man/*.Rd` | Function reference content (titles, params, examples, descriptions) | Site structure, navigation |
+| `vignettes/*.Rmd` | Long-form narrative documentation (articles on the site) | Short inline examples (those belong in man/) |
+| `README.md` | Home page: install path, quick start, one-liner pitch | Deep how-to (that belongs in vignettes) |
+| `_pkgdown.yml` | Site structure, navigation, reference grouping, theme | Content (content lives in source files) |
+| `.github/workflows/pkgdown.yaml` | CI build and deployment trigger | Content or structure decisions |
+| `inst/quarto/`, `inst/templates/` | Quarto extension assets bundled with the R package | Doc site generation (these are package runtime assets, not site sources) |
 
-1. **Diagnostics foundation (must be first)**
-   - add diagnostic schema and constructors
-   - add printer/formatter
-   - no behavior change yet
+**Critical boundary:** `inst/` content is **not consumed by pkgdown**. The Quarto extension files in `inst/quarto/extensions/typstR/` and the scaffold templates in `inst/templates/` are R package runtime assets. They do not become site pages automatically. If the site needs to explain these (e.g., a "Template Reference" article), that explanation goes in a vignette — the raw `.typ` files themselves are not rendered by pkgdown.
 
-2. **Validation engine over shared context**
-   - implement `validate_manuscript()` and check modules
-   - export `check_quarto()`, `check_typst()`, `check_typstR()` only after internal contract is stable
+---
 
-3. **Render integration gate**
-   - wire validation into `render_pub()`
-   - ensure render errors preserve root cause and remediation
-   - add post-render artifact verification
+## 7. Validation Points by Phase
 
-4. **Scaffolding consolidation + onboarding updates**
-   - extract shared scaffold logic
-   - update starter templates/content for first-run success
-   - ensure `open` behavior is truthful and tested
+| Phase Topic | What to Validate | Tool |
+|---|---|---|
+| Roxygen polish | All exported functions have title + description + `@param` + at least one `@examples` | `devtools::check_man()` |
+| Vignette eval guards | No vignette chunk executes `render_*()`, `create_*()`, `check_typst()` without `eval = FALSE` | `pkgdown::build_articles()` locally (no Quarto in PATH) |
+| Reference grouping | Every exported topic appears in exactly one `_pkgdown.yml` reference group | `pkgdown::check_pkgdown()` |
+| .Rbuildignore coverage | `docs/`, `_pkgdown.yml`, `pkgdown/`, `.github/` all excluded from tarball | `R CMD build .` + inspect tarball contents |
+| Local build | Site builds without warnings or errors | `pkgdown::build_site(preview = FALSE)` |
+| CI deployment | Push to main triggers workflow; gh-pages branch updated | GitHub Actions run log |
+| Live site | Navigation works; search works; all 3 article pages load | Manual browser review |
 
-5. **Performance pass + regression guardrails**
-   - benchmark modified paths
-   - keep only optimizations with measurable gains
+---
 
-## Patterns to Follow
+## 8. Edge Cases and Integration Risks
 
-### Pattern 1: Single Context, Multiple Checks
-**What:** Build one validated context object and run all checks from it.
-**When:** Any `validate_manuscript()` execution.
-**Why:** Prevent repeated YAML parsing and path walking.
+### Risk: Vignette execution in CI
+**Problem:** `vignettes/*.Rmd` are rendered by pkgdown at build time. Any chunk calling `render_*()` without `eval = FALSE` will fail in CI because Quarto and Typst are not installed in the pkgdown build runner.
+**Mitigation:** Audit all three vignettes before configuring CI. The existing vignette headers already show `eval = FALSE` on render calls, but all three files need explicit per-chunk verification.
 
-### Pattern 2: Diagnostics as Data, Not Strings
-**What:** Return structured diagnostic records and format for CLI at boundary.
-**When:** Validation and render failures.
-**Why:** Stable tests, better automation, clearer user remediation.
+### Risk: S3 print methods polluting the reference index
+**Problem:** pkgdown warns if any `.Rd` file is not assigned to a reference group. The three `print.typstR_*` methods (`print.typstR_affiliation`, `print.typstR_author`, `print.typstR_meta`) are low-value reference pages.
+**Mitigation:** Add `@keywords internal` to their roxygen source. pkgdown silently omits internal topics from the reference index without warnings.
 
-### Pattern 3: Shared Scaffolding Core
-**What:** `create_*()` remain public wrappers; one internal scaffold implementation does the real work.
-**When:** Any onboarding/starter change touching multiple formats.
-**Why:** Prevent format drift and triple maintenance.
+### Risk: README as home page — mismatched audience tone
+**Problem:** The current README is written for GitHub browsing. As the pkgdown home page it becomes the primary landing page for new users arriving from a search or link.
+**Mitigation:** Keep the README GitHub-compatible but verify the install-to-quick-start flow is complete and compelling as a standalone landing page. The README is now dual-purpose.
 
-### Pattern 4: Additive API Evolution
-**What:** Keep existing function signatures stable; add optional behavior via new args/defaults only if needed.
-**When:** Integrating validation into render/scaffold.
-**Why:** Brownfield safety for existing callers.
+### Risk: `docs/` accidentally committed to `main`
+**Problem:** If a developer runs `pkgdown::build_site()` locally without the `docs/` gitignore entry, the generated HTML gets committed and conflicts with the CI `gh-pages` deployment pattern.
+**Mitigation:** Add `docs/` to `.gitignore` early — in the same phase as creating `_pkgdown.yml`, not after.
 
-## Anti-Patterns to Avoid
+### Risk: `.Rbuildignore` gaps breaking `R CMD check`
+**Problem:** `_pkgdown.yml`, `pkgdown/`, `.github/`, and `docs/` at the package root are not standard R package directories. `R CMD check` warns about unknown top-level files if they are absent from `.Rbuildignore`.
+**Mitigation:** Update `.Rbuildignore` in the same commit as creating these files. The existing `.Rbuildignore` already follows a good pattern with anchored regex entries.
 
-### Anti-Pattern 1: Validation by `cli_abort()` Side Effects Alone
-**Why bad:** Impossible to aggregate or test robustly.
-**Instead:** Collect diagnostics, then decide whether to abort.
+---
 
-### Anti-Pattern 2: Re-reading Files Per Check
-**Why bad:** Wasted IO and slower render path.
-**Instead:** Shared context object with parsed metadata and resolved paths.
+## 9. Recommended Phase Structure for Roadmap
 
-### Anti-Pattern 3: Silent Fallbacks on Invalid Metadata
-**Why bad:** Users think settings applied when they were ignored.
-**Instead:** Explicit warnings/errors for unknown variants/invalid fields.
+Based on the ordering constraints and risk profile, the work naturally groups into three phases:
 
-### Anti-Pattern 4: Unmeasured “Performance” Refactors
-**Why bad:** Risky churn without user-visible benefit.
-**Instead:** Baseline -> change -> benchmark -> keep/drop.
+**Phase A — Content foundation (prerequisite for everything)**
+Polish the artifacts pkgdown consumes: roxygen docs (`R/` → `man/`), vignette content and eval guards, README. No pkgdown dependency. Must land first. Validates with `devtools::check_man()` and `pkgdown::build_articles()` locally.
 
-## Silent-Failure Hotspots and Mitigations
+**Phase B — Site configuration and local build**
+Create `_pkgdown.yml`, update DESCRIPTION (`Suggests:` + docs URL), update `.Rbuildignore`/`.gitignore`, run `pkgdown::build_site()` locally. Validates with `pkgdown::check_pkgdown()` and a local browser review.
 
-| Hotspot (current) | What can silently fail | Mitigation in v1.1 | Target location |
-|---|---|---|---|
-| `create_*()` `open` argument | Argument is accepted but not acted on | Implement or remove behavior; add tests asserting effect | `R/create_*.R` + tests |
-| Title prefill regex substitution | No title replacement if template line shape changes | Verify replacement count; emit diagnostic when zero | shared scaffold helper |
-| `format-variant` handling | Invalid value can degrade to unintended layout | Validate against allowed enum; block render on invalid value | `R/validation.R` |
-| `render_pub()` output-open path assumption | PDF may not exist at inferred path | Post-render existence check + warning with actual expected path | `R/render.R` |
-| `logo` path escaping in Typst bridge | Path normalization may break certain user paths | Validate path early and warn on suspicious escaping/backslashes | `R/validation.R` + `typst-show.typ` contract checks |
-| Unknown `typstR:` keys | User expects effect; key is ignored | Warn on unknown keys with close-match suggestions | `R/validation.R` |
+**Phase C — CI/CD deployment and live site**
+Create `.github/workflows/pkgdown.yaml`, configure GitHub Pages (source: `gh-pages` branch), push and verify the live URL. Validates with Actions run log and browser review of the live site.
 
-## Scalability Considerations
+This order ensures content is polished before it is published, and the publishing infrastructure is only wired up after a clean local build is confirmed — avoiding repeated CI debug cycles.
 
-| Concern | At single manuscript use | At CI/batch renders | At institute/team scale |
-|---------|--------------------------|---------------------|-------------------------|
-| Validation overhead | negligible | can accumulate if checks duplicate IO | enforce single-context architecture |
-| Diagnostics signal/noise | interactive-friendly | needs machine-readable codes | stable codebook + severity filtering |
-| Scaffold consistency | manual review catches drift | drift appears as flaky tests | shared scaffold core + snapshot tests |
-| Quarto/Typst drift | one user can self-fix | CI failures block release | version checks + clear upgrade guidance |
-
-## Roadmap Implications for v1.1
-
-Recommended milestone decomposition:
-1. **Reliability substrate:** diagnostics + validation context model
-2. **Coverage expansion:** metadata/file/runtime checks and check_* exports
-3. **Render hardening:** preflight gating + truthful failure propagation
-4. **Onboarding polish:** shared scaffolder + starter template improvements
-5. **Performance validation:** benchmark-driven optimizations only
-
-This order minimizes risk: first build shared truth objects (diagnostics/context), then attach behavior at public entry points.
+---
 
 ## Sources
 
-### Codebase evidence (HIGH confidence)
-- `.planning/PROJECT.md`
-- `R/render.R`
-- `R/utils.R`
-- `R/create_working_paper.R`, `R/create_article.R`, `R/create_policy_brief.R`
-- `inst/templates/workingpaper/template.qmd`
-- `inst/templates/article/template.qmd`
-- `inst/templates/policy-brief/template.qmd`
-- `inst/quarto/extensions/typstR/_extension.yml`
-- `inst/quarto/extensions/typstR/typst-show.typ`
-- `inst/quarto/extensions/typstR/formats/*.typ`
-- `tests/testthat/test-render-guards.R`
-- `tests/testthat/test-scaffolding.R`
-- `tests/testthat/test-yaml-integration.R`
-
-### External references (MEDIUM/HIGH confidence)
-- Quarto custom Typst formats: https://quarto.org/docs/output-formats/typst-custom.html
-- Quarto format extensions: https://quarto.org/docs/extensions/formats.html
-- quarto R `quarto_available()`: https://quarto-dev.github.io/quarto-r/reference/quarto_available.html
-- quarto R `quarto_version()`: https://quarto-dev.github.io/quarto-r/reference/quarto_version.html
-- rlang conditions and `abort()`: https://rlang.r-lib.org/reference/abort.html
-- rlang chained conditions: https://rlang.r-lib.org/reference/topic-condition-chains.html
-- testthat snapshot/condition testing: https://testthat.r-lib.org/
+- pkgdown documentation: Context7 `/r-lib/pkgdown` (HIGH confidence — verified against r-lib/pkgdown source)
+- pkgdown GitHub Actions / `deploy_to_branch()`: Context7 `/r-lib/pkgdown` NEWS.md and README (HIGH confidence)
+- pkgdown Bootstrap 5 config: Context7 `/r-lib/pkgdown` (HIGH confidence)
+- pkgdown Quarto vignette support (≥ 1.5): Context7 `/r-lib/pkgdown` NEWS (HIGH confidence)
+- Existing repo structure: direct inspection of `/Users/davidzenz/R/typstR/` (HIGH confidence)
