@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Documentation and Website Polish
-status: Ready to execute
-stopped_at: Phase 11 planned
-last_updated: "2026-06-01T12:22:03.726Z"
-last_activity: 2026-06-01 — Phase 11 planned with 4 executable plans
+status: executing
+stopped_at: Plan 11-01 completed
+last_updated: "2026-06-01T12:28:21Z"
+last_activity: 2026-06-01 -- Plan 11-01 completed; moving to Plan 11-02
 progress:
   total_phases: 3
   completed_phases: 0
   total_plans: 4
-  completed_plans: 0
-  percent: 0
+  completed_plans: 1
+  percent: 25
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-01)
 
 **Core value:** Users can go from `create_working_paper("my-paper")` to a polished, branded PDF in minutes — no Typst or LaTeX knowledge required.
-**Current focus:** Phase 11 — Documentation Content Foundation (planned and ready for execution)
+**Current focus:** Phase 11 — Documentation Content Foundation
 
 ## Current Position
 
-Phase: 11 — Documentation Content Foundation (not started)
-Plan: 4 plans across 2 waves
-Status: Ready to execute
-Last activity: 2026-06-01 — Phase 11 planned with 4 executable plans
+Phase: 11 — Documentation Content Foundation (executing)
+Plan: 2 of 4
+Status: Plan 11-01 complete; Plan 11-02 next
+Last activity: 2026-06-01 -- Plan 11-01 completed; moving to Plan 11-02
 
 ## Performance Metrics
 
@@ -104,10 +104,11 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: --stopped-at
-Stopped at: Phase 11 planned
-Resume file: --resume-file
+Last session: Current
+Stopped at: Plan 11-01 completed
+Resume file: None
 
 **Completed Milestone:** v1.1 (reliability-and-onboarding-polish) — Phases 05-10 — archived 2026-05-07T05:27:46Z
 
 **Planned Phase:** 11 (Documentation Content Foundation) — 4 plans — 2026-06-01T12:22:03.717Z
+**Executing Plan:** 11-02 (Documentation reference audit) — 2026-06-01T12:28:21Z
