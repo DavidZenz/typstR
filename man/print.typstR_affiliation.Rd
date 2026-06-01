@@ -17,3 +17,4 @@ The input \code{x}, invisibly.
 \description{
 Print method for typstR_affiliation
 }
+\keyword{internal}

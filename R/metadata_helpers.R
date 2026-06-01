@@ -218,6 +218,7 @@ manuscript_meta <- function(authors,
 #' @param ... Additional arguments (unused).
 #' @return The input `x`, invisibly.
 #' @method print typstR_author
+#' @keywords internal
 #' @export
 print.typstR_author <- function(x, ...) {
   cat("<typstR_author>", x[["name"]], "\n")
@@ -230,6 +231,7 @@ print.typstR_author <- function(x, ...) {
 #' @param ... Additional arguments (unused).
 #' @return The input `x`, invisibly.
 #' @method print typstR_affiliation
+#' @keywords internal
 #' @export
 print.typstR_affiliation <- function(x, ...) {
   cat("<typstR_affiliation> [", x[["id"]], "] ", x[["name"]], "\n", sep = "")
@@ -242,6 +244,7 @@ print.typstR_affiliation <- function(x, ...) {
 #' @param ... Additional arguments (unused).
 #' @return The input `x`, invisibly.
 #' @method print typstR_meta
+#' @keywords internal
 #' @export
 print.typstR_meta <- function(x, ...) {
   n_authors <- length(x[["author"]])

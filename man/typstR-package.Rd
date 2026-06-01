@@ -16,6 +16,7 @@ The package centers a YAML-driven workflow: scaffold a starter project, edit
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://davidzenz.github.io/typstR/}
   \item \url{https://github.com/DavidZenz/typstR}
   \item Report bugs at \url{https://github.com/DavidZenz/typstR/issues}
 }

@@ -45,7 +45,8 @@ reference:
       - validate_render_environment
 
 articles:
-  - contents:
+  - title: Articles
+    contents:
       - getting-started
       - working-papers
       - customizing-branding
