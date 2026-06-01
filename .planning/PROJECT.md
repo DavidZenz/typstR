@@ -10,21 +10,22 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 
 ## Current State
 
-- **Latest shipped release:** v1.1 (2026-05-06)
-- **Status:** Milestone v1.2 is active and currently defining requirements.
-- **Previous Release:** v1.0 (Released 2026-03-23)
-- **Milestone Archives:** [v1.0-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.0-ROADMAP.md), [v1.1-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.1-ROADMAP.md)
+- **Latest shipped release:** v1.2 (2026-06-01)
+- **Status:** Milestone v1.3 is active and currently defining requirements.
+- **Previous Release:** v1.1 (Released 2026-05-06)
+- **Milestone Archives:** [v1.0-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.0-ROADMAP.md), [v1.1-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.1-ROADMAP.md), [v1.2-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.2-ROADMAP.md)
 
 ## Current Milestone
 
-### v1.2 Documentation and Website Polish
+### v1.3 Branding and Documentation Depth
 
-**Goal:** Make typstR easier for new users to adopt with a publishable docs surface that guides them from install to scaffold to render.
+**Goal:** Establish a distinct visual identity for the typstR site and provide deeper technical guidance through complex examples and format comparisons.
 
 **Target features:**
-- Publishable pkgdown website
-- Clear install / getting-started / reference / articles navigation
-- Documentation polish centered on the onboarding flow
+- Custom logo and favicon
+- Branded CSS accent styling for the pkgdown site
+- Advanced examples article (complex tables, math, bib management)
+- Format comparison matrix (Working Paper vs Article vs Policy Brief)
 
 ## Requirements
 
@@ -49,14 +50,19 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 - [x] Pre-render environment validation reports Quarto/Typst readiness, version-floor compatibility, and extension presence before render (VAL-01) — validated in Phase 06
 - [x] First-run onboarding reliability contract across workingpaper/article/brief scaffold paths (ONB-01) — validated in Phase 07, with Quarto-enabled human UAT persisted
 - [x] Measured performance optimization contract with baseline-mapped gain/no-backslide assertions (PERF-01) — validated in Phase 08, with supported-environment human UAT persisted
+- [x] Documentation content foundation polished around one canonical onboarding story — v1.2 Phase 11
+- [x] Grouped reference index and manual navbar wiring for "Get Started" — v1.2 Phase 12
+- [x] Automated CI/CD deployment to GitHub Pages via GHA — v1.2 Phase 13
 
 - [x] Reliability/onboarding polish milestone archived with passed milestone audit and shipped supported-environment evidence — v1.1
+- [x] Documentation and website polish milestone archived with live verified site — v1.2
 
 ### Active
 
-- [ ] Publish a pkgdown website for typstR with clear navigation across installation, onboarding, reference, and articles.
-- [ ] Strengthen onboarding documentation so new users can follow install -> scaffold -> render without friction.
-- [ ] Align README, vignettes, and site structure so the docs surface tells one coherent story.
+- [ ] Design and implement a custom logo and favicon for the documentation site.
+- [ ] Apply branded CSS accent styling (colors, fonts) to the pkgdown site.
+- [ ] Create an "Advanced Examples" article covering complex tables, equations, and bibliography edge cases.
+- [ ] Create a "Format Comparison" guide with a feature matrix across supported publication types.
 
 ### Out of Scope
 
