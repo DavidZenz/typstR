@@ -50,7 +50,7 @@ Goal: Establish a distinct visual identity for the typstR site and provide deepe
 **Depends on**: Phase 15
 **Requirements**: EXT-02
 **Plans**: 2 plans
-- [ ] 16-01-PLAN.md — Format Comparison Article
+- [x] 16-01-PLAN.md — Format Comparison Article
 - [ ] 16-02-PLAN.md — Milestone Audit and Closure
 **Success Criteria**:
   1. "Format Comparison" matrix exists and is reachable via the navbar.
@@ -78,4 +78,4 @@ Goal: Establish a distinct visual identity for the typstR site and provide deepe
 | 13. CI/CD Deployment and Live Site | v1.2 | 2/2 | Complete | 2026-06-01 |
 | 14. Visual Branding and Identity | v1.3 | 3/3 | Complete | 2026-06-01 |
 | 15. Advanced Documentation Examples | v1.3 | 2/2 | Complete | 2026-06-01 |
-| 16. Format Comparison and Milestone Audit | v1.3 | 0/2 | Not started | - |
+| 16. Format Comparison and Milestone Audit | v1.3 | 1/2 | In progress | 2026-06-01 |

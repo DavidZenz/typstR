@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.3
 milestone_name: milestone
 status: completed
-stopped_at: Completed 15-02-PLAN.md
-last_updated: "2026-06-01T20:27:22.562Z"
-last_activity: 2026-06-01 -- Integrated advanced examples into site and validated build.
+stopped_at: Completed 16-01-PLAN.md
+last_updated: "2026-06-01T20:38:03.967Z"
+last_activity: 2026-06-01 -- Phase 15 complete; Advanced Examples added.
 progress:
   total_phases: 3
   completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
-  percent: 100
+  total_plans: 7
+  completed_plans: 6
+  percent: 85
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-01)
 
 **Core value:** Users can go from `create_working_paper("my-paper")` to a polished, branded PDF in minutes — no Typst or LaTeX knowledge required.
-**Current focus:** Phase 15 — Advanced Documentation Examples
+**Current focus:** Phase 16 — Format Comparison and Milestone Audit
 
 ## Current Position
 
-Phase: 15 — Advanced Documentation Examples
-Plan: 15-02-PLAN.md
-Status: Phase 15 complete
-Last activity: 2026-06-01 -- Integrated advanced examples into site and validated build.
+Phase: 16 — Format Comparison and Milestone Audit
+Plan: 16-01-PLAN.md
+Status: Plan 01 complete
+Last activity: 2026-06-01 -- Format Comparison article created and wired.
 
 ## Performance Metrics
 
@@ -57,6 +57,7 @@ Last activity: 2026-06-01 -- Integrated advanced examples into site and validate
 | Phase 14-visual-branding-and-identity P14-03 | 10m | 3 tasks | 1 file |
 | Phase 15 P01 | 10m | 1 tasks | 1 files |
 | Phase 15 P02 | 10m | 2 tasks | 1 files |
+| Phase 16 P01 | 15m | 3 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -72,10 +73,11 @@ Last activity: 2026-06-01 -- Integrated advanced examples into site and validate
 - Drafted technical depth documentation for advanced users.
 - Used gt as the primary example for complex Typst tables.
 - Registered the 'advanced-examples' article in the pkgdown site navigation to ensure discoverability.
+- Created a 'Choosing a Format' article to provide technical depth and decision support for users.
 
 ### Pending Todos
 
-- Research canonical pkgdown extra.css patterns for BRAND-02.
+- None.
 
 ### Blockers/Concerns
 
@@ -83,8 +85,8 @@ Last activity: 2026-06-01 -- Integrated advanced examples into site and validate
 
 ## Session Continuity
 
-Last session: 2026-06-01T20:27:20.545Z
-Stopped at: Completed 15-02-PLAN.md
+Last session: 2026-06-01T20:38:03.959Z
+Stopped at: Completed 16-01-PLAN.md
 Resume file: None
 
 **Completed Milestone:** v1.2 (Documentation and Website Polish) — Phases 11-13 — 2026-06-01
