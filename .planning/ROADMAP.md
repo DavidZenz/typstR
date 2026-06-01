@@ -209,7 +209,7 @@ Plans:
 
 Plans:
 - [x] 11-01-PLAN.md — Split README, pkgdown home, and the vignette corpus around one canonical working-paper onboarding story.
-- [ ] 11-02-PLAN.md — Add a RED-state exported-help-page audit that enumerates the real exported reference surface.
+- [x] 11-02-PLAN.md — Add a RED-state exported-help-page audit that enumerates the real exported reference surface.
 - [ ] 11-03-PLAN.md — Add NEWS.md and lock the git/build-ignore split for committed man pages and CRAN-safe pkgdown artifacts.
 - [ ] 11-04-PLAN.md — Refresh source-driven reference docs and regenerate committed Rd pages behind the audit and ignore-rule gates.
 
