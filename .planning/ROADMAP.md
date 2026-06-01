@@ -210,7 +210,7 @@ Plans:
 Plans:
 - [x] 11-01-PLAN.md — Split README, pkgdown home, and the vignette corpus around one canonical working-paper onboarding story.
 - [x] 11-02-PLAN.md — Add a RED-state exported-help-page audit that enumerates the real exported reference surface.
-- [ ] 11-03-PLAN.md — Add NEWS.md and lock the git/build-ignore split for committed man pages and CRAN-safe pkgdown artifacts.
+- [x] 11-03-PLAN.md — Add NEWS.md and lock the git/build-ignore split for committed man pages and CRAN-safe pkgdown artifacts.
 - [ ] 11-04-PLAN.md — Refresh source-driven reference docs and regenerate committed Rd pages behind the audit and ignore-rule gates.
 
 ### Phase 12: Site Configuration and Local Validation
@@ -254,6 +254,6 @@ Plans:
 | 8. Measured Performance Optimization | v1.1 | 2/2 | Complete | 2026-04-01 |
 | 9. Audit Traceability and Validation Artifact Closure | v1.1 | 2/2 | Complete | 2026-05-05 |
 | 10. Supported-Environment Verification Closure | v1.1 | 2/2 | Complete | 2026-05-06 |
-| 11. Documentation Content Foundation | v1.2 | 0/4 | Not started | - |
+| 11. Documentation Content Foundation | v1.2 | 3/4 | In progress | - |
 | 12. Site Configuration and Local Validation | v1.2 | 0/? | Not started | - |
 | 13. CI/CD Deployment and Live Site | v1.2 | 0/? | Not started | - |
