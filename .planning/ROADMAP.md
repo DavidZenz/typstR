@@ -156,7 +156,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [x] 08-01: TBD (created during /gsd:plan-phase 8)
+- [x] 08-01: 3 plans (created during /gsd:plan-phase 8)
 - [x] 08-02-PLAN.md — Implement measured hotspot optimizations with mapped gain assertions and semantic parity checks.
 
 ### Phase 9: Audit Traceability and Validation Artifact Closure
@@ -224,8 +224,13 @@ Plans:
   4. The Reference index displays five named function groups (Scaffolding, Metadata helpers, Publication helpers, Rendering, Validation and diagnostics); every exported function appears in exactly one group; no "unmatched" warning is emitted.
   5. All three vignettes appear in the Articles section in onboarding-first order; no "unlisted article" warning is emitted.
   6. The site renders without the pkgdown development-mode badge (suppressed via `development: mode: release` in `_pkgdown.yml`).
-**Plans**: TBD
+**Plans**: 3 plans
 **UI hint**: yes
+
+Plans:
+- [x] 12-01-PLAN.md — Housekeeping and Scaffolding (usethis, DESCRIPTION, .gitignore).
+- [ ] 12-02-PLAN.md — Site Configuration (_pkgdown.yml, navbar, reference grouping, articles).
+- [ ] 12-03-PLAN.md — Local Validation (check_pkgdown, build_site, manual review).
 
 ### Phase 13: CI/CD Deployment and Live Site
 **Goal**: The pkgdown site is publicly reachable at `https://davidzenz.github.io/typstR/` and re-deploys automatically on every push to `main`.
@@ -236,7 +241,7 @@ Plans:
   2. `https://davidzenz.github.io/typstR/` loads a valid home page with the correct package content.
   3. All top-level nav links (Home, Get Started, Reference, Articles, Changelog) resolve to the correct pages on the live site.
   4. All three article pages load and display correctly on the live site.
-**Plans**: TBD
+**Plans**: 3 plans
 
 ## Progress
 
@@ -255,5 +260,5 @@ Plans:
 | 9. Audit Traceability and Validation Artifact Closure | v1.1 | 2/2 | Complete | 2026-05-05 |
 | 10. Supported-Environment Verification Closure | v1.1 | 2/2 | Complete | 2026-05-06 |
 | 11. Documentation Content Foundation | v1.2 | 4/4 | Complete | 2026-06-01 |
-| 12. Site Configuration and Local Validation | v1.2 | 0/? | Not started | - |
-| 13. CI/CD Deployment and Live Site | v1.2 | 0/? | Not started | - |
+| 12. Site Configuration and Local Validation | v1.2 | 1/3 | In progress | - |
+| 13. CI/CD Deployment and Live Site | v1.2 | 0/3 | Not started | - |

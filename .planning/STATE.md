@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Documentation and Website Polish
-status: phase-complete
-stopped_at: Phase 11 completed
-last_updated: "2026-06-01T12:34:14Z"
+status: planning
+stopped_at: Completed 12-01-PLAN.md
+last_updated: "2026-06-01T13:33:18.676Z"
 last_activity: 2026-06-01 -- Phase 11 completed; Phase 12 planning next
 progress:
   total_phases: 3
   completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
-  percent: 100
+  total_plans: 7
+  completed_plans: 5
+  percent: 71
 ---
 
 # Project State
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-06-01)
 
 ## Current Position
 
-Phase: 12 — Site Configuration and Local Validation (not planned)
-Plan: Not started
-Status: Phase 11 complete; Phase 12 planning next
-Last activity: 2026-06-01 -- Phase 11 completed; Phase 12 planning next
+Phase: 12 — Site Configuration and Local Validation
+Plan: 12-02 (next)
+Status: Plan 12-01 complete; Plan 12-02 next
+Last activity: 2026-06-01 -- Plan 12-01 complete; Housekeeping and Scaffolding done.
 
 ## Performance Metrics
 
@@ -59,6 +59,7 @@ Last activity: 2026-06-01 -- Phase 11 completed; Phase 12 planning next
 | Phase 08-measured-performance-optimization P01 | 677 | 2 tasks | 9 files |
 | Phase 08-measured-performance-optimization P02 | 448 | 2 tasks | 10 files |
 | Phase 09 P02 | 616 | 2 tasks | 10 files |
+| Phase 12 P01 | 5m | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -93,6 +94,7 @@ Recent decisions affecting current work:
 - [v1.2 Roadmap]: `usethis::use_pkgdown_github_pages()` is the canonical scaffold entry point for Phase 12-13 config; do not hand-roll `.Rbuildignore`, workflow permissions, or deploy target.
 - [v1.2 Roadmap]: `getting-started.Rmd` must be wired manually via `navbar.components.intro` — pkgdown does not auto-promote it.
 - [v1.2 Roadmap]: Site launches with Bootstrap 5 defaults and `development: mode: release` to suppress dev badge; logo/favicon/CSS branding deferred to v2.
+- Initialized pkgdown using usethis::use_pkgdown() to ensure alignment with standard R package documentation practices.
 
 ### Pending Todos
 
@@ -104,8 +106,8 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: Current
-Stopped at: Phase 11 completed
+Last session: 2026-06-01T13:33:18.667Z
+Stopped at: Completed 12-01-PLAN.md
 Resume file: None
 
 **Completed Milestone:** v1.1 (reliability-and-onboarding-polish) — Phases 05-10 — archived 2026-05-07T05:27:46Z

@@ -26,7 +26,8 @@ Requirements for the v1.2 documentation and website polish milestone. Each will 
 ### Delivery and Publishing
 
 - [ ] **SHIP-01**: Maintainers can generate the site from the existing repository structure without manual copying of reference pages, articles, or assets.
-- [ ] **SHIP-02**: Maintainers can validate the pkgdown configuration locally with zero pkgdown warnings before enabling deployment.
+- [x] **SHIP-02
+**: Maintainers can validate the pkgdown configuration locally with zero pkgdown warnings before enabling deployment.
 - [ ] **SHIP-03**: Maintainers can publish the site automatically from GitHub Actions and GitHub Pages on pushes to `main`.
 - [ ] **SHIP-04**: Maintainers can keep the site build CRAN-safe by excluding pkgdown-only artifacts from the package tarball while preserving all required source docs in git.
 
