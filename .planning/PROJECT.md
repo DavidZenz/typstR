@@ -10,14 +10,21 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 
 ## Current State
 
-- **Version:** v1.1 shipped (2026-05-06)
-- **Status:** Milestone archived. No active milestone is open; the next step is defining the next version's requirements.
+- **Latest shipped release:** v1.1 (2026-05-06)
+- **Status:** Milestone v1.2 is active and currently defining requirements.
 - **Previous Release:** v1.0 (Released 2026-03-23)
 - **Milestone Archives:** [v1.0-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.0-ROADMAP.md), [v1.1-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.1-ROADMAP.md)
 
 ## Current Milestone
 
-No active milestone. Start the next one with `$gsd-new-milestone` once the next set of requirements is ready.
+### v1.2 Documentation and Website Polish
+
+**Goal:** Make typstR easier for new users to adopt with a publishable docs surface that guides them from install to scaffold to render.
+
+**Target features:**
+- Publishable pkgdown website
+- Clear install / getting-started / reference / articles navigation
+- Documentation polish centered on the onboarding flow
 
 ## Requirements
 
@@ -47,7 +54,9 @@ No active milestone. Start the next one with `$gsd-new-milestone` once the next 
 
 ### Active
 
-- None yet. Define the next milestone requirements before reopening Active scope.
+- [ ] Publish a pkgdown website for typstR with clear navigation across installation, onboarding, reference, and articles.
+- [ ] Strengthen onboarding documentation so new users can follow install -> scaffold -> render without friction.
+- [ ] Align README, vignettes, and site structure so the docs surface tells one coherent story.
 
 ### Out of Scope
 
@@ -89,6 +98,7 @@ No active milestone. Start the next one with `$gsd-new-milestone` once the next 
 | Helper-driven onboarding matrix across all formats in v1.1 | Testing scaffold → validate → render through real create/render helpers reduces false confidence from template-only smoke checks | ✓ Satisfied (Phase 07) |
 | Baseline-mapped performance contract for v1.1 | Explicit v1.0/current baseline artifacts plus executable gain/no-backslide assertions make optimization claims auditable and regression-safe | ✓ Satisfied (Phase 08) |
 | Close milestone only after supported-environment evidence is captured | Runtime-gated claims for onboarding and performance should not archive on trust alone | ✓ Satisfied (Phases 09-10) |
+| Focus v1.2 on docs discoverability and onboarding | Existing README/vignettes exist, but a publishable docs site is the fastest way to improve first-use adoption | — Pending |
 
 ## Evolution
 
@@ -108,4 +118,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-07 after archiving milestone v1.1*
+*Last updated: 2026-06-01 after starting milestone v1.2*
