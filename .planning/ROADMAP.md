@@ -229,7 +229,7 @@ Plans:
 
 Plans:
 - [x] 12-01-PLAN.md — Housekeeping and Scaffolding (usethis, DESCRIPTION, .gitignore).
-- [ ] 12-02-PLAN.md — Site Configuration (_pkgdown.yml, navbar, reference grouping, articles).
+- [x] 12-02-PLAN.md — Site Configuration (_pkgdown.yml, navbar, reference grouping, articles).
 - [ ] 12-03-PLAN.md — Local Validation (check_pkgdown, build_site, manual review).
 
 ### Phase 13: CI/CD Deployment and Live Site
@@ -260,5 +260,5 @@ Plans:
 | 9. Audit Traceability and Validation Artifact Closure | v1.1 | 2/2 | Complete | 2026-05-05 |
 | 10. Supported-Environment Verification Closure | v1.1 | 2/2 | Complete | 2026-05-06 |
 | 11. Documentation Content Foundation | v1.2 | 4/4 | Complete | 2026-06-01 |
-| 12. Site Configuration and Local Validation | v1.2 | 1/3 | In progress | - |
+| 12. Site Configuration and Local Validation | v1.2 | 2/3 | In progress | - |
 | 13. CI/CD Deployment and Live Site | v1.2 | 0/3 | Not started | - |
