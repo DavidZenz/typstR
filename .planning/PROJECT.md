@@ -10,22 +10,22 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 
 ## Current State
 
-- **Latest shipped release:** v1.2 (2026-06-01)
-- **Status:** Milestone v1.3 is active and currently defining requirements.
-- **Previous Release:** v1.1 (Released 2026-05-06)
-- **Milestone Archives:** [v1.0-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.0-ROADMAP.md), [v1.1-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.1-ROADMAP.md), [v1.2-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.2-ROADMAP.md)
+- **Latest shipped release:** v1.3 (2026-06-01)
+- **Status:** Milestone v1.4 is active and currently defining requirements.
+- **Previous Release:** v1.2 (Released 2026-06-01)
+- **Milestone Archives:** [v1.0-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.0-ROADMAP.md), [v1.1-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.1-ROADMAP.md), [v1.2-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.2-ROADMAP.md), [v1.3-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.3-ROADMAP.md)
 
 ## Current Milestone
 
-### v1.3 Branding and Documentation Depth
+### v1.4 Hardening and CRAN Submission Readiness
 
-**Goal:** Establish a distinct visual identity for the typstR site and provide deeper technical guidance through complex examples and format comparisons.
+**Goal:** Ensure the package meets all strict CRAN policies and is fully hardened for a public release on the Comprehensive R Archive Network.
 
 **Target features:**
-- Custom logo and favicon
-- Branded CSS accent styling for the pkgdown site
-- Advanced examples article (complex tables, math, bib management)
-- Format comparison matrix (Working Paper vs Article vs Policy Brief)
+- Comprehensive CRAN policy compliance check (R CMD check --as-cran)
+- Dependency footprint review
+- Cross-platform test hardening
+- CRAN submission artifact preparation (cran-comments.md)
 
 ## Requirements
 
@@ -53,16 +53,16 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 - [x] Documentation content foundation polished around one canonical onboarding story — v1.2 Phase 11
 - [x] Grouped reference index and manual navbar wiring for "Get Started" — v1.2 Phase 12
 - [x] Automated CI/CD deployment to GitHub Pages via GHA — v1.2 Phase 13
+- [x] Design and implement a custom logo and favicon for the documentation site — v1.3 Phase 14
+- [x] Apply branded CSS accent styling (colors, fonts) to the pkgdown site — v1.3 Phase 14
+- [x] Create an "Advanced Examples" article covering complex tables, equations, and bibliography edge cases — v1.3 Phase 15
+- [x] Create a "Format Comparison" guide with a feature matrix across supported publication types — v1.3 Phase 16
 
 - [x] Reliability/onboarding polish milestone archived with passed milestone audit and shipped supported-environment evidence — v1.1
 - [x] Documentation and website polish milestone archived with live verified site — v1.2
+- [x] Branding and documentation depth milestone archived with full requirement coverage — v1.3
 
 ### Active
-
-- [ ] Design and implement a custom logo and favicon for the documentation site.
-- [ ] Apply branded CSS accent styling (colors, fonts) to the pkgdown site.
-- [ ] Create an "Advanced Examples" article covering complex tables, equations, and bibliography edge cases.
-- [ ] Create a "Format Comparison" guide with a feature matrix across supported publication types.
 
 ### Out of Scope
 

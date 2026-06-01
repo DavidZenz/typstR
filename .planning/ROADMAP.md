@@ -2,9 +2,9 @@
 
 ## Overview
 
-**Active milestone:** v2 (or next planned)
+**Active milestone:** v1.4 Hardening and CRAN Submission Readiness
 
-Goal: To be determined.
+**Goal:** Ensure the package meets all strict CRAN policies and is fully hardened for a public release on the Comprehensive R Archive Network.
 
 ## Milestones
 
@@ -12,54 +12,56 @@ Goal: To be determined.
 - SHIPPED **v1.1 Reliability and Onboarding Polish** — Phases 5-10 (shipped 2026-05-06)
 - SHIPPED **v1.2 Documentation and Website Polish** — Phases 11-13 (shipped 2026-06-01)
 - SHIPPED **v1.3 Branding and Documentation Depth** — Phases 14-16 (shipped 2026-06-01)
+- ACTIVE **v1.4 Hardening and CRAN Submission Readiness** — Phases 17-20
 
 ## Phases
 
-- [x] **Phase 14: Visual Branding and Identity** - Implement logo, favicon, and custom CSS accents.
-- [x] **Phase 15: Advanced Documentation Examples** - Create the advanced examples article covering tables, math, and cross-refs.
-- [x] **Phase 16: Format Comparison and Milestone Audit** - Create the format comparison matrix and finalize the milestone.
+- [ ] **Phase 17: Dependency Review and Cleanup** - Review and minimize package dependencies.
+- [ ] **Phase 18: Cross-Platform Test Hardening** - Ensure tests run robustly across all platforms.
+- [ ] **Phase 19: R CMD Check Optimization** - Achieve 0 errors, 0 warnings, and 0 notes on all platforms.
+- [ ] **Phase 20: CRAN Submission Preparation** - Prepare cran-comments.md and finalize submission artifacts.
 
 ## Phase Details
 
-### Phase 14: Visual Branding and Identity
-**Goal**: The pkgdown site feels branded and polished.
-**Depends on**: Phase 13 (v1.2 completion)
-**Requirements**: BRAND-01, BRAND-02
-**Plans**: 3 plans
-- [x] 14-01-PLAN.md — Asset Preparation
-- [x] 14-02-PLAN.md — Site Styling
-- [x] 14-03-PLAN.md — Validation
+### Phase 17: Dependency Review and Cleanup
+**Goal**: The package dependency footprint is minimized to reduce CRAN installation burden.
+**Depends on**: Phase 16
+**Requirements**: CRAN-02
 **Success Criteria**:
-  1. Custom logo appears in navbar.
-  2. Favicon appears in browser tab.
-  3. Custom CSS accents (colors/links) are visible on the site.
+  1. Unused or unnecessary packages are removed from Imports and Suggests in DESCRIPTION.
+  2. Remaining dependencies are justified and actively utilized in the package codebase.
+**Plans**: TBD
 
-### Phase 15: Advanced Documentation Examples
-**Goal**: Users can see how to handle complex academic document requirements.
-**Depends on**: Phase 14
-**Requirements**: EXT-01
-**Plans**: 2 plans
-- [x] 15-01-PLAN.md — Content Drafting
-- [x] 15-02-PLAN.md — Site Wiring and Validation
+### Phase 18: Cross-Platform Test Hardening
+**Goal**: The test suite executes reliably on all platforms without false failures.
+**Depends on**: Phase 17
+**Requirements**: CRAN-04
 **Success Criteria**:
-  1. "Advanced Examples" article exists and is reachable via the navbar.
-  2. Examples cover complex tables (e.g., gt), multi-line equations, and bib citations.
+  1. Tests run successfully on macOS, Windows, and Linux CI environments.
+  2. Tests fail gracefully or skip appropriately when Quarto or Typst are missing on a host machine.
+**Plans**: TBD
 
-### Phase 16: Format Comparison and Milestone Audit
-**Goal**: Users can easily choose the right format for their needs.
-**Depends on**: Phase 15
-**Requirements**: EXT-02
-**Plans**: 2 plans
-- [x] 16-01-PLAN.md — Format Comparison Article
-- [x] 16-02-PLAN.md — Milestone Audit and Closure
+### Phase 19: R CMD Check Optimization
+**Goal**: The package passes all rigorous CRAN checks perfectly across operating systems.
+**Depends on**: Phase 18
+**Requirements**: CRAN-01
 **Success Criteria**:
-  1. "Format Comparison" matrix exists and is reachable via the navbar.
-  2. Matrix correctly compares all three formats (workingpaper, article, brief).
-  3. Milestone v1.3 audit passes.
+  1. `R CMD check --as-cran` executes with 0 errors, 0 warnings, and 0 notes locally.
+  2. CI workflows confirm 0 errors, 0 warnings, 0 notes on macOS, Windows, and Linux.
+**Plans**: TBD
+
+### Phase 20: CRAN Submission Preparation
+**Goal**: All necessary artifacts for a formal CRAN submission are complete and validated.
+**Depends on**: Phase 19
+**Requirements**: CRAN-03
+**Success Criteria**:
+  1. `cran-comments.md` is fully drafted and populated with required testing environment details.
+  2. The package structure is verified to meet CRAN repository policies.
+**Plans**: TBD
 
 ## Progress
 
-**Execution Order:** 14 → 15 → 16
+**Execution Order:** 17 → 18 → 19 → 20
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -79,3 +81,7 @@ Goal: To be determined.
 | 14. Visual Branding and Identity | v1.3 | 3/3 | Complete | 2026-06-01 |
 | 15. Advanced Documentation Examples | v1.3 | 2/2 | Complete | 2026-06-01 |
 | 16. Format Comparison and Milestone Audit | v1.3 | 2/2 | Complete | 2026-06-01 |
+| 17. Dependency Review and Cleanup | v1.4 | 0/2 | Not started | - |
+| 18. Cross-Platform Test Hardening | v1.4 | 0/2 | Not started | - |
+| 19. R CMD Check Optimization | v1.4 | 0/2 | Not started | - |
+| 20. CRAN Submission Preparation | v1.4 | 0/2 | Not started | - |
