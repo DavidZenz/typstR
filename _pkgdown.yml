@@ -1,4 +1,15 @@
-url: ~
+url: https://davidzenz.github.io/typstR/
+
 template:
   bootstrap: 5
 
+development:
+  mode: release
+
+navbar:
+  structure:
+    left: [home, intro, reference, articles, news]
+  components:
+    intro:
+      text: "Get Started"
+      href: "articles/getting-started.html"
