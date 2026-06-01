@@ -16,7 +16,7 @@ Goal: Establish a distinct visual identity for the typstR site and provide deepe
 ## Phases
 
 - [x] **Phase 14: Visual Branding and Identity** - Implement logo, favicon, and custom CSS accents.
-- [ ] **Phase 15: Advanced Documentation Examples** - Create the advanced examples article covering tables, math, and cross-refs.
+- [x] **Phase 15: Advanced Documentation Examples** - Create the advanced examples article covering tables, math, and cross-refs.
 - [ ] **Phase 16: Format Comparison and Milestone Audit** - Create the format comparison matrix and finalize the milestone.
 
 ## Phase Details
@@ -40,7 +40,7 @@ Goal: Establish a distinct visual identity for the typstR site and provide deepe
 **Requirements**: EXT-01
 **Plans**: 2 plans
 - [x] 15-01-PLAN.md — Content Drafting
-- [ ] 15-02-PLAN.md — Site Wiring and Validation
+- [x] 15-02-PLAN.md — Site Wiring and Validation
 **Success Criteria**:
   1. "Advanced Examples" article exists and is reachable via the navbar.
   2. Examples cover complex tables (e.g., gt), multi-line equations, and bib citations.
@@ -74,5 +74,5 @@ Goal: Establish a distinct visual identity for the typstR site and provide deepe
 | 12. Site Configuration and Local Validation | v1.2 | 3/3 | Complete | 2026-06-01 |
 | 13. CI/CD Deployment and Live Site | v1.2 | 2/2 | Complete | 2026-06-01 |
 | 14. Visual Branding and Identity | v1.3 | 3/3 | Complete | 2026-06-01 |
-| 15. Advanced Documentation Examples | v1.3 | 1/2 | In progress | - |
+| 15. Advanced Documentation Examples | v1.3 | 2/2 | Complete | 2026-06-01 |
 | 16. Format Comparison and Milestone Audit | v1.3 | 0/2 | Not started | - |
