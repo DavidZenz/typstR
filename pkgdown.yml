@@ -2,10 +2,12 @@ pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
+  advanced-examples: advanced-examples.html
   customizing-branding: customizing-branding.html
+  format-comparison: format-comparison.html
   getting-started: getting-started.html
   working-papers: working-papers.html
-last_built: 2026-06-01T20:02Z
+last_built: 2026-06-01T20:49Z
 urls:
   reference: https://davidzenz.github.io/typstR/reference
   article: https://davidzenz.github.io/typstR/articles
