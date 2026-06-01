@@ -14,5 +14,7 @@
 ^\.github$
 ^LICENSE\.md$
 ^_extensions$
+^docs$
+^pkgdown$
 ^.*\.Rproj$
 ^\.Rproj\.user$
