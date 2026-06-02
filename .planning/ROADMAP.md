@@ -51,7 +51,9 @@
 **Success Criteria**:
   1. `R CMD check --as-cran` executes with 0 errors, 0 warnings, and 0 notes locally.
   2. CI workflows confirm 0 errors, 0 warnings, 0 notes on macOS, Windows, and Linux.
-**Plans**: TBD
+**Plans**: 2 plans
+- [ ] 19-01-PLAN.md — Build-Ignore Alignment
+- [ ] 19-02-PLAN.md — CI Perfection Verification
 
 ### Phase 20: CRAN Submission Preparation
 **Goal**: All necessary artifacts for a formal CRAN submission are complete and validated.
@@ -60,7 +62,7 @@
 **Success Criteria**:
   1. `cran-comments.md` is fully drafted and populated with required testing environment details.
   2. The package structure is verified to meet CRAN repository policies.
-**Plans**: TBD
+**Plans**: 2 plans
 
 ## Progress
 
