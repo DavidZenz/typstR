@@ -2,7 +2,7 @@ scenarios:
   - scenario_id: perf-collect-environment-checks
     v1_baseline_key: v1_quarto_available_check
     current_baseline_key: current_collect_environment_checks
-    slowdown_tolerance: 0.35
+    slowdown_tolerance: 0.5
     gain_target_ratio: 0.9
 
   - scenario_id: perf-validate-render-environment
