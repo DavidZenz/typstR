@@ -63,7 +63,7 @@
   1. `cran-comments.md` is fully drafted and populated with required testing environment details.
   2. The package structure is verified to meet CRAN repository policies.
 **Plans**: 2 plans
-- [ ] 20-01-PLAN.md — Submission Artifacts
+- [x] 20-01-PLAN.md — Submission Artifacts
 - [ ] 20-02-PLAN.md — Milestone Audit and Closure
 
 ## Progress
@@ -91,4 +91,4 @@
 | 17. Dependency Review and Cleanup | v1.4 | 1/1 | Complete | 2026-06-02 |
 | 18. Cross-Platform Test Hardening | v1.4 | 2/2 | Complete | 2026-06-02 |
 | 19. R CMD Check Optimization | v1.4 | 1/2 | In progress | - |
-| 20. CRAN Submission Preparation | v1.4 | 0/2 | Not started | - |
+| 20. CRAN Submission Preparation | v1.4 | 1/2 | In progress | - |
