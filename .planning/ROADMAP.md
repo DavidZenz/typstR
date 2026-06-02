@@ -16,8 +16,8 @@
 
 ## Phases
 
-- [ ] **Phase 17: Dependency Review and Cleanup** - Review and minimize package dependencies.
-- [ ] **Phase 18: Cross-Platform Test Hardening** - Ensure tests run robustly across all platforms.
+- [x] **Phase 17: Dependency Review and Cleanup** - Review and minimize package dependencies.
+- [x] **Phase 18: Cross-Platform Test Hardening** - Ensure tests run robustly across all platforms.
 - [ ] **Phase 19: R CMD Check Optimization** - Achieve 0 errors, 0 warnings, and 0 notes on all platforms.
 - [ ] **Phase 20: CRAN Submission Preparation** - Prepare cran-comments.md and finalize submission artifacts.
 
@@ -63,6 +63,8 @@
   1. `cran-comments.md` is fully drafted and populated with required testing environment details.
   2. The package structure is verified to meet CRAN repository policies.
 **Plans**: 2 plans
+- [ ] 20-01-PLAN.md — Submission Artifacts
+- [ ] 20-02-PLAN.md — Milestone Audit and Closure
 
 ## Progress
 
