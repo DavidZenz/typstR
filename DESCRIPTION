@@ -1,6 +1,6 @@
 Package: typstR
 Title: Publication-Ready Scientific Documents with Quarto and Typst
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: person("David", "Zenz", role = c("aut", "cre"), email = "office@davidzenz.com")
 Description: Create publication-ready scientific documents using Quarto and Typst.
     Provides opinionated publication formats, manuscript scaffolding, metadata
