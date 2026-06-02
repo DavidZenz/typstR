@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.4
-milestone_name: milestone
-status: in-progress
-stopped_at: Completed 20-01-PLAN.md
-last_updated: "2026-06-02T11:40:21.009Z"
-last_activity: 2026-06-02 -- Build-ignore alignment verified (0/0/0 local check).
+milestone_name: Hardening and CRAN Submission Readiness
+status: shipped
+stopped_at: Completed 20-02-PLAN.md
+last_updated: "2026-06-02T12:00:00.000Z"
+last_activity: 2026-06-02 -- Milestone v1.4 audited and closed. Package 0.1.0 ready for CRAN.
 progress:
   total_phases: 4
-  completed_phases: 2
+  completed_phases: 4
   total_plans: 7
-  completed_plans: 6
-  percent: 86
+  completed_plans: 7
+  percent: 100
 ---
 
 # Project State
@@ -26,15 +26,15 @@ See: .planning/PROJECT.md (updated 2026-06-01)
 ## Current Position
 
 Phase: 20 — CRAN Submission Preparation
-Plan: 01
-Status: in-progress
-Last activity: 2026-06-02 -- Submission artifacts prepared and 0.1.0 versioned (0/0/0 local check).
+Plan: 02
+Status: shipped
+Last activity: 2026-06-02 -- Milestone v1.4 audited and closed. Package 0.1.0 ready for CRAN.
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 25 (v1.0-v1.4)
+- Total plans completed: 27 (v1.0-v1.4)
 - Average duration: Not tracked
 - Total execution time: Not tracked
 
@@ -44,18 +44,20 @@ Last activity: 2026-06-02 -- Submission artifacts prepared and 0.1.0 versioned (
 |-------|-------|-------|----------|
 | 17. Dependency Review and Cleanup | 1 | 1 | - |
 | 18. Cross-Platform Test Hardening | 2 | 2 | - |
-| 19. R CMD Check Optimization | 0 | - | - |
-| 20. CRAN Submission Preparation | 0 | - | - |
+| 19. R CMD Check Optimization | 2 | 2 | - |
+| 20. CRAN Submission Preparation | 2 | 2 | - |
 
 **Recent Trend:**
 
-- Last completed execution tranche: Phase 18 complete
-- Trend: Systematically hardening for CRAN.
+- Last completed execution tranche: Phase 20 complete
+- Trend: Systematically hardened for CRAN. 0.1.0 ready.
 
 | Phase 18-cross-platform-test-hardening P18-01 | 1 | 1 tasks | 1 files |
 | Phase 18-cross-platform-test-hardening P18-02 | 1 | 1 tasks | 0 files |
 | Phase 19-r-cmd-check-optimization P01 | 15m | 2 tasks | 3 files |
+| Phase 19-r-cmd-check-optimization P02 | 5m | 2 tasks | 0 files |
 | Phase 20 P01 | 15m | 2 tasks | 2 files |
+| Phase 20 P02 | 10m | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -70,6 +72,7 @@ Last activity: 2026-06-02 -- Submission artifacts prepared and 0.1.0 versioned (
 - Relaxed performance test tolerances to handle microsecond-level machine noise during R CMD check.
 - Set initial release version to 0.1.0.
 - Documented clean check results (0/0/0) in cran-comments.md.
+- [v1.4-20]: Closed Milestone v1.4 after successful audit of all 4 CRAN requirements.
 
 ### Pending Todos
 
@@ -81,8 +84,8 @@ Last activity: 2026-06-02 -- Submission artifacts prepared and 0.1.0 versioned (
 
 ## Session Continuity
 
-Last session: 2026-06-02T11:40:20.999Z
-Stopped at: Completed 20-01-PLAN.md
+Last session: 2026-06-02T12:00:00.000Z
+Stopped at: Completed 20-02-PLAN.md
 Resume file: None
 
-**Next Suggested Step:** /gsd-plan-phase 19
+**Next Suggested Step:** Final manual review and submit to CRAN.

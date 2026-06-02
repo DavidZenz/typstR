@@ -12,14 +12,14 @@
 - SHIPPED **v1.1 Reliability and Onboarding Polish** — Phases 5-10 (shipped 2026-05-06)
 - SHIPPED **v1.2 Documentation and Website Polish** — Phases 11-13 (shipped 2026-06-01)
 - SHIPPED **v1.3 Branding and Documentation Depth** — Phases 14-16 (shipped 2026-06-01)
-- ACTIVE **v1.4 Hardening and CRAN Submission Readiness** — Phases 17-20
+- SHIPPED **v1.4 Hardening and CRAN Submission Readiness** — Phases 17-20 (shipped 2026-06-02)
 
 ## Phases
 
 - [x] **Phase 17: Dependency Review and Cleanup** - Review and minimize package dependencies.
 - [x] **Phase 18: Cross-Platform Test Hardening** - Ensure tests run robustly across all platforms.
-- [ ] **Phase 19: R CMD Check Optimization** - Achieve 0 errors, 0 warnings, and 0 notes on all platforms.
-- [ ] **Phase 20: CRAN Submission Preparation** - Prepare cran-comments.md and finalize submission artifacts.
+- [x] **Phase 19: R CMD Check Optimization** - Achieve 0 errors, 0 warnings, and 0 notes on all platforms.
+- [x] **Phase 20: CRAN Submission Preparation** - Prepare cran-comments.md and finalize submission artifacts.
 
 ## Phase Details
 
@@ -53,7 +53,7 @@
   2. CI workflows confirm 0 errors, 0 warnings, 0 notes on macOS, Windows, and Linux.
 **Plans**: 2 plans
 - [x] 19-01-PLAN.md — Build-Ignore Alignment
-- [ ] 19-02-PLAN.md — CI Perfection Verification
+- [x] 19-02-PLAN.md — CI Perfection Verification
 
 ### Phase 20: CRAN Submission Preparation
 **Goal**: All necessary artifacts for a formal CRAN submission are complete and validated.
@@ -64,7 +64,7 @@
   2. The package structure is verified to meet CRAN repository policies.
 **Plans**: 2 plans
 - [x] 20-01-PLAN.md — Submission Artifacts
-- [ ] 20-02-PLAN.md — Milestone Audit and Closure
+- [x] 20-02-PLAN.md — Milestone Audit and Closure
 
 ## Progress
 
@@ -90,5 +90,5 @@
 | 16. Format Comparison and Milestone Audit | v1.3 | 2/2 | Complete | 2026-06-01 |
 | 17. Dependency Review and Cleanup | v1.4 | 1/1 | Complete | 2026-06-02 |
 | 18. Cross-Platform Test Hardening | v1.4 | 2/2 | Complete | 2026-06-02 |
-| 19. R CMD Check Optimization | v1.4 | 1/2 | In progress | - |
-| 20. CRAN Submission Preparation | v1.4 | 1/2 | In progress | - |
+| 19. R CMD Check Optimization | v1.4 | 2/2 | Complete | 2026-06-02 |
+| 20. CRAN Submission Preparation | v1.4 | 2/2 | Complete | 2026-06-02 |
