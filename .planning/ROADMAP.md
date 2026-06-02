@@ -40,7 +40,9 @@
 **Success Criteria**:
   1. Tests run successfully on macOS, Windows, and Linux CI environments.
   2. Tests fail gracefully or skip appropriately when Quarto or Typst are missing on a host machine.
-**Plans**: TBD
+**Plans**: 2 plans
+- [ ] 18-01-PLAN.md — CI Workflow Scaffolding
+- [ ] 18-02-PLAN.md — Cross-Platform Execution and Hardening
 
 ### Phase 19: R CMD Check Optimization
 **Goal**: The package passes all rigorous CRAN checks perfectly across operating systems.
