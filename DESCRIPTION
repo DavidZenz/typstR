@@ -13,15 +13,15 @@ SystemRequirements: quarto
 Imports:
     cli (>= 3.6.0),
     fs (>= 1.6.0),
-    quarto (>= 1.4)
+    quarto (>= 1.4),
+    yaml
 Suggests:
     bench,
     knitr,
     pkgdown,
     rmarkdown,
     testthat (>= 3.0.0),
-    withr,
-    yaml
+    withr
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 URL: https://davidzenz.github.io/typstR/, https://github.com/DavidZenz/typstR

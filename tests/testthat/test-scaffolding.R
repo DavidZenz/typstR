@@ -2,7 +2,8 @@
   candidates <- c(
     getwd(),
     file.path(getwd(), ".."),
-    file.path(getwd(), "..", "..")
+    file.path(getwd(), "..", ".."),
+    file.path(getwd(), "..", "..", "00_pkg_src", "typstR")
   )
 
   for (candidate in candidates) {
@@ -57,8 +58,10 @@
     base::system.file(..., package = package, mustWork = mustWork)
   }
 
-  assign("system.file", local_system_file, envir = environment(fn))
-  on.exit(rm("system.file", envir = environment(fn)), add = TRUE)
+  if (!environmentIsLocked(environment(fn))) {
+    assign("system.file", local_system_file, envir = environment(fn))
+    on.exit(rm("system.file", envir = environment(fn)), add = TRUE)
+  }
 
   force(code)
 }

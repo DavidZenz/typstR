@@ -21,7 +21,8 @@
     candidates <- c(
       getwd(),
       file.path(getwd(), ".."),
-      file.path(getwd(), "..", "..")
+      file.path(getwd(), "..", ".."),
+      file.path(getwd(), "..", "..", "00_pkg_src", "typstR")
     )
 
     for (candidate in candidates) {
@@ -160,7 +161,9 @@
     base::system.file(..., package = package, mustWork = mustWork)
   }
 
-  assign("system.file", local_system_file, envir = env)
+  if (!environmentIsLocked(env)) {
+    assign("system.file", local_system_file, envir = env)
+  }
   source(file.path(repo_root, "R", "scaffold_helpers.R"), local = env)
   assign("scaffold_emit_success", function(path, label) invisible(NULL), envir = env)
   source(file.path(repo_root, "R", "create_working_paper.R"), local = env)

@@ -35,7 +35,9 @@ new_v1_env <- function(worktree) {
     base::system.file(..., package = package, mustWork = mustWork)
   }
 
-  assign("system.file", local_system_file, envir = env)
+  if (!environmentIsLocked(env)) {
+    assign("system.file", local_system_file, envir = env)
+  }
   source(file.path(worktree, "R", "utils.R"), local = env)
   source(file.path(worktree, "R", "render.R"), local = env)
   source(file.path(worktree, "R", "create_working_paper.R"), local = env)

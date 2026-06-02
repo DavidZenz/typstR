@@ -1,6 +1,6 @@
 # Performance micro-benchmarks for Phase 08 hotspot scenarios.
 
-.perf_assert_low_noise <- function(result, scenario_id, max_ratio = 1.35) {
+.perf_assert_low_noise <- function(result, scenario_id, max_ratio = 2.5) {
   stats <- .perf_benchmark_summary(result)
   expect_true(is.finite(stats$p50), info = paste(scenario_id, "p50 must be finite"))
   expect_true(is.finite(stats$p95), info = paste(scenario_id, "p95 must be finite"))

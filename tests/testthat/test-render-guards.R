@@ -2,6 +2,7 @@ resolve_render_source_file <- function(relative_path) {
   candidates <- c(
     relative_path,
     file.path("..", "..", relative_path),
+    file.path("..", "..", "00_pkg_src", "typstR", relative_path),
     file.path(getwd(), relative_path)
   )
 

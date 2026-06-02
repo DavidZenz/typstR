@@ -2,6 +2,7 @@ diagnostics_source_file <- function() {
   candidates <- c(
     "R/diagnostics.R",
     "../../R/diagnostics.R",
+    file.path("..", "..", "00_pkg_src", "typstR", "R", "diagnostics.R"),
     file.path(getwd(), "R", "diagnostics.R")
   )
 

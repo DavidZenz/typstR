@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: Hardening and CRAN Submission Readiness
-status: planning
-stopped_at: ROADMAP created
-last_updated: "2026-06-01T23:30:00.000Z"
-last_activity: 2026-06-01 -- ROADMAP and REQUIREMENTS generated for v1.4
+status: phase-complete
+stopped_at: Phase 17 completed
+last_updated: "2026-06-02T08:00:00Z"
+last_activity: 2026-06-02 -- Phase 17 complete; dependencies aligned and tests fixed for R CMD check isolation.
 progress:
   total_phases: 4
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  completed_phases: 1
+  total_plans: 1
+  completed_plans: 1
+  percent: 25
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-01)
 
 **Core value:** Users can go from `create_working_paper("my-paper")` to a polished, branded PDF in minutes — no Typst or LaTeX knowledge required.
-**Current focus:** Hardening and CRAN Submission Readiness (v1.4)
+**Current focus:** Phase 18 — Cross-Platform Test Hardening
 
 ## Current Position
 
-Phase: 17 — Dependency Review and Cleanup
-Plan: None
-Status: Ready for Phase 17 Planning
-Last activity: ROADMAP and REQUIREMENTS generated for v1.4
+Phase: 18 — Cross-Platform Test Hardening
+Plan: Not started
+Status: Phase 17 complete
+Last activity: 2026-06-02 -- Phase 17 complete; dependencies aligned and tests fixed for R CMD check isolation.
 
 ## Performance Metrics
 

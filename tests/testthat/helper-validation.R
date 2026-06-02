@@ -2,7 +2,8 @@ validation_repo_root <- local({
   candidates <- c(
     getwd(),
     file.path(getwd(), ".."),
-    file.path(getwd(), "..", "..")
+    file.path(getwd(), "..", ".."),
+    file.path(getwd(), "..", "..", "00_pkg_src", "typstR")
   )
 
   for (candidate in candidates) {

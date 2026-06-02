@@ -30,7 +30,8 @@
 **Success Criteria**:
   1. Unused or unnecessary packages are removed from Imports and Suggests in DESCRIPTION.
   2. Remaining dependencies are justified and actively utilized in the package codebase.
-**Plans**: TBD
+**Plans**: 1 plans
+- [x] 17-01-PLAN.md — Dependency Alignment
 
 ### Phase 18: Cross-Platform Test Hardening
 **Goal**: The test suite executes reliably on all platforms without false failures.
@@ -81,7 +82,8 @@
 | 14. Visual Branding and Identity | v1.3 | 3/3 | Complete | 2026-06-01 |
 | 15. Advanced Documentation Examples | v1.3 | 2/2 | Complete | 2026-06-01 |
 | 16. Format Comparison and Milestone Audit | v1.3 | 2/2 | Complete | 2026-06-01 |
-| 17. Dependency Review and Cleanup | v1.4 | 0/2 | Not started | - |
+| 17. Dependency Review and Cleanup | v1.4 | 1/1 | Complete | 2026-06-02 |
+
 | 18. Cross-Platform Test Hardening | v1.4 | 0/2 | Not started | - |
 | 19. R CMD Check Optimization | v1.4 | 0/2 | Not started | - |
 | 20. CRAN Submission Preparation | v1.4 | 0/2 | Not started | - |
