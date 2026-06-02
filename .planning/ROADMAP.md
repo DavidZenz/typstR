@@ -41,8 +41,8 @@
   1. Tests run successfully on macOS, Windows, and Linux CI environments.
   2. Tests fail gracefully or skip appropriately when Quarto or Typst are missing on a host machine.
 **Plans**: 2 plans
-- [ ] 18-01-PLAN.md — CI Workflow Scaffolding
-- [ ] 18-02-PLAN.md — Cross-Platform Execution and Hardening
+- [x] 18-01-PLAN.md — CI Workflow Scaffolding
+- [x] 18-02-PLAN.md — Cross-Platform Execution and Hardening
 
 ### Phase 19: R CMD Check Optimization
 **Goal**: The package passes all rigorous CRAN checks perfectly across operating systems.
@@ -85,7 +85,6 @@
 | 15. Advanced Documentation Examples | v1.3 | 2/2 | Complete | 2026-06-01 |
 | 16. Format Comparison and Milestone Audit | v1.3 | 2/2 | Complete | 2026-06-01 |
 | 17. Dependency Review and Cleanup | v1.4 | 1/1 | Complete | 2026-06-02 |
-
-| 18. Cross-Platform Test Hardening | v1.4 | 0/2 | Not started | - |
+| 18. Cross-Platform Test Hardening | v1.4 | 2/2 | Complete | 2026-06-02 |
 | 19. R CMD Check Optimization | v1.4 | 0/2 | Not started | - |
 | 20. CRAN Submission Preparation | v1.4 | 0/2 | Not started | - |
