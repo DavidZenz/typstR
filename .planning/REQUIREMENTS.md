@@ -9,7 +9,8 @@ Requirements for the v1.4 Hardening and CRAN Submission Readiness milestone.
 
 ### CRAN Hardening
 
-- [ ] **CRAN-01**: R CMD check --as-cran passes with 0 errors, 0 warnings, 0 notes on local, macOS, Windows, and Linux CI.
+- [x] **CRAN-01
+**: R CMD check --as-cran passes with 0 errors, 0 warnings, 0 notes on local, macOS, Windows, and Linux CI.
 - [ ] **CRAN-02**: Dependency footprint is minimized (Review Imports/Suggests).
 - [ ] **CRAN-03**: `cran-comments.md` is prepared for submission.
 - [x] **CRAN-04

@@ -52,7 +52,7 @@
   1. `R CMD check --as-cran` executes with 0 errors, 0 warnings, and 0 notes locally.
   2. CI workflows confirm 0 errors, 0 warnings, 0 notes on macOS, Windows, and Linux.
 **Plans**: 2 plans
-- [ ] 19-01-PLAN.md — Build-Ignore Alignment
+- [x] 19-01-PLAN.md — Build-Ignore Alignment
 - [ ] 19-02-PLAN.md — CI Perfection Verification
 
 ### Phase 20: CRAN Submission Preparation
@@ -88,5 +88,5 @@
 | 16. Format Comparison and Milestone Audit | v1.3 | 2/2 | Complete | 2026-06-01 |
 | 17. Dependency Review and Cleanup | v1.4 | 1/1 | Complete | 2026-06-02 |
 | 18. Cross-Platform Test Hardening | v1.4 | 2/2 | Complete | 2026-06-02 |
-| 19. R CMD Check Optimization | v1.4 | 0/2 | Not started | - |
+| 19. R CMD Check Optimization | v1.4 | 1/2 | In progress | - |
 | 20. CRAN Submission Preparation | v1.4 | 0/2 | Not started | - |
