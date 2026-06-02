@@ -20,3 +20,6 @@
 ^\.Rproj\.user$
 ^_pkgdown\.yml$
 ^pkgdown/
+^init\.json$
+^\.Rhistory$
+^\.DS_Store$
