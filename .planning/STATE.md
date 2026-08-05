@@ -4,8 +4,8 @@ milestone: v1.4
 milestone_name: Hardening and CRAN Submission Readiness
 status: shipped
 stopped_at: Completed 20-02-PLAN.md
-last_updated: "2026-06-02T12:00:00.000Z"
-last_activity: 2026-06-02 -- Milestone v1.4 audited and closed. Package 0.1.0 ready for CRAN.
+last_updated: "2026-08-05T08:05:22Z"
+last_activity: 2026-08-05 -- Resolved Phase 18/19 CI gaps and reverified the v1.4 milestone. Package 0.1.0 ready for CRAN.
 progress:
   total_phases: 4
   completed_phases: 4
@@ -73,6 +73,7 @@ Last activity: 2026-06-02 -- Milestone v1.4 audited and closed. Package 0.1.0 re
 - Set initial release version to 0.1.0.
 - Documented clean check results (0/0/0) in cran-comments.md.
 - [v1.4-20]: Closed Milestone v1.4 after successful audit of all 4 CRAN requirements.
+- [v1.4-closure]: Final GitHub Actions run 30987307046 passed on all five configured targets after stabilizing CI timing assertions and Windows diagnostic ordering.
 
 ### Pending Todos
 
@@ -84,8 +85,8 @@ Last activity: 2026-06-02 -- Milestone v1.4 audited and closed. Package 0.1.0 re
 
 ## Session Continuity
 
-Last session: 2026-06-02T12:00:00.000Z
-Stopped at: Completed 20-02-PLAN.md
+Last session: 2026-08-05T08:05:22Z
+Stopped at: Completed Phase 17-20 verification gap closure
 Resume file: None
 
 **Next Suggested Step:** Final manual review and submit to CRAN.

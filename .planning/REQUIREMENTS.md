@@ -9,14 +9,10 @@ Requirements for the v1.4 Hardening and CRAN Submission Readiness milestone.
 
 ### CRAN Hardening
 
-- [x] **CRAN-01
-**: R CMD check --as-cran passes with 0 errors, 0 warnings, 0 notes on local, macOS, Windows, and Linux CI.
-- [x] **CRAN-02
-**: Dependency footprint is minimized (Review Imports/Suggests).
-- [x] **CRAN-03
-**: `cran-comments.md` is prepared for submission.
-- [x] **CRAN-04
-**: Test coverage is sufficient for CRAN and runs robustly across platforms without Quarto/Typst failures.
+- [x] **CRAN-01**: R CMD check --as-cran passes with 0 errors, 0 warnings, 0 notes on local, macOS, Windows, and Linux CI.
+- [x] **CRAN-02**: Dependency footprint is minimized (Review Imports/Suggests).
+- [x] **CRAN-03**: `cran-comments.md` is prepared for submission.
+- [x] **CRAN-04**: Test coverage is sufficient for CRAN and runs robustly across platforms without Quarto/Typst failures.
 
 ## v2 Requirements (Deferred)
 
@@ -40,7 +36,7 @@ Requirements that matter for long-term growth but are not yet scheduled.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CRAN-02 | Phase 17 | Pending |
+| CRAN-02 | Phase 17 | Complete |
 | CRAN-04 | Phase 18 | Complete |
-| CRAN-01 | Phase 19 | Pending |
-| CRAN-03 | Phase 20 | Pending |
+| CRAN-01 | Phase 19 | Complete |
+| CRAN-03 | Phase 20 | Complete |
