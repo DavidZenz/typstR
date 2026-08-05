@@ -48,3 +48,19 @@ jobs:
         with:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
+
+      - name: Surface check failures
+        if: failure()
+        shell: bash
+        run: |
+          for log in $(find check -type f \( -name '00check.log' -o -name 'testthat.Rout.fail' \)); do
+            echo "### $log" >> "$GITHUB_STEP_SUMMARY"
+            while IFS= read -r line; do
+              case "$line" in
+                *ERROR*|*Error*|*FAIL*|*Failed*|*failure*|*error*)
+                  printf '::error file=%s::%s\n' "$log" "$line"
+                  printf '%s\n' "$line" >> "$GITHUB_STEP_SUMMARY"
+                  ;;
+              esac
+            done < "$log"
+          done
