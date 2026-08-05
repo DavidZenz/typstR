@@ -22,6 +22,7 @@
 }
 
 test_that("regression: hotspot scenarios do not backslide beyond calibrated tolerance", {
+  .perf_skip_if_ci()
   .perf_skip_if_bench_missing()
 
   scenario_map <- Filter(

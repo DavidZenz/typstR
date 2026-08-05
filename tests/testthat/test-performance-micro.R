@@ -15,6 +15,7 @@
 }
 
 test_that("micro: D-01 scenario perf-collect-environment-checks is deterministic", {
+  .perf_skip_if_ci()
   .perf_skip_if_bench_missing()
 
   result <- bench::mark(
@@ -28,6 +29,7 @@ test_that("micro: D-01 scenario perf-collect-environment-checks is deterministic
 })
 
 test_that("micro: D-02 scenario perf-validate-render-environment is deterministic", {
+  .perf_skip_if_ci()
   .perf_skip_if_bench_missing()
 
   result <- bench::mark(
@@ -41,6 +43,7 @@ test_that("micro: D-02 scenario perf-validate-render-environment is deterministi
 })
 
 test_that("micro: D-04 scenario perf-create-working-paper-baseline is deterministic", {
+  .perf_skip_if_ci()
   .perf_skip_if_bench_missing()
 
   result <- bench::mark(
@@ -70,6 +73,7 @@ test_that("micro: scaffold helper matrix executes symmetric helper calls", {
 })
 
 test_that("smoke: perf-collect-environment-checks scenario stays low-noise", {
+  .perf_skip_if_ci()
   .perf_skip_if_bench_missing()
 
   result <- bench::mark(
@@ -83,6 +87,7 @@ test_that("smoke: perf-collect-environment-checks scenario stays low-noise", {
 })
 
 test_that("smoke: perf-validate-render-environment scenario stays low-noise", {
+  .perf_skip_if_ci()
   .perf_skip_if_bench_missing()
 
   result <- bench::mark(
@@ -108,6 +113,7 @@ test_that("smoke: perf-create-working-paper-baseline scenario matrix still resol
     .perf_assert_scaffold_outputs(fixture$project, spec$label)
   }
 
+  .perf_skip_if_ci()
   .perf_skip_if_bench_missing()
 
   result <- bench::mark(

@@ -60,6 +60,7 @@
 }
 
 test_that("gain: validation/render hotspots beat mapped v1 baseline targets", {
+  .perf_skip_if_ci()
   .perf_skip_if_bench_missing()
 
   for (entry in .perf_gain_validation_render_entries()) {
@@ -68,6 +69,7 @@ test_that("gain: validation/render hotspots beat mapped v1 baseline targets", {
 })
 
 test_that("smoke: validation hotspot beats mapped v1 baseline target", {
+  .perf_skip_if_ci()
   .perf_skip_if_bench_missing()
 
   entry <- .perf_gain_entry_for("perf-collect-environment-checks")

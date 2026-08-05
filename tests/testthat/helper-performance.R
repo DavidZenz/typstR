@@ -2,6 +2,11 @@
   testthat::skip_if_not_installed("bench")
 }
 
+# Shared CI runners make sub-millisecond timing comparisons non-deterministic.
+.perf_skip_if_ci <- function() {
+  testthat::skip_on_ci()
+}
+
 .perf_quarto_available <- function() {
   requireNamespace("quarto", quietly = TRUE) && quarto::quarto_available()
 }
