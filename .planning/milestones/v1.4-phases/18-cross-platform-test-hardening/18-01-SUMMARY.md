@@ -4,6 +4,7 @@ plan: "18-01"
 subsystem: "ci"
 tags: ["ci", "github-actions", "rcmdcheck"]
 requires: []
+requirements_completed: ["CRAN-04"]
 provides: ["ci-workflow"]
 affects: [".github/workflows/R-CMD-check.yaml"]
 tech-stack:

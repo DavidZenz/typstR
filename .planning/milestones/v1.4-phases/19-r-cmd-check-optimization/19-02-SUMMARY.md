@@ -4,6 +4,7 @@ plan: 02
 subsystem: ci
 tags: [cran, ci, r-cmd-check]
 requires: [CRAN-01]
+requirements_completed: [CRAN-01]
 provides: [cross-platform-clean-check]
 affects: []
 tech-stack: [R, GitHub Actions, devtools]

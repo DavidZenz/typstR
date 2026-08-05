@@ -4,6 +4,7 @@ plan: 02
 subsystem: Audit
 tags: [milestone, audit, closure]
 requires: [CRAN-01, CRAN-02, CRAN-03, CRAN-04]
+requirements_completed: [CRAN-01, CRAN-02, CRAN-03, CRAN-04]
 provides: [milestone-closure]
 affects: [.planning/STATE.md, .planning/ROADMAP.md, .planning/v1.4-MILESTONE-AUDIT.md]
 tech-stack: [Markdown]

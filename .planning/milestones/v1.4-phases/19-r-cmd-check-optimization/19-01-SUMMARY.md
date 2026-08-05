@@ -4,6 +4,7 @@ plan: 01
 subsystem: build
 tags: [cran, rbuildignore, automation]
 requires: [CRAN-01]
+requirements_completed: [CRAN-01]
 provides: [clean-check]
 affects: [tests, build]
 tech-stack: [R, devtools]

@@ -4,6 +4,7 @@ plan: 01
 subsystem: Metadata
 tags: [cran, submission, versioning]
 requires: [CRAN-03]
+requirements_completed: [CRAN-03]
 provides: [CRAN-03]
 affects: [DESCRIPTION, cran-comments.md]
 tech-stack: [R, usethis, devtools]

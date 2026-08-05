@@ -3,6 +3,7 @@ phase: "18-cross-platform-test-hardening"
 plan: "02"
 subsystem: "tests"
 tags: ["ci", "cross-platform", "testing", "github-actions"]
+requirements_completed: ["CRAN-04"]
 dependencies:
   requires: ["18-01-SUMMARY.md"]
   provides: ["Green CI Pipeline"]
