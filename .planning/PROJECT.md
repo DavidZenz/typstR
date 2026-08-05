@@ -10,22 +10,14 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 
 ## Current State
 
-- **Latest shipped release:** v1.3 (2026-06-01)
-- **Status:** Milestone v1.4 is active and currently defining requirements.
-- **Previous Release:** v1.2 (Released 2026-06-01)
-- **Milestone Archives:** [v1.0-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.0-ROADMAP.md), [v1.1-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.1-ROADMAP.md), [v1.2-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.2-ROADMAP.md), [v1.3-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.3-ROADMAP.md)
+- **Latest shipped release:** v1.4 (2026-08-05)
+- **Status:** v1.4 is archived and ready for CRAN submission.
+- **Previous Release:** v1.3 (Released 2026-06-01)
+- **Milestone Archives:** [v1.0-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.0-ROADMAP.md), [v1.1-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.1-ROADMAP.md), [v1.2-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.2-ROADMAP.md), [v1.3-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.3-ROADMAP.md), [v1.4-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.4-ROADMAP.md), [v1.4-REQUIREMENTS.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.4-REQUIREMENTS.md), [v1.4-MILESTONE-AUDIT.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.4-MILESTONE-AUDIT.md)
 
-## Current Milestone
+## Next Milestone Goals
 
-### v1.4 Hardening and CRAN Submission Readiness
-
-**Goal:** Ensure the package meets all strict CRAN policies and is fully hardened for a public release on the Comprehensive R Archive Network.
-
-**Target features:**
-- Comprehensive CRAN policy compliance check (R CMD check --as-cran)
-- Dependency footprint review
-- Cross-platform test hardening
-- CRAN submission artifact preparation (cran-comments.md)
+No next milestone is defined. Run `/gsd-new-milestone` to gather requirements and establish the next roadmap.
 
 ## Requirements
 
@@ -61,8 +53,11 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 - [x] Reliability/onboarding polish milestone archived with passed milestone audit and shipped supported-environment evidence — v1.1
 - [x] Documentation and website polish milestone archived with live verified site — v1.2
 - [x] Branding and documentation depth milestone archived with full requirement coverage — v1.3
+- [x] Hardening and CRAN submission readiness milestone archived with full requirement coverage and five-target CI verification — v1.4
 
 ### Active
+
+No active requirements.
 
 ### Out of Scope
 
@@ -89,6 +84,7 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 - **Compatibility**: Must work with current Quarto (1.4+) and its bundled Typst
 - **CRAN**: R CMD check must pass cleanly; proper DESCRIPTION, NAMESPACE, roxygen2 docs
 - **Design**: Prefer Quarto conventions; metadata should be declarative; minimize magic; sensible defaults out of the box
+- **Release state**: package version 0.1.0; v1.4 is ready for final maintainer review and CRAN submission
 
 ## Key Decisions
 
@@ -104,7 +100,8 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 | Helper-driven onboarding matrix across all formats in v1.1 | Testing scaffold → validate → render through real create/render helpers reduces false confidence from template-only smoke checks | ✓ Satisfied (Phase 07) |
 | Baseline-mapped performance contract for v1.1 | Explicit v1.0/current baseline artifacts plus executable gain/no-backslide assertions make optimization claims auditable and regression-safe | ✓ Satisfied (Phase 08) |
 | Close milestone only after supported-environment evidence is captured | Runtime-gated claims for onboarding and performance should not archive on trust alone | ✓ Satisfied (Phases 09-10) |
-| Focus v1.2 on docs discoverability and onboarding | Existing README/vignettes exist, but a publishable docs site is the fastest way to improve first-use adoption | — Pending |
+| Focus v1.2 on docs discoverability and onboarding | Existing README/vignettes exist, but a publishable docs site is the fastest way to improve first-use adoption | ✓ Satisfied (v1.2) |
+| Close v1.4 only after external CI evidence is green | Local checks alone did not expose the Windows diagnostic ordering failure | ✓ Satisfied (v1.4) |
 
 ## Evolution
 
@@ -124,4 +121,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-06-01 after starting milestone v1.2*
+*Last updated: 2026-08-05 after v1.4 milestone completion*

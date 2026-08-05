@@ -2,10 +2,11 @@
 gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: Hardening and CRAN Submission Readiness
-status: shipped
-stopped_at: Completed 20-02-PLAN.md
-last_updated: "2026-08-05T08:05:22Z"
-last_activity: 2026-08-05 -- Resolved Phase 18/19 CI gaps and reverified the v1.4 milestone. Package 0.1.0 ready for CRAN.
+status: Awaiting next milestone
+stopped_at: Milestone v1.4 archived
+last_updated: "2026-08-05T08:31:07.760Z"
+last_activity: 2026-08-05
+last_activity_desc: Milestone v1.4 completed and archived
 progress:
   total_phases: 4
   completed_phases: 4
@@ -21,14 +22,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-01)
 
 **Core value:** Users can go from `create_working_paper("my-paper")` to a polished, branded PDF in minutes — no Typst or LaTeX knowledge required.
-**Current focus:** Phase 20 — CRAN Submission Preparation
+**Current focus:** Awaiting next milestone
 
 ## Current Position
 
-Phase: 20 — CRAN Submission Preparation
-Plan: 02
-Status: shipped
-Last activity: 2026-06-02 -- Milestone v1.4 audited and closed. Package 0.1.0 ready for CRAN.
+Phase: Milestone v1.4 complete
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-08-05 — Milestone v1.4 completed and archived
 
 ## Performance Metrics
 
@@ -85,8 +86,12 @@ Last activity: 2026-06-02 -- Milestone v1.4 audited and closed. Package 0.1.0 re
 
 ## Session Continuity
 
-Last session: 2026-08-05T08:05:22Z
-Stopped at: Completed Phase 17-20 verification gap closure
+Last session: 2026-08-05T08:31:07Z
+Stopped at: Milestone v1.4 archived
 Resume file: None
 
-**Next Suggested Step:** Final manual review and submit to CRAN.
+**Next Suggested Step:** Start the next milestone with `/gsd-new-milestone` or complete final maintainer review for CRAN submission.
+
+## Operator Next Steps
+
+- Start the next milestone with /gsd-new-milestone
