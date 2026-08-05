@@ -76,6 +76,33 @@ test_that("sort_diagnostics() produces deterministic results across repeated run
   )
 })
 
+test_that("sort_diagnostics() normalizes Windows path separators", {
+  new_diagnostic <- get_diagnostics_fn("new_diagnostic")
+  sort_diagnostics <- get_diagnostics_fn("sort_diagnostics")
+
+  diagnostics <- list(
+    new_diagnostic(
+      code = "DIAG-ENV-001",
+      severity = "error",
+      location = list(file = "C:\\temp\\project"),
+      hint = "Install Quarto."
+    ),
+    new_diagnostic(
+      code = "DIAG-ENV-004",
+      severity = "error",
+      location = list(file = "C:/temp/project/_extensions/typstR/_extension.yml"),
+      hint = "Copy the extension manifest."
+    )
+  )
+
+  sorted <- sort_diagnostics(diagnostics)
+
+  expect_identical(
+    vapply(sorted, function(x) x$code, character(1)),
+    c("DIAG-ENV-001", "DIAG-ENV-004")
+  )
+})
+
 test_that("emit_diagnostics_error() emits classed condition with diagnostics payload", {
   new_diagnostic <- get_diagnostics_fn("new_diagnostic")
   emit_diagnostics_error <- get_diagnostics_fn("emit_diagnostics_error")

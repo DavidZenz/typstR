@@ -152,6 +152,15 @@ diagnostic_sort_string <- function(value) {
   value
 }
 
+diagnostic_sort_file_string <- function(value) {
+  value <- diagnostic_sort_string(value)
+  if (identical(value, "~")) {
+    return(value)
+  }
+
+  chartr("\\", "/", value)
+}
+
 validate_diagnostics_list <- function(diagnostics) {
   if (!is.list(diagnostics) || length(diagnostics) == 0) {
     cli::cli_abort("{.arg diagnostics} must be a non-empty list of diagnostics.")
@@ -202,7 +211,7 @@ sort_diagnostics <- function(diagnostics) {
       return("~")
     }
 
-    diagnostic_sort_string(location[["file"]])
+    diagnostic_sort_file_string(location[["file"]])
   }, character(1))
 
   field_key <- vapply(diagnostics, function(diagnostic) {
