@@ -140,6 +140,36 @@ if (quarto::quarto_available()) {
 }
 ```
 
+
+## Validate before rendering
+
+```{r eval = FALSE}
+validate_manuscript("my-paper/template.qmd")
+validate_manuscript("my-paper", check_environment = TRUE)
+```
+
+The first call checks static YAML, publication metadata and configured files without
+requiring Quarto. Rendering runs those same checks plus Quarto/Typst and extension
+checks automatically. `validate_render_environment()` remains an environment-only
+check. Errors include stable diagnostic codes, locations and repair hints.
+
+Every variant needs a text title and the bundled `typstR-typst` format. Select
+`workingpaper` (default), `article` or `brief` with `typstR: format-variant`.
+Authors, affiliations, abstract, keywords, JEL codes, report numbers and branding
+are optional; supplied fields must have the documented types.
+
+File input works from outside the project, including paths with spaces. Directory
+input selects one immediate `.qmd`; `NULL` searches the current directory and
+reports ambiguity rather than guessing. The nearest `_quarto.yml` establishes the
+project root. Project settings, directory `_metadata.yml` and manuscript YAML are
+merged. Local resources (bibliography, logo, CSL and include files) resolve relative
+to the YAML file that declares them. Configured files must already exist.
+
+Static preflight rejects profiles, `.local` overrides, `metadata-files`, executable
+YAML and remote resources. It does not evaluate code-generated resources/citations
+or validate the whole Quarto schema. Citeproc checks bibliography contents at render
+time. For unsupported configuration, use Quarto directly and verify the output.
+
 ## Next steps
 
 Once the basic workflow is working, the other vignettes cover the two main

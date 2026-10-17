@@ -265,11 +265,15 @@ probe_extension <- function(path) {
   }
   manifest <- as.character(fs::path(path, "_extensions", "typstR", "_extension.yml"))
   present <- fs::file_exists(manifest)
+  required <- c("typst-template.typ", "typst-show.typ", "formats/workingpaper.typ",
+                paste0("templates/", c("base", "titleblock", "authors", "abstract", "branding", "disclaimer"), ".typ"))
+  missing <- required[!file.exists(file.path(dirname(manifest), required))]
 
   list(
-    ok = present,
+    ok = present && !length(missing),
     present = present,
-    manifest = manifest
+    manifest = manifest,
+    missing_files = missing
   )
 }
 
@@ -320,7 +324,7 @@ diagnostics_from_environment_checks <- function(checks, path) {
       severity = "error",
       location = list(file = checks$extension$manifest),
       hint = "Ensure the project contains _extensions/typstR/_extension.yml.",
-      message = "typstR extension manifest is missing from the target project.",
+      message = "typstR extension manifest or required template files are missing from the target project.",
       details = checks$extension
     )
   }

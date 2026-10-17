@@ -19,6 +19,7 @@ render_test_env <- local({
   source(resolve_render_source_file("R/diagnostics.R"), local = env)
   source(resolve_render_source_file("R/validation_environment.R"), local = env)
   source(resolve_render_source_file("R/utils.R"), local = env)
+  source(resolve_render_source_file("R/validation_manuscript.R"), local = env)
   source(resolve_render_source_file("R/render.R"), local = env)
   env
 })
@@ -56,7 +57,7 @@ test_that("render_pub() emits structured diagnostics when Quarto is unavailable"
   render_pub <- get_render_fn("render_pub")
   mock_environment_unavailable()
   path <- withr::local_tempfile(fileext = ".qmd")
-  writeLines("---\ntitle: Test\n---", path)
+  writeLines("---\ntitle: Test\nformat: typstR-typst\n---", path)
 
   condition <- expect_error(
     render_pub(path, open = FALSE),
@@ -71,7 +72,7 @@ test_that("render_working_paper() emits the same no-Quarto structured diagnostic
   render_working_paper <- get_render_fn("render_working_paper")
   mock_environment_unavailable()
   path <- withr::local_tempfile(fileext = ".qmd")
-  writeLines("---\ntitle: Test\n---", path)
+  writeLines("---\ntitle: Test\nformat: typstR-typst\n---", path)
 
   condition <- expect_error(
     render_working_paper(path, open = FALSE),

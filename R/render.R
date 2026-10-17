@@ -16,7 +16,7 @@
 #' render_pub("my-working-paper/template.qmd", quiet = TRUE, open = FALSE)
 #' render_pub(
 #'   "my-article/template.qmd",
-#'   output_format = "typstR-article",
+#'   output_format = "typstR-typst",
 #'   quiet = TRUE,
 #'   open = FALSE
 #' )
@@ -27,7 +27,7 @@ render_pub <- function(input = NULL, output_format = NULL, quiet = FALSE,
   # Resolve manuscript and project before probing the environment.
   context <- resolve_render_context(input)
   resolved_input <- context$input
-  validate_render_environment(context$extension_dir)
+  validate_manuscript_context(context, output_format, check_environment = TRUE)
 
   # Render via quarto R package (never shell out directly)
   quarto::quarto_render(
