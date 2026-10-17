@@ -23,3 +23,20 @@ reproduced current-code regression; it does not justify resetting the baseline.
 Raw evidence: artifacts/benchmark/comparisons.csv, same-host-scaffold-comparison.csv,
 toolchain.txt and per-workload RDS objects (local, ignored artifacts). Repeat on the
 release CI host before using measurements to make release performance claims.
+
+## Final-source refresh
+
+Re-ran the same runner on package-code commit 623a8fe after all other local
+verification processes finished. Historical baselines remain unchanged; this is
+measurement evidence, not a speed claim.
+
+| Workload | p50 ms | p95 ms | Stored-baseline ratio |
+|---|---:|---:|---:|
+| perf-collect-environment-checks | 0.03895 | 0.04214 | 0.848 |
+| perf-validate-render-environment | 0.13936 | 0.24336 | 1.018 |
+| perf-create-working-paper-baseline | 28.93757 | 32.37725 | 2.733 |
+
+The scaffold signal remains consistent with the documented same-host historical
+comparison and unchanged scaffold helper implementation; the old 10.588 ms
+baseline is not reproduced. No baseline was reset. Raw final evidence is in
+artifacts/release-verified/benchmark-isolated (CSV/RDS/toolchain).

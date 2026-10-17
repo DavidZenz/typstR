@@ -14,8 +14,8 @@
 - Verifiable source-tarball/check evidence and maintainer checklist prepared.
 
 **Evidence:** [audit](v1.5-MILESTONE-AUDIT.md), [handoff](phases/25-release-handoff/25-VERIFICATION.md).
-**Check:** 0 errors, 0 warnings, 2 explained local notes; 462 test passes.
-**Tarball SHA-256:** `b778c267725d626e2668e516fec63bac5c852adbb8456d6c830ce61d903ba758`.
+**Check:** 0 errors, 0 warnings, 2 explained local notes; 484 test passes.
+**Tarball SHA-256:** `9d7cf19b24c7fb4a9a3919e01b57be6b3b811760125b9b02796e425c7c0a2cb0`.
 **Next release action:** final maintainer review, then explicit authorization before CRAN submission.
 
 ---

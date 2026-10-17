@@ -17,7 +17,7 @@ progress:
 
 Planning milestone v1.5; package version 0.1.0 remains unchanged.
 
-**Current focus:** maintainer review of draft PR #1 and source tarball/hash before explicit submission authorization.
+**Current focus:** maintainer review of draft PR #1 and the verified source tarball/hash before explicit submission authorization.
 **Requirements:** [REQUIREMENTS.md](REQUIREMENTS.md).
 **Backlog:** [BACKLOG.md](BACKLOG.md).
 
@@ -37,4 +37,4 @@ check evidence must be recorded; final maintainer authorization is a separate ac
 
 ## Current evidence
 
-See [release ledger](phases/25-release-handoff/25-VERIFICATION.md). Local check: 0 errors, 0 warnings, 2 explained notes. Six required installed-tarball renders passed. Hosted CI passed: matrix 39065294234, PDF assurance 39065294207, docs 39065294285.
+See [release ledger](phases/25-release-handoff/25-VERIFICATION.md). Local check: 0 errors, 0 warnings, 2 explained notes. Six required installed-tarball renders passed. Hosted CI passed: matrix 39067210867, PDF assurance 39067210872, docs 39067210860.

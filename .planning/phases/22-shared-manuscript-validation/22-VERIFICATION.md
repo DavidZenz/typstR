@@ -1,11 +1,11 @@
 ---
 phase: 22-shared-manuscript-validation
 status: passed
-verified: "2026-10-17T20:12:40.722376+00:00"
+verified: "2026-10-17T20:40:10.105302+00:00"
 requirements_completed: [VAL-02]
 verification_method: inline source-test-artifact audit
 covered_files: [".planning/phases/22-shared-manuscript-validation/22-01-PLAN.md", ".planning/phases/22-shared-manuscript-validation/22-01-SUMMARY.md", "NAMESPACE", "R/diagnostics.R", "R/render.R", "R/utils.R", "R/validation_environment.R", "R/validation_manuscript.R", "VALID_STRATEGY.md", "man/validate_manuscript.Rd", "tests/testthat/test-diagnostics-codebook.R", "tests/testthat/test-diagnostics-ordering.R", "tests/testthat/test-manuscript-validation.R", "tests/testthat/test-validation-environment.R"]
-covered_digest: v2:sha256:ee78542200e90f24b773d97a96d4b40c57c76a0623a8e1907c5567c5e6461d22
+covered_digest: v2:sha256:38d7fa7cdf31d7b6f3e958a2ff7547b16fbb763ae41cf413c7a70d739388e269
 ---
 
 # Shared validation verification
@@ -26,3 +26,13 @@ standalone/render equivalence and explicit unsupported dynamic configuration.
 
 Contract and limits: ../../../VALID_STRATEGY.md and getting-started article.
 PDF branding/content/visual assurance is tracked under RENDER-01.
+
+## Final metadata edge verification
+
+Final source 623a8fe adds a shape-preserving YAML sequence handler, validates
+subtitle/abstract/inline-reference and project mapping shapes, and ignores literal
+fenced/inline code when detecting citations. Narrative metadata citations remain
+checked. Direct Quarto probes confirmed project must be a mapping and typed core
+fields reject explicit null; the validator now diagnoses these before Quarto.
+A literal-code manuscript without bibliography rendered through the public helper.
+Fresh source-tarball tests: 484 passes, 0 failures/warnings, 9 opt-in timing skips.

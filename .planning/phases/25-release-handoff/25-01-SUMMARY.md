@@ -10,7 +10,7 @@ completed: 2026-10-17
 
 Implemented the user's authorized scope: Build/check the source tarball, install and render in a clean session, explain check notes and prepare the maintainer checklist. Verify hosted checks; do not submit without explicit maintainer authorization.
 
-Code/documentation commits: c9c425a, ceac7a5. This is an evidence-linked retrospective
+Code/documentation commits: c9c425a, ceac7a5, 84c0f23, 623a8fe. This is an evidence-linked retrospective
 summary of inline work, not a claim of an earlier GSD agent run.
 
 Verification and any outstanding gate: [25-VERIFICATION.md](25-VERIFICATION.md).

@@ -10,7 +10,7 @@ completed: 2026-10-17
 
 Implemented the user's authorized scope: Share standalone/render validation; check static YAML, supported format/variant, metadata and local resources; document supported inheritance and unsupported dynamic configuration.
 
-Code/documentation commits: a953615, ceac7a5. This is an evidence-linked retrospective
+Code/documentation commits: a953615, ceac7a5, 84c0f23, 623a8fe. This is an evidence-linked retrospective
 summary of inline work, not a claim of an earlier GSD agent run.
 
 Verification and any outstanding gate: [22-VERIFICATION.md](22-VERIFICATION.md).
