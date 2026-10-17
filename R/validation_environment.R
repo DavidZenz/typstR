@@ -260,6 +260,9 @@ extension_manifest_source <- function() {
 }
 
 probe_extension <- function(path) {
+  if (file.exists(path) && !dir.exists(path)) {
+    path <- resolve_render_context(path)$extension_dir
+  }
   manifest <- as.character(fs::path(path, "_extensions", "typstR", "_extension.yml"))
   present <- fs::file_exists(manifest)
 

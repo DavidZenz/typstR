@@ -157,6 +157,7 @@ test_that("render_pub() and standalone validation emit equivalent diagnostics", 
   env <- new_render_validation_env()
   path <- tempfile("validation-render-equivalence-")
   dir.create(path)
+  writeLines("---\ntitle: Test\n---", file.path(path, "paper.qmd"))
 
   assign("collect_environment_checks", function(path) failing_checks(path), envir = env)
 

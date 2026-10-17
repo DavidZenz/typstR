@@ -55,9 +55,11 @@ assert_env_diag <- function(condition) {
 test_that("render_pub() emits structured diagnostics when Quarto is unavailable", {
   render_pub <- get_render_fn("render_pub")
   mock_environment_unavailable()
+  path <- withr::local_tempfile(fileext = ".qmd")
+  writeLines("---\ntitle: Test\n---", path)
 
   condition <- expect_error(
-    render_pub("paper.qmd", open = FALSE),
+    render_pub(path, open = FALSE),
     class = "typstR_diagnostics_error"
   )
 
@@ -68,9 +70,11 @@ test_that("render_pub() emits structured diagnostics when Quarto is unavailable"
 test_that("render_working_paper() emits the same no-Quarto structured diagnostic", {
   render_working_paper <- get_render_fn("render_working_paper")
   mock_environment_unavailable()
+  path <- withr::local_tempfile(fileext = ".qmd")
+  writeLines("---\ntitle: Test\n---", path)
 
   condition <- expect_error(
-    render_working_paper("paper.qmd", open = FALSE),
+    render_working_paper(path, open = FALSE),
     class = "typstR_diagnostics_error"
   )
 

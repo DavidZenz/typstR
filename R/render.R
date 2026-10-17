@@ -24,11 +24,10 @@
 #' @export
 render_pub <- function(input = NULL, output_format = NULL, quiet = FALSE,
                        open = interactive()) {
-  # Pre-flight: shared environment validation (locked decision)
-  validate_render_environment(if (is.null(input)) "." else input)
-
-  # Input auto-detection (locked decision)
-  resolved_input <- resolve_input(input)
+  # Resolve manuscript and project before probing the environment.
+  context <- resolve_render_context(input)
+  resolved_input <- context$input
+  validate_render_environment(context$extension_dir)
 
   # Render via quarto R package (never shell out directly)
   quarto::quarto_render(

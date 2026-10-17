@@ -1,0 +1,13 @@
+---
+phase: 21-reliable-render-context
+status: passed
+verified: 2026-10-17
+requirements_completed: [REL-01]
+---
+
+# Render context verification
+
+- Reproduced old README file-input error: DIAG-ENV-004 incorrectly looked under template.qmd/_extensions/.
+- Targeted testthat suite (render-context, render-guards, input-diagnostics, validation-environment): exit 0, no failures/skips on R 4.6.1.
+- Fresh working paper in a path containing spaces rendered via public render_working_paper(file.path(project, "template.qmd")) from outside the project; PDF exists (Quarto 1.10.19, Typst 0.15.1).
+- Unit coverage checks all three scaffolders and file/directory/NULL dispatch, nearest project boundary, ambiguity/missing inputs. Full all-format PDF assurance is tracked separately as RENDER-01.
