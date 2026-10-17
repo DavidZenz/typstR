@@ -138,11 +138,13 @@ validate_manuscript_context <- function(context, output_format, check_environmen
   meta <- merge_manuscript_metadata(meta, document)
   # Respect document format selection rather than adding project output formats.
   if (!is.null(document$format)) {
-    meta$format <- document$format
-    if (is_yaml_mapping(document$format) && is_yaml_mapping(inherited_format)) {
-      for (key in names(document$format)) {
+    selected_format <- document$format
+    if (is_text_scalar(selected_format)) selected_format <- stats::setNames(list("default"), selected_format)
+    meta$format <- selected_format
+    if (is_yaml_mapping(selected_format) && is_yaml_mapping(inherited_format)) {
+      for (key in names(selected_format)) {
         old <- inherited_format[[key]]
-        new <- document$format[[key]]
+        new <- selected_format[[key]]
         if (identical(new, "default")) new <- list()
         if (is_yaml_mapping(old) && is_yaml_mapping(new)) meta$format[[key]] <- merge_manuscript_metadata(old, new)
       }

@@ -131,3 +131,12 @@ test_that("extension preflight detects missing required templates", {
   expect_false(probe_extension(project)$ok)
   expect_identical(probe_extension(project)$missing_files, "templates/branding.typ")
 })
+
+test_that("scalar document format inherits selected project format resources", {
+  file <- manuscript_fixture(c("title: Test", "format: typstR-typst"))
+  root <- dirname(file)
+  writeLines(c("project: default", "format:", "  typstR-typst:", "    typstR:", "      logo: missing.svg"), file.path(root, "_quarto.yml"))
+  expect_true("DIAG-MANUSCRIPT-004" %in% manuscript_codes(file))
+  writeLines("<svg/>", file.path(root, "missing.svg"))
+  expect_true(validate_manuscript(file)$ok)
+})
