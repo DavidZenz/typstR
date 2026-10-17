@@ -2,9 +2,23 @@
 
 ## Overview
 
-**Active milestone:** None. v1.4 shipped on 2026-08-05.
+**Active milestone:** v1.5 First Release Reliability (started 2026-10-17).
+Package version: 0.1.0. Milestone numbers are internal planning identifiers.
 
-**Next action:** Start the next milestone with `/gsd-new-milestone`.
+**Next action:** Phase 21: repair public scaffold-to-render onboarding.
+
+## v1.5 First Release Reliability
+
+| Phase | Scope | Requirements | Status |
+|---|---|---|---|
+| 21 | Resolve manuscript/project context and repair onboarding | REL-01 | In progress |
+| 22 | Shared manuscript validation and resource semantics | VAL-02 | Pending |
+| 23 | Required real renders and separate performance assurance | RENDER-01, PERF-02 | Pending |
+| 24 | Reconcile historical evidence, documentation and backlog | PLAN-01 | Pending |
+| 25 | Current source-package verification and CRAN handoff | CRAN-05 | Pending |
+
+Acceptance criteria: [REQUIREMENTS.md](REQUIREMENTS.md).
+Each phase must record verification evidence before being marked complete.
 
 ## Milestones
 
@@ -40,4 +54,4 @@ Full phase plans, summaries, validation, and verification are archived under `mi
 
 ## Backlog
 
-No deferred milestone items.
+See [BACKLOG.md](BACKLOG.md): BRAND-03 rendered previews (P2), EXT-03 versioned docs (P3).

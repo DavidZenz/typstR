@@ -10,14 +10,14 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 
 ## Current State
 
-- **Latest shipped release:** v1.4 (2026-08-05)
-- **Status:** v1.4 is archived and ready for CRAN submission.
+- **Latest completed planning milestone:** v1.4 (2026-08-05)
+- **Status:** v1.5 First Release Reliability active. Package 0.1.0 requires fresh verification before CRAN handoff.
 - **Previous Release:** v1.3 (Released 2026-06-01)
-- **Milestone Archives:** [v1.0-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.0-ROADMAP.md), [v1.1-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.1-ROADMAP.md), [v1.2-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.2-ROADMAP.md), [v1.3-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.3-ROADMAP.md), [v1.4-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.4-ROADMAP.md), [v1.4-REQUIREMENTS.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.4-REQUIREMENTS.md), [v1.4-MILESTONE-AUDIT.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.4-MILESTONE-AUDIT.md)
+- **Milestone Archives:** [v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md), [v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md), [v1.2-ROADMAP.md](milestones/v1.2-ROADMAP.md), [v1.3-ROADMAP.md](milestones/v1.3-ROADMAP.md), [v1.4-ROADMAP.md](milestones/v1.4-ROADMAP.md), [v1.4-REQUIREMENTS.md](milestones/v1.4-REQUIREMENTS.md), [v1.4-MILESTONE-AUDIT.md](milestones/v1.4-MILESTONE-AUDIT.md)
 
 ## Next Milestone Goals
 
-No next milestone is defined. Run `/gsd-new-milestone` to gather requirements and establish the next roadmap.
+v1.5: repair first-run rendering, complete manuscript validation, require real render verification, separate benchmarks, reconcile evidence, and prepare a verifiable CRAN handoff. See [requirements](REQUIREMENTS.md).
 
 ## Requirements
 
@@ -29,7 +29,7 @@ No next milestone is defined. Run `/gsd-new-milestone` to gather requirements an
 - [x] Project scaffolding functions: create_working_paper(), create_article(), create_policy_brief()
 - [x] Metadata helpers: author(), affiliation(), manuscript_meta(), funding(), data_availability(), code_availability()
 - [x] Publication helpers: jel_codes(), keywords(), fig_note(), tab_note(), appendix_title(), report_number()
-- [x] Validation/diagnostics: check_typst(), check_quarto(), check_typstR(), validate_manuscript()
+- [x] Environment validation/diagnostics: validate_render_environment(); original proposed check_* and validate_manuscript APIs were not shipped. Manuscript validation is tracked as VAL-02.
 - [x] Render wrappers: render_pub(), render_working_paper()
 - [x] Branding hooks: logo, fonts, colors, margins, footer, disclaimer page — configurable via YAML
 - [x] Anonymized/review mode for article format
@@ -57,7 +57,7 @@ No next milestone is defined. Run `/gsd-new-milestone` to gather requirements an
 
 ### Active
 
-No active requirements.
+REL-01, VAL-02, RENDER-01, PERF-02, PLAN-01, CRAN-05; see [REQUIREMENTS.md](REQUIREMENTS.md).
 
 ### Out of Scope
 
@@ -80,11 +80,11 @@ No active requirements.
 ## Constraints
 
 - **Tech stack**: R package + Quarto extension + Typst templates — three layers that must integrate cleanly
-- **Dependencies**: cli, yaml, fs, rlang, quarto — keep lightweight for CRAN
+- **Dependencies**: cli, yaml, fs, quarto — keep lightweight for CRAN
 - **Compatibility**: Must work with current Quarto (1.4+) and its bundled Typst
 - **CRAN**: R CMD check must pass cleanly; proper DESCRIPTION, NAMESPACE, roxygen2 docs
 - **Design**: Prefer Quarto conventions; metadata should be declarative; minimize magic; sensible defaults out of the box
-- **Release state**: package version 0.1.0; v1.4 is ready for final maintainer review and CRAN submission
+- **Release state**: package version 0.1.0; v1.5 verification is required before final maintainer review; submission needs explicit authorization
 
 ## Key Decisions
 
