@@ -1,8 +1,11 @@
 ## Test environments
 * local macOS Tahoe 26.6.2 (aarch64), R 4.6.1
 * Quarto 1.10.19 with bundled Typst 0.15.1 for clean-session PDF assurance
-* Five-target GitHub Actions checks are required before submission; historical
-  v1.4 checks are not presented as current verification of these changes.
+* GitHub Actions: Ubuntu R-release/devel/oldrel-1, macOS R-release and Windows
+  R-release all passed for package-code commit ceac7a5:
+  https://github.com/DavidZenz/typstR/actions/runs/39065294234
+* Required six-PDF assurance passed on Ubuntu with the pinned toolchain:
+  https://github.com/DavidZenz/typstR/actions/runs/39065294207
 
 ## R CMD check results
 

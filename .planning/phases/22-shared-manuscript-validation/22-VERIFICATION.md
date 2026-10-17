@@ -1,8 +1,11 @@
 ---
 phase: 22-shared-manuscript-validation
 status: passed
-verified: 2026-10-17
+verified: "2026-10-17T20:12:40.722376+00:00"
 requirements_completed: [VAL-02]
+verification_method: inline source-test-artifact audit
+covered_files: [".planning/phases/22-shared-manuscript-validation/22-01-PLAN.md", ".planning/phases/22-shared-manuscript-validation/22-01-SUMMARY.md", "NAMESPACE", "R/diagnostics.R", "R/render.R", "R/utils.R", "R/validation_environment.R", "R/validation_manuscript.R", "VALID_STRATEGY.md", "man/validate_manuscript.Rd", "tests/testthat/test-diagnostics-codebook.R", "tests/testthat/test-diagnostics-ordering.R", "tests/testthat/test-manuscript-validation.R", "tests/testthat/test-validation-environment.R"]
+covered_digest: v2:sha256:ee78542200e90f24b773d97a96d4b40c57c76a0623a8e1907c5567c5e6461d22
 ---
 
 # Shared validation verification

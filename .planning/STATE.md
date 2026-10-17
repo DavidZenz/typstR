@@ -2,22 +2,22 @@
 gsd_state_version: 1.0
 milestone: v1.5
 milestone_name: First Release Reliability
-status: In progress
-stopped_at: Hosted CI verification and maintainer handoff
+status: Complete — maintainer release review pending
+stopped_at: First release reliability verified; maintainer handoff ready
 last_updated: "2026-10-17"
 last_activity: 2026-10-17
-last_activity_desc: Local source-tarball checks and six clean-session PDF renders passed
+last_activity_desc: All six requirements verified; five-target matrix, PDF assurance and documentation jobs passed
 progress:
   total_phases: 5
-  completed_phases: 3
-  percent: 60
+  completed_phases: 5
+  percent: 100
 ---
 
 # Project State
 
 Planning milestone v1.5; package version 0.1.0 remains unchanged.
 
-**Current focus:** verify hosted CI on review branch, then finalize the maintainer handoff.
+**Current focus:** maintainer review of draft PR #1 and source tarball/hash before explicit submission authorization.
 **Requirements:** [REQUIREMENTS.md](REQUIREMENTS.md).
 **Backlog:** [BACKLOG.md](BACKLOG.md).
 
@@ -37,4 +37,4 @@ check evidence must be recorded; final maintainer authorization is a separate ac
 
 ## Current evidence
 
-See [release ledger](phases/25-release-handoff/25-VERIFICATION.md). Local check: 0 errors, 0 warnings, 2 explained notes. Six required installed-tarball renders passed. Hosted CI pending.
+See [release ledger](phases/25-release-handoff/25-VERIFICATION.md). Local check: 0 errors, 0 warnings, 2 explained notes. Six required installed-tarball renders passed. Hosted CI passed: matrix 39065294234, PDF assurance 39065294207, docs 39065294285.
