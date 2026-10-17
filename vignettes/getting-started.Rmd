@@ -156,7 +156,10 @@ check. Errors include stable diagnostic codes, locations and repair hints.
 Every variant needs a text title and the bundled `typstR-typst` format. Select
 `workingpaper` (default), `article` or `brief` with `typstR: format-variant`.
 Authors, affiliations, abstract, keywords, JEL codes, report numbers and branding
-are optional; supplied fields must have the documented types.
+are optional; supplied fields must have the documented types. Use `null` to clear
+optional metadata inherited from project settings. Literal citation examples inside
+fenced/inline code do not require a bibliography; citations in prose or the abstract
+do. Inline reference records need unique text IDs.
 
 File input works from outside the project, including paths with spaces. Directory
 input selects one immediate `.qmd`; `NULL` searches the current directory and

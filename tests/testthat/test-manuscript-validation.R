@@ -37,6 +37,11 @@ test_that("format, title and optional metadata shapes are validated", {
     c("title: Test", "format: {typstR-typst: 123}"),
     c("title: Test", "format: typstR-typst", "typstR: {format-variant: unknown}"),
     c("title: 123", "format: typstR-typst"),
+    c("title: Test", "format: typstR-typst", "abstract: [invalid]"),
+    c("title: Test", "format: typstR-typst", "subtitle: {invalid: mapping}"),
+    c("title: Test", "format: typstR-typst", "references: invalid"),
+    c("title: Test", "format: typstR-typst", "references: [{id: key}, {id: key}]"),
+    c("title: Test", "format: typstR-typst", "include-before-body: {text: [invalid]}"),
     c("title: Test", "format: typstR-typst", "typstR: text"),
     c("title: Test", "format: typstR-typst", "typstR: {anonymized: yesplease}"),
     c("title: Test", "format: typstR-typst", "author: [42]"),
@@ -138,5 +143,28 @@ test_that("scalar document format inherits selected project format resources", {
   writeLines(c("project: default", "format:", "  typstR-typst:", "    typstR:", "      logo: missing.svg"), file.path(root, "_quarto.yml"))
   expect_true("DIAG-MANUSCRIPT-004" %in% manuscript_codes(file))
   writeLines("<svg/>", file.path(root, "missing.svg"))
+  expect_true(validate_manuscript(file)$ok)
+})
+
+test_that("literal citation examples do not require a bibliography", {
+  for (body in list(
+    c("```r", "# @examples", "```"),
+    c("~~~~markdown", "See @literal", "~~~~"),
+    "Use `example @literal` inside code.",
+    c("````markdown", "```", "@literal", "```", "````")
+  )) expect_true(validate_manuscript(manuscript_fixture(body = body))$ok)
+  file <- manuscript_fixture(body = c("```r", "# @literal", "```", "Cite @real."))
+  expect_true("DIAG-MANUSCRIPT-004" %in% manuscript_codes(file))
+  file <- manuscript_fixture(c("title: Test", "format: typstR-typst", "abstract: 'Cite @real.'"))
+  expect_true("DIAG-MANUSCRIPT-004" %in% manuscript_codes(file))
+})
+
+test_that("null optional fields can clear project defaults without becoming invalid metadata", {
+  file <- manuscript_fixture(c("title: Test", "format: typstR-typst", "abstract: null", "subtitle: null",
+    "bibliography: null", "csl: null", "include-before-body: null",
+    "typstR: {logo: null, footer: null, keywords: null, anonymized: null}",
+    "author: [{name: Ada, email: null, orcid: null}]"))
+  writeLines(c("project: default", "abstract: Project abstract", "bibliography: missing.bib",
+               "typstR: {logo: missing.svg}"), file.path(dirname(file), "_quarto.yml"))
   expect_true(validate_manuscript(file)$ok)
 })

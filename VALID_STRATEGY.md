@@ -26,12 +26,16 @@ format, not separate Quarto format names.
 
 Authors, affiliations, abstract, keywords, JEL codes, report number, statements
 and branding remain optional for every variant, including anonymized articles.
+Explicit `null` clears optional fields inherited from project settings. Supplied
+subtitle/abstract and inline include text must be text, not sequences or mappings.
 When present, author names, IDs, emails, ORCIDs, booleans, lists, colors and margin
 lengths are checked for supported shapes. Affiliation IDs must be unique;
 references to a declared ID table must resolve.
 
 Configured bibliography, CSL, logo and header/body include files must exist and
-be files. Citations need a bibliography or inline references. Bibliography contents
+be files. Citations in prose and narrative metadata need a bibliography or inline
+references; fenced/inline code examples are ignored. Inline references must be a
+sequence of mappings with unique text IDs. Remaining bibliography contents
 and citation-key resolution are delegated to Quarto/citeproc; successful creation
 alone does not prove meaningful PDF content. Required render assurance checks PDF
 text, warnings and representative layout separately.

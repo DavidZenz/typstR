@@ -42,6 +42,31 @@ is_text_sequence <- function(x) {
   is.list(x) && is.null(names(x)) && length(x) > 0L && all(vapply(x, is_text_scalar, logical(1)))
 }
 
+# Citation syntax in literal code is not a manuscript citation. Ignore YAML,
+# fenced code blocks and inline code; generated citations remain Quarto's job.
+manuscript_prose_lines <- function(lines) {
+  if (length(lines) && grepl("^---\\s*$", sub("^\ufeff", "", lines[[1]]))) {
+    end <- which(grepl("^(---|\\.\\.\\.)\\s*$", lines[-1]))
+    if (length(end)) lines <- lines[-seq_len(end[[1]] + 1L)]
+  }
+  prose <- character(length(lines))
+  kept <- 0L
+  fence <- NULL
+  for (line in lines) {
+    marker <- regmatches(line, regexpr("^ {0,3}(`{3,}|~{3,})", line))
+    if (is.null(fence) && length(marker) && nzchar(marker)) {
+      fence <- trimws(marker)
+    } else if (!is.null(fence)) {
+      closing <- paste0("^ {0,3}", substr(fence, 1L, 1L), "{", nchar(fence), ",}\\s*$")
+      if (grepl(closing, line)) fence <- NULL
+    } else {
+      kept <- kept + 1L
+      prose[[kept]] <- gsub("`+[^`]*`+", "", line)
+    }
+  }
+  prose[seq_len(kept)]
+}
+
 # Quarto merges mappings and sequences; scalar values override. Document format
 # names replace the project selection, but matching format options inherit.
 merge_manuscript_metadata <- function(base, override) {
@@ -104,7 +129,8 @@ validate_manuscript_context <- function(context, output_format, check_environmen
       lines <- if (end[[1]] == 1L) character() else lines[seq.int(2L, end[[1]])]
     }
     meta <- tryCatch(
-      withCallingHandlers(yaml::yaml.load(paste(lines, collapse = "\n"), eval.expr = FALSE),
+      withCallingHandlers(yaml::yaml.load(paste(lines, collapse = "\n"), eval.expr = FALSE,
+                                         handlers = list(seq = function(x) as.list(x))),
                           warning = function(w) stop(conditionMessage(w))),
       error = function(e) {
         add("manuscript_yaml_invalid", paste("Invalid YAML:", conditionMessage(e)), "yaml", file)
@@ -171,6 +197,9 @@ validate_manuscript_context <- function(context, output_format, check_environmen
     add("manuscript_format_invalid", "Format options must be a mapping or default.", "format")
   }
   if (!is_text_scalar(meta$title)) add("manuscript_metadata_invalid", "A non-empty title is required for all publication variants.", "title")
+  for (key in intersect(names(meta), c("subtitle", "abstract"))) {
+    if (!is.null(meta[[key]]) && !is_text_scalar(meta[[key]])) add("manuscript_metadata_invalid", paste(key, "must be non-empty text."), key)
+  }
   typ <- meta$typstR
   if (!is.null(typ) && !is_yaml_mapping(typ)) {
     add("manuscript_metadata_invalid", "typstR must be a mapping.", "typstR")
@@ -181,13 +210,13 @@ validate_manuscript_context <- function(context, output_format, check_environmen
     add("manuscript_format_invalid", "Unknown publication variant.", "typstR.format-variant")
   }
   for (key in intersect(names(typ), c("logo", "primary-font", "title-font", "footer", "report-number", "abstract-label", "acknowledgements", "funding", "data-availability", "code-availability", "disclaimer-text", "accent-color"))) {
-    if (!is_text_scalar(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must be non-empty text."), paste0("typstR.", key))
+    if (!is.null(typ[[key]]) && !is_text_scalar(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must be non-empty text."), paste0("typstR.", key))
   }
   for (key in intersect(names(typ), c("anonymized", "disclaimer-page"))) {
-    if (!is.logical(typ[[key]]) || length(typ[[key]]) != 1L || is.na(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must be true or false."), paste0("typstR.", key))
+    if (!is.null(typ[[key]]) && (!is.logical(typ[[key]]) || length(typ[[key]]) != 1L || is.na(typ[[key]]))) add("manuscript_metadata_invalid", paste(key, "must be true or false."), paste0("typstR.", key))
   }
   for (key in intersect(names(typ), c("keywords", "jel"))) {
-    if (!is_text_sequence(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must contain text values."), paste0("typstR.", key))
+    if (!is.null(typ[[key]]) && !is_text_sequence(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must contain text values."), paste0("typstR.", key))
   }
   if (is_text_sequence(typ$jel) && any(!grepl("^[A-Z][0-9]{1,2}$", unlist(typ$jel)))) add("manuscript_metadata_invalid", "Invalid JEL code.", "typstR.jel")
   if (!is.null(typ$`disclaimer-position`) && !identical(typ$`disclaimer-position`, "first") && !identical(typ$`disclaimer-position`, "last")) add("manuscript_metadata_invalid", "Disclaimer position must be first or last.", "typstR.disclaimer-position")
@@ -231,7 +260,7 @@ validate_manuscript_context <- function(context, output_format, check_environmen
     if (is_yaml_mapping(name)) name <- if (!is.null(name$literal)) name$literal else paste(name$given, name$family)
     if (!is_text_scalar(name)) add("manuscript_metadata_invalid", "Author name must be non-empty text.", paste0(field, ".name"))
     for (key in intersect(names(a), c("email", "orcid"))) {
-      if (!is_text_scalar(a[[key]])) add("manuscript_metadata_invalid", paste(key, "must be text."), paste0(field, ".", key))
+      if (!is.null(a[[key]]) && !is_text_scalar(a[[key]])) add("manuscript_metadata_invalid", paste(key, "must be text."), paste0(field, ".", key))
     }
     if (is_text_scalar(a$email) && !grepl("^[^[:space:]@]+@[^[:space:]@]+\\.[^[:space:]@]+$", a$email)) add("manuscript_metadata_invalid", "Malformed author email.", paste0(field, ".email"))
     if (is_text_scalar(a$orcid) && !grepl("^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]$", a$orcid)) add("manuscript_metadata_invalid", "Malformed ORCID.", paste0(field, ".orcid"))
@@ -264,15 +293,35 @@ validate_manuscript_context <- function(context, output_format, check_environmen
       }
     }
   }
-  for (key in intersect(names(meta), c("bibliography", "csl"))) check_resource(meta[[key]], key)
+  for (key in intersect(names(meta), c("bibliography", "csl"))) {
+    if (!is.null(meta[[key]])) check_resource(meta[[key]], key)
+  }
+  if (!is.null(meta$references)) {
+    refs <- meta$references
+    if (!is.list(refs) || !is.null(names(refs)) || !length(refs) ||
+        !all(vapply(refs, function(x) is_yaml_mapping(x) && is_text_scalar(x$id), logical(1)))) {
+      add("manuscript_metadata_invalid", "Inline references must be a sequence of mappings with text IDs.", "references")
+    } else if (anyDuplicated(vapply(refs, `[[`, character(1), "id"))) {
+      add("manuscript_metadata_invalid", "Inline reference IDs must be unique.", "references")
+    }
+  }
   if (!is.null(typ$logo)) check_resource(typ$logo, "typstR.logo")
   for (key in intersect(names(meta), c("include-in-header", "include-before-body", "include-after-body"))) {
     value <- meta[[key]]
-    if (is_yaml_mapping(value) && !is.null(value$text)) next
+    if (is.null(value)) next
+    if (is_yaml_mapping(value) && !is.null(value$text)) {
+      if (!is_text_scalar(value$text)) add("manuscript_metadata_invalid", "Inline include text must be non-empty text.", key)
+      next
+    }
     if (is_yaml_mapping(value)) value <- value$file
     check_resource(value, key)
   }
-  body <- readLines(context$input, warn = FALSE)
+  body <- manuscript_prose_lines(readLines(context$input, warn = FALSE))
+  narrative <- c(list(meta$abstract), unname(typ[intersect(names(typ),
+    c("acknowledgements", "funding", "data-availability", "code-availability", "disclaimer-text"))]))
+  for (text in Filter(is_text_scalar, narrative)) {
+    body <- c(body, manuscript_prose_lines(strsplit(text, "\n", fixed = TRUE)[[1]]))
+  }
   if (any(grepl("(^|[[:space:]\\[;])@[-A-Za-z0-9_:.]+", body)) && is.null(meta$bibliography) && is.null(meta$references)) {
     add("manuscript_resource_missing", "Citations require bibliography or inline references.", "bibliography",
         hint = "Set bibliography to a local .bib/CSL file, or supply Quarto inline references.")
