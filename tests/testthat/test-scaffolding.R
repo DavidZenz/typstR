@@ -105,7 +105,7 @@
     "typstR:",
     "keywords:",
     "funding: |",
-    "## References"
+    "<!-- Quarto adds the bibliography automatically when citations are present. -->"
   )
 }
 

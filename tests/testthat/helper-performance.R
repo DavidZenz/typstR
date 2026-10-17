@@ -4,6 +4,9 @@
 
 # Shared CI runners make sub-millisecond timing comparisons non-deterministic.
 .perf_skip_if_ci <- function() {
+  if (!identical(Sys.getenv("TYPSTR_RUN_BENCHMARKS"), "true")) {
+    testthat::skip("Timing assertions are opt-in; run tools/benchmark.R for recorded evidence")
+  }
   testthat::skip_on_ci()
 }
 

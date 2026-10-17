@@ -10,14 +10,14 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 
 ## Current State
 
-- **Latest shipped release:** v1.4 (2026-08-05)
-- **Status:** v1.4 is archived and ready for CRAN submission.
-- **Previous Release:** v1.3 (Released 2026-06-01)
-- **Milestone Archives:** [v1.0-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.0-ROADMAP.md), [v1.1-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.1-ROADMAP.md), [v1.2-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.2-ROADMAP.md), [v1.3-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.3-ROADMAP.md), [v1.4-ROADMAP.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.4-ROADMAP.md), [v1.4-REQUIREMENTS.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.4-REQUIREMENTS.md), [v1.4-MILESTONE-AUDIT.md](/Users/davidzenz/R/typstR/.planning/milestones/v1.4-MILESTONE-AUDIT.md)
+- **Latest completed planning milestone:** v1.5 First Release Reliability (2026-10-17)
+- **Status:** Package 0.1.0 handoff ready. Fresh local source check, five-target hosted matrix, required PDFs and documentation build passed; CRAN submission/acceptance are not recorded.
+- **Previous planning milestone:** v1.4 (completed 2026-08-05)
+- **Milestone Archives:** [v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md), [v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md), [v1.2-ROADMAP.md](milestones/v1.2-ROADMAP.md), [v1.3 milestone audit](v1.3-MILESTONE-AUDIT.md), [v1.4-ROADMAP.md](milestones/v1.4-ROADMAP.md), [v1.4-REQUIREMENTS.md](milestones/v1.4-REQUIREMENTS.md), [v1.4-MILESTONE-AUDIT.md](milestones/v1.4-MILESTONE-AUDIT.md)
 
-## Next Milestone Goals
+## Release Handoff
 
-No next milestone is defined. Run `/gsd-new-milestone` to gather requirements and establish the next roadmap.
+v1.5 is complete. Review draft PR #1, the verified 0.1.0 tarball/hash and release evidence; explicit maintainer authorization is required before submission. No next implementation milestone is defined.
 
 ## Requirements
 
@@ -29,7 +29,7 @@ No next milestone is defined. Run `/gsd-new-milestone` to gather requirements an
 - [x] Project scaffolding functions: create_working_paper(), create_article(), create_policy_brief()
 - [x] Metadata helpers: author(), affiliation(), manuscript_meta(), funding(), data_availability(), code_availability()
 - [x] Publication helpers: jel_codes(), keywords(), fig_note(), tab_note(), appendix_title(), report_number()
-- [x] Validation/diagnostics: check_typst(), check_quarto(), check_typstR(), validate_manuscript()
+- [x] Environment/manuscript validation: validate_render_environment() and validate_manuscript(); original proposed check_* wrappers are not shipped. VAL-02 passed in v1.5.
 - [x] Render wrappers: render_pub(), render_working_paper()
 - [x] Branding hooks: logo, fonts, colors, margins, footer, disclaimer page — configurable via YAML
 - [x] Anonymized/review mode for article format
@@ -57,7 +57,7 @@ No next milestone is defined. Run `/gsd-new-milestone` to gather requirements an
 
 ### Active
 
-No active requirements.
+No active implementation requirements. All six v1.5 gates pass; see [REQUIREMENTS.md](REQUIREMENTS.md) and the [milestone audit](v1.5-MILESTONE-AUDIT.md).
 
 ### Out of Scope
 
@@ -80,11 +80,11 @@ No active requirements.
 ## Constraints
 
 - **Tech stack**: R package + Quarto extension + Typst templates — three layers that must integrate cleanly
-- **Dependencies**: cli, yaml, fs, rlang, quarto — keep lightweight for CRAN
+- **Dependencies**: cli, yaml, fs, quarto — keep lightweight for CRAN
 - **Compatibility**: Must work with current Quarto (1.4+) and its bundled Typst
 - **CRAN**: R CMD check must pass cleanly; proper DESCRIPTION, NAMESPACE, roxygen2 docs
 - **Design**: Prefer Quarto conventions; metadata should be declarative; minimize magic; sensible defaults out of the box
-- **Release state**: package version 0.1.0; v1.4 is ready for final maintainer review and CRAN submission
+- **Release state**: package version 0.1.0; v1.5 verification passed; final maintainer review and explicit authorization precede submission
 
 ## Key Decisions
 
@@ -121,4 +121,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-08-05 after v1.4 milestone completion*
+*Last updated: 2026-10-17 after v1.5 implementation and handoff verification*

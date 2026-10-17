@@ -63,4 +63,4 @@ figures would fit into the article workflow.
 End with the paper's contribution, external validity, and the most important
 avenue for follow-up work.
 
-## References
+<!-- Quarto adds the bibliography automatically when citations are present. -->

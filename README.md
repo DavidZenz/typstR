@@ -44,6 +44,14 @@ For the full walkthrough of what to edit in `template.qmd`, `_quarto.yml`, and
 `references.bib`, start with
 `vignette("getting-started", package = "typstR")`.
 
+## Validation
+
+`validate_manuscript("my-paper/template.qmd")` checks static YAML, metadata and
+configured local files without Quarto. Render helpers run the same checks plus
+environment checks. File paths work from outside the project; directory/NULL input
+requires one unambiguous `.qmd`. See the getting-started article for resource-path
+semantics and unsupported dynamic configuration.
+
 ## Other publication formats
 
 After the working-paper flow is familiar, `typstR` also ships scaffolders for

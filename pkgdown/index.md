@@ -60,3 +60,10 @@ create_policy_brief("my-brief")
 
 Use `create_article()` for article-style manuscripts and
 `create_policy_brief()` for shorter policy-facing outputs.
+
+## Validation and release status
+
+`validate_manuscript()` checks static metadata and local resources without Quarto.
+Render helpers add runtime checks automatically. See Getting Started for supported
+configuration and resource paths. Package 0.1.0 is being prepared for first release;
+planning milestone identifiers v1.0–v1.5 are not package releases.

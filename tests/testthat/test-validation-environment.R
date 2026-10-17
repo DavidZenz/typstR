@@ -85,6 +85,7 @@ new_render_validation_env <- function() {
   source(resolve_validation_source_file("R/diagnostics.R"), local = env)
   source(resolve_validation_source_file("R/validation_environment.R"), local = env)
   source(resolve_validation_source_file("R/utils.R"), local = env)
+  source(resolve_validation_source_file("R/validation_manuscript.R"), local = env)
   source(resolve_validation_source_file("R/render.R"), local = env)
   env
 }
@@ -157,6 +158,7 @@ test_that("render_pub() and standalone validation emit equivalent diagnostics", 
   env <- new_render_validation_env()
   path <- tempfile("validation-render-equivalence-")
   dir.create(path)
+  writeLines("---\ntitle: Test\nformat: typstR-typst\n---", file.path(path, "paper.qmd"))
 
   assign("collect_environment_checks", function(path) failing_checks(path), envir = env)
 

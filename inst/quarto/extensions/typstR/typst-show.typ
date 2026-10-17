@@ -13,7 +13,11 @@
 // Top-level `affiliations` is the deduplicated list of affiliation objects.
 // typstR: namespace fields come through as Pandoc metadata variables.
 
+$if(typstR-extension-path)$
+#import ("$typstR-extension-path$".replace("\\", "") + "/formats/workingpaper.typ"): working-paper
+$else$
 #import "_extensions/typstR/formats/workingpaper.typ": working-paper
+$endif$
 
 #show: working-paper.with(
   $if(title)$
@@ -36,7 +40,7 @@
       $if(it.affiliations)$
       affiliations: (
         $for(it.affiliations)$
-        (ref: "$it.ref$"),
+        (ref: "$if(it.ref)$$it.ref$$else$$it.id$$endif$"),
         $endfor$
       ),
       $endif$
@@ -83,7 +87,7 @@
   code-availability: [$typstR.code-availability$],
   $endif$
   $if(typstR.logo)$
-  logo: "$typstR.logo$",
+  logo: image("$typstR.logo$".replace("\\", ""), width: 2.5cm),
   $endif$
   $if(typstR.primary-font)$
   primary-font: "$typstR.primary-font$",
@@ -92,7 +96,7 @@
   title-font: "$typstR.title-font$",
   $endif$
   $if(typstR.accent-color)$
-  accent-color: rgb("$typstR.accent-color$"),
+  accent-color: rgb("$typstR.accent-color$".replace("\\", "")),
   $endif$
   $if(typstR.footer)$
   footer: "$typstR.footer$",

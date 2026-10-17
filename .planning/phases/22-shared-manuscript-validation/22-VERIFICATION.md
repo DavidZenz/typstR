@@ -1,0 +1,38 @@
+---
+phase: 22-shared-manuscript-validation
+status: passed
+verified: "2026-10-17T20:40:10.105302+00:00"
+requirements_completed: [VAL-02]
+verification_method: inline source-test-artifact audit
+covered_files: [".planning/phases/22-shared-manuscript-validation/22-01-PLAN.md", ".planning/phases/22-shared-manuscript-validation/22-01-SUMMARY.md", "NAMESPACE", "R/diagnostics.R", "R/render.R", "R/utils.R", "R/validation_environment.R", "R/validation_manuscript.R", "VALID_STRATEGY.md", "man/validate_manuscript.Rd", "tests/testthat/test-diagnostics-codebook.R", "tests/testthat/test-diagnostics-ordering.R", "tests/testthat/test-manuscript-validation.R", "tests/testthat/test-validation-environment.R"]
+covered_digest: v2:sha256:38d7fa7cdf31d7b6f3e958a2ff7547b16fbb763ae41cf413c7a70d739388e269
+---
+
+# Shared validation verification
+
+`validate_manuscript()` and `render_pub()` use the same internal context validator.
+The existing environment-only function remains public and compatible. No runtime
+dependencies were added. Existing diagnostic assignments are retained.
+
+Full `testthat::test_local(reporter="summary")` with CI=true on R 4.6.1 completed
+with zero failures/warnings; nine noisy performance tests skipped by existing CI
+guards. Quarto-enabled integration tests ran (Quarto 1.10.19, Typst 0.15.1).
+
+Positive/negative tests cover all scaffold defaults, YAML syntax/shape, format and
+variant, required title, metadata shapes, valid and missing local bibliography,
+logo, CSL and include files, citations without bibliography, inherited project and
+directory resources, author IDs, missing extension templates, deterministic payloads,
+standalone/render equivalence and explicit unsupported dynamic configuration.
+
+Contract and limits: ../../../VALID_STRATEGY.md and getting-started article.
+PDF branding/content/visual assurance is tracked under RENDER-01.
+
+## Final metadata edge verification
+
+Final source 623a8fe adds a shape-preserving YAML sequence handler, validates
+subtitle/abstract/inline-reference and project mapping shapes, and ignores literal
+fenced/inline code when detecting citations. Narrative metadata citations remain
+checked. Direct Quarto probes confirmed project must be a mapping and typed core
+fields reject explicit null; the validator now diagnoses these before Quarto.
+A literal-code manuscript without bibliography rendered through the public helper.
+Fresh source-tarball tests: 484 passes, 0 failures/warnings, 9 opt-in timing skips.

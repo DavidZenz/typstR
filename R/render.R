@@ -16,7 +16,7 @@
 #' render_pub("my-working-paper/template.qmd", quiet = TRUE, open = FALSE)
 #' render_pub(
 #'   "my-article/template.qmd",
-#'   output_format = "typstR-article",
+#'   output_format = "typstR-typst",
 #'   quiet = TRUE,
 #'   open = FALSE
 #' )
@@ -24,18 +24,27 @@
 #' @export
 render_pub <- function(input = NULL, output_format = NULL, quiet = FALSE,
                        open = interactive()) {
-  # Pre-flight: shared environment validation (locked decision)
-  validate_render_environment(if (is.null(input)) "." else input)
-
-  # Input auto-detection (locked decision)
-  resolved_input <- resolve_input(input)
+  # Resolve manuscript and project before probing the environment.
+  context <- resolve_render_context(input)
+  resolved_input <- context$input
+  report <- validate_manuscript_context(context, output_format, check_environment = TRUE)
+  render_metadata <- list("typstR-extension-path" = as.character(fs::path_rel(
+    file.path(context$extension_dir, "_extensions", "typstR"), start = context$manuscript_dir
+  )))
+  if (!is.null(report$metadata$typstR$logo)) {
+    render_metadata$typstR <- list(logo = as.character(
+      fs::path_rel(report$metadata$typstR$logo, start = context$manuscript_dir)
+    ))
+  }
 
   # Render via quarto R package (never shell out directly)
-  quarto::quarto_render(
+  render_args <- list(
     input = resolved_input,
     output_format = output_format,
     quiet = quiet
   )
+  if (!is.null(render_metadata)) render_args$metadata <- render_metadata
+  do.call(quarto::quarto_render, render_args)
 
   # Open PDF in system viewer (locked decision: open = interactive())
   if (open) {

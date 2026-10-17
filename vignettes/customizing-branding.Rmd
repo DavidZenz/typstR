@@ -31,7 +31,7 @@ The working paper starter ships with these commented fields:
 typstR:
   # logo: "logo.png"
   # accent-color: "#0A5DA6"
-  # primary-font: "Linux Libertine"
+  # primary-font: "Libertinus Serif"
   # footer: "Working Paper Series"
   # disclaimer-page: true
 ```
@@ -59,7 +59,7 @@ the page footer.
 
 ```yaml
 typstR:
-  primary-font: "Linux Libertine"
+  primary-font: "Libertinus Serif"
   footer: "Working Paper Series"
 ```
 
