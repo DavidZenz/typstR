@@ -14,8 +14,8 @@ Package version: 0.1.0. Milestone numbers are internal planning identifiers.
 | 21 | Resolve manuscript/project context and repair onboarding | REL-01 | Complete |
 | 22 | Shared manuscript validation and resource semantics | VAL-02 | Complete |
 | 23 | Required real renders and separate performance assurance | RENDER-01, PERF-02 | In progress |
-| 24 | Reconcile historical evidence, documentation and backlog | PLAN-01 | Pending |
-| 25 | Current source-package verification and CRAN handoff | CRAN-05 | Pending |
+| 24 | Reconcile historical evidence, documentation and backlog | PLAN-01 | Complete |
+| 25 | Current source-package verification and CRAN handoff | CRAN-05 | Verification in progress |
 
 Acceptance criteria: [REQUIREMENTS.md](REQUIREMENTS.md).
 Each phase must record verification evidence before being marked complete.

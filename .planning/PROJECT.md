@@ -13,7 +13,7 @@ Users can go from `create_working_paper("my-paper")` to a polished, branded PDF 
 - **Latest completed planning milestone:** v1.4 (2026-08-05)
 - **Status:** v1.5 First Release Reliability active. Package 0.1.0 requires fresh verification before CRAN handoff.
 - **Previous Release:** v1.3 (Released 2026-06-01)
-- **Milestone Archives:** [v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md), [v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md), [v1.2-ROADMAP.md](milestones/v1.2-ROADMAP.md), [v1.3-ROADMAP.md](milestones/v1.3-ROADMAP.md), [v1.4-ROADMAP.md](milestones/v1.4-ROADMAP.md), [v1.4-REQUIREMENTS.md](milestones/v1.4-REQUIREMENTS.md), [v1.4-MILESTONE-AUDIT.md](milestones/v1.4-MILESTONE-AUDIT.md)
+- **Milestone Archives:** [v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md), [v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md), [v1.2-ROADMAP.md](milestones/v1.2-ROADMAP.md), [v1.3 milestone audit](v1.3-MILESTONE-AUDIT.md), [v1.4-ROADMAP.md](milestones/v1.4-ROADMAP.md), [v1.4-REQUIREMENTS.md](milestones/v1.4-REQUIREMENTS.md), [v1.4-MILESTONE-AUDIT.md](milestones/v1.4-MILESTONE-AUDIT.md)
 
 ## Next Milestone Goals
 
