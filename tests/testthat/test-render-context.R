@@ -3,7 +3,7 @@ test_that("all scaffolders resolve file, directory and NULL inputs outside the p
   withr::local_dir(root)
   observed <- character()
   testthat::local_mocked_bindings(
-    quarto_render = function(input, output_format, quiet) {
+    quarto_render = function(input, output_format, quiet, metadata) {
       observed <<- c(observed, input)
     }, .package = "quarto"
   )

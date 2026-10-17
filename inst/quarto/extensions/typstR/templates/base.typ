@@ -3,7 +3,7 @@
 // No @preview imports allowed
 
 #let apply-base-styles(
-  primary-font: "Linux Libertine",
+  primary-font: "Libertinus Serif",
   title-font: none,
   margins: (x: 1in, y: 1in),
   accent-color: none,
@@ -21,8 +21,9 @@
   set par(justify: true, leading: 0.65em)
   set heading(numbering: "1.1")
 
-  if accent-color != none {
-    show heading: set text(fill: accent-color)
+  show heading: it => {
+    set text(fill: if accent-color == none { black } else { accent-color })
+    it
   }
 
   // TMPL-08: Consistent caption sizing for figures and tables

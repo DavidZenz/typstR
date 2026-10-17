@@ -25,7 +25,7 @@
   data-availability: none,
   code-availability: none,
   // Branding hooks
-  primary-font: "Linux Libertine",
+  primary-font: "Libertinus Serif",
   title-font: none,
   margins: (x: 1in, y: 1in),
   accent-color: none,

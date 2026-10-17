@@ -27,14 +27,24 @@ render_pub <- function(input = NULL, output_format = NULL, quiet = FALSE,
   # Resolve manuscript and project before probing the environment.
   context <- resolve_render_context(input)
   resolved_input <- context$input
-  validate_manuscript_context(context, output_format, check_environment = TRUE)
+  report <- validate_manuscript_context(context, output_format, check_environment = TRUE)
+  render_metadata <- list("typstR-extension-path" = as.character(fs::path_rel(
+    file.path(context$extension_dir, "_extensions", "typstR"), start = context$manuscript_dir
+  )))
+  if (!is.null(report$metadata$typstR$logo)) {
+    render_metadata$typstR <- list(logo = as.character(
+      fs::path_rel(report$metadata$typstR$logo, start = context$manuscript_dir)
+    ))
+  }
 
   # Render via quarto R package (never shell out directly)
-  quarto::quarto_render(
+  render_args <- list(
     input = resolved_input,
     output_format = output_format,
     quiet = quiet
   )
+  if (!is.null(render_metadata)) render_args$metadata <- render_metadata
+  do.call(quarto::quarto_render, render_args)
 
   # Open PDF in system viewer (locked decision: open = interactive())
   if (open) {

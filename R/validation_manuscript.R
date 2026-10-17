@@ -238,8 +238,12 @@ validate_manuscript_context <- function(context, output_format, check_environmen
     if (is_text_sequence(refs) && length(ids) && any(!unlist(refs) %in% ids)) add("manuscript_metadata_invalid", "Author references undefined affiliation IDs.", paste0(field, ".affiliation"))
     if (!is.null(refs) && !is_text_sequence(refs)) {
       entries <- if (is_yaml_mapping(refs)) list(refs) else refs
-      if (!is.list(entries) || !all(vapply(entries, function(x) is_yaml_mapping(x) && is_text_scalar(x$name), logical(1)))) {
+      if (!is.list(entries) || !all(vapply(entries, function(x) is_yaml_mapping(x) && (is_text_scalar(x$name) || is_text_scalar(x$ref)), logical(1)))) {
         add("manuscript_metadata_invalid", "Author affiliations must be text references or named institution mappings.", paste0(field, ".affiliation"))
+      } else {
+        for (entry in entries) {
+          if (is_text_scalar(entry$ref) && !entry$ref %in% ids) add("manuscript_metadata_invalid", "Author references undefined affiliation IDs.", paste0(field, ".affiliation"))
+        }
       }
     }
   }

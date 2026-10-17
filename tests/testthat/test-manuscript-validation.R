@@ -115,6 +115,8 @@ test_that("valid local resources, inline references and author IDs are accepted"
   for (name in c("refs.bib", "style.csl", "intro.typ", "logo.svg")) writeLines("", file.path(dirname(file), name))
   expect_true(validate_manuscript(file)$ok)
   lines <- readLines(file)
+  writeLines(sub("affiliation: \\[econ\\]", "affiliation: [{ref: econ}]", lines), file)
+  expect_true(validate_manuscript(file)$ok)
   writeLines(sub("affiliation: \\[econ\\]", "affiliation: [missing]", lines), file)
   expect_true("DIAG-MANUSCRIPT-003" %in% manuscript_codes(file))
   file <- manuscript_fixture(c("title: Test", "format: typstR-typst", "references: [{id: key, title: Example}]"), body = "@key")
