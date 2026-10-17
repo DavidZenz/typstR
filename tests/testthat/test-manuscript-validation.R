@@ -75,7 +75,7 @@ test_that("configured files and citations fail before invoking Quarto", {
 test_that("project and directory settings merge with document resources using source directories", {
   root <- withr::local_tempdir()
   dir.create(file.path(root, "nested space"))
-  writeLines(c("project: default", "title: Project title", "bibliography: [root.bib]", "format: {typstR-typst: {toc: true}}"), file.path(root, "_quarto.yml"))
+  writeLines(c("project: {type: default}", "title: Project title", "bibliography: [root.bib]", "format: {typstR-typst: {toc: true}}"), file.path(root, "_quarto.yml"))
   writeLines("", file.path(root, "root.bib"))
   nested <- file.path(root, "nested space")
   writeLines(c("bibliography: [local.bib]", "typstR: {footer: Directory}"), file.path(nested, "_metadata.yml"))
@@ -140,7 +140,7 @@ test_that("extension preflight detects missing required templates", {
 test_that("scalar document format inherits selected project format resources", {
   file <- manuscript_fixture(c("title: Test", "format: typstR-typst"))
   root <- dirname(file)
-  writeLines(c("project: default", "format:", "  typstR-typst:", "    typstR:", "      logo: missing.svg"), file.path(root, "_quarto.yml"))
+  writeLines(c("project: {type: default}", "format:", "  typstR-typst:", "    typstR:", "      logo: missing.svg"), file.path(root, "_quarto.yml"))
   expect_true("DIAG-MANUSCRIPT-004" %in% manuscript_codes(file))
   writeLines("<svg/>", file.path(root, "missing.svg"))
   expect_true(validate_manuscript(file)$ok)
@@ -159,12 +159,19 @@ test_that("literal citation examples do not require a bibliography", {
   expect_true("DIAG-MANUSCRIPT-004" %in% manuscript_codes(file))
 })
 
-test_that("null optional fields can clear project defaults without becoming invalid metadata", {
+test_that("explicit null in typed metadata is diagnosed before Quarto rejects it", {
   file <- manuscript_fixture(c("title: Test", "format: typstR-typst", "abstract: null", "subtitle: null",
     "bibliography: null", "csl: null", "include-before-body: null",
     "typstR: {logo: null, footer: null, keywords: null, anonymized: null}",
     "author: [{name: Ada, email: null, orcid: null}]"))
-  writeLines(c("project: default", "abstract: Project abstract", "bibliography: missing.bib",
+  writeLines(c("project: {type: default}", "abstract: Project abstract", "bibliography: missing.bib",
                "typstR: {logo: missing.svg}"), file.path(dirname(file), "_quarto.yml"))
-  expect_true(validate_manuscript(file)$ok)
+  expect_true("DIAG-MANUSCRIPT-003" %in% manuscript_codes(file))
+})
+
+
+test_that("project configuration must have the Quarto mapping shape", {
+  file <- manuscript_fixture()
+  writeLines("project: default", file.path(dirname(file), "_quarto.yml"))
+  expect_true("DIAG-MANUSCRIPT-003" %in% manuscript_codes(file))
 })

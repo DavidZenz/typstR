@@ -26,8 +26,10 @@ format, not separate Quarto format names.
 
 Authors, affiliations, abstract, keywords, JEL codes, report number, statements
 and branding remain optional for every variant, including anonymized articles.
-Explicit `null` clears optional fields inherited from project settings. Supplied
-subtitle/abstract and inline include text must be text, not sequences or mappings.
+Omit optional fields when unused. Supplied subtitle/abstract and inline include
+text must be text, not sequences, mappings or null. Quarto rejects null for typed
+standard fields such as abstract and bibliography; change inherited settings with
+a valid value or edit their declaring configuration.
 When present, author names, IDs, emails, ORCIDs, booleans, lists, colors and margin
 lengths are checked for supported shapes. Affiliation IDs must be unique;
 references to a declared ID table must resolve.

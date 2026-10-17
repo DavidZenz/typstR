@@ -162,6 +162,10 @@ validate_manuscript_context <- function(context, output_format, check_environmen
   document <- read_metadata(context$input, document = TRUE)
   inherited_format <- meta$format
   meta <- merge_manuscript_metadata(meta, document)
+  if (!is.null(meta$project) && !is_yaml_mapping(meta$project)) {
+    add("manuscript_metadata_invalid", "Project settings must be a mapping, such as project: {type: default}.", "project",
+        file = if (is.null(context$project_file)) context$input else context$project_file)
+  }
   # Respect document format selection rather than adding project output formats.
   if (!is.null(document$format)) {
     selected_format <- document$format
@@ -198,7 +202,7 @@ validate_manuscript_context <- function(context, output_format, check_environmen
   }
   if (!is_text_scalar(meta$title)) add("manuscript_metadata_invalid", "A non-empty title is required for all publication variants.", "title")
   for (key in intersect(names(meta), c("subtitle", "abstract"))) {
-    if (!is.null(meta[[key]]) && !is_text_scalar(meta[[key]])) add("manuscript_metadata_invalid", paste(key, "must be non-empty text."), key)
+    if (!is_text_scalar(meta[[key]])) add("manuscript_metadata_invalid", paste(key, "must be non-empty text."), key)
   }
   typ <- meta$typstR
   if (!is.null(typ) && !is_yaml_mapping(typ)) {
@@ -210,13 +214,13 @@ validate_manuscript_context <- function(context, output_format, check_environmen
     add("manuscript_format_invalid", "Unknown publication variant.", "typstR.format-variant")
   }
   for (key in intersect(names(typ), c("logo", "primary-font", "title-font", "footer", "report-number", "abstract-label", "acknowledgements", "funding", "data-availability", "code-availability", "disclaimer-text", "accent-color"))) {
-    if (!is.null(typ[[key]]) && !is_text_scalar(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must be non-empty text."), paste0("typstR.", key))
+    if (!is_text_scalar(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must be non-empty text."), paste0("typstR.", key))
   }
   for (key in intersect(names(typ), c("anonymized", "disclaimer-page"))) {
-    if (!is.null(typ[[key]]) && (!is.logical(typ[[key]]) || length(typ[[key]]) != 1L || is.na(typ[[key]]))) add("manuscript_metadata_invalid", paste(key, "must be true or false."), paste0("typstR.", key))
+    if (!is.logical(typ[[key]]) || length(typ[[key]]) != 1L || is.na(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must be true or false."), paste0("typstR.", key))
   }
   for (key in intersect(names(typ), c("keywords", "jel"))) {
-    if (!is.null(typ[[key]]) && !is_text_sequence(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must contain text values."), paste0("typstR.", key))
+    if (!is_text_sequence(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must contain text values."), paste0("typstR.", key))
   }
   if (is_text_sequence(typ$jel) && any(!grepl("^[A-Z][0-9]{1,2}$", unlist(typ$jel)))) add("manuscript_metadata_invalid", "Invalid JEL code.", "typstR.jel")
   if (!is.null(typ$`disclaimer-position`) && !identical(typ$`disclaimer-position`, "first") && !identical(typ$`disclaimer-position`, "last")) add("manuscript_metadata_invalid", "Disclaimer position must be first or last.", "typstR.disclaimer-position")
@@ -260,7 +264,7 @@ validate_manuscript_context <- function(context, output_format, check_environmen
     if (is_yaml_mapping(name)) name <- if (!is.null(name$literal)) name$literal else paste(name$given, name$family)
     if (!is_text_scalar(name)) add("manuscript_metadata_invalid", "Author name must be non-empty text.", paste0(field, ".name"))
     for (key in intersect(names(a), c("email", "orcid"))) {
-      if (!is.null(a[[key]]) && !is_text_scalar(a[[key]])) add("manuscript_metadata_invalid", paste(key, "must be text."), paste0(field, ".", key))
+      if (!is_text_scalar(a[[key]])) add("manuscript_metadata_invalid", paste(key, "must be text."), paste0(field, ".", key))
     }
     if (is_text_scalar(a$email) && !grepl("^[^[:space:]@]+@[^[:space:]@]+\\.[^[:space:]@]+$", a$email)) add("manuscript_metadata_invalid", "Malformed author email.", paste0(field, ".email"))
     if (is_text_scalar(a$orcid) && !grepl("^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]$", a$orcid)) add("manuscript_metadata_invalid", "Malformed ORCID.", paste0(field, ".orcid"))
@@ -294,7 +298,7 @@ validate_manuscript_context <- function(context, output_format, check_environmen
     }
   }
   for (key in intersect(names(meta), c("bibliography", "csl"))) {
-    if (!is.null(meta[[key]])) check_resource(meta[[key]], key)
+    check_resource(meta[[key]], key)
   }
   if (!is.null(meta$references)) {
     refs <- meta$references
@@ -308,7 +312,6 @@ validate_manuscript_context <- function(context, output_format, check_environmen
   if (!is.null(typ$logo)) check_resource(typ$logo, "typstR.logo")
   for (key in intersect(names(meta), c("include-in-header", "include-before-body", "include-after-body"))) {
     value <- meta[[key]]
-    if (is.null(value)) next
     if (is_yaml_mapping(value) && !is.null(value$text)) {
       if (!is_text_scalar(value$text)) add("manuscript_metadata_invalid", "Inline include text must be non-empty text.", key)
       next
