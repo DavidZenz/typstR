@@ -13,30 +13,48 @@
 // Top-level `affiliations` is the deduplicated list of affiliation objects.
 // typstR: namespace fields come through as Pandoc metadata variables.
 
-#import "_extensions/typstR/formats/workingpaper.typ": working-paper
+$if(typstR-extension-path)$
+#import ("$typstR-extension-path$".replace("\\", "") + "/formats/workingpaper.typ"): working-paper, start-appendix
+$else$
+#import "_extensions/typstR/formats/workingpaper.typ": working-paper, start-appendix
+$endif$
+
+#let typstr-appendices-enabled = $if(typstr-numbered)$true$else$false$endif$ and "$if(typstR.format-variant)$$typstR.format-variant$$else$workingpaper$endif$" != "brief"
 
 #show: working-paper.with(
+  $if(papersize)$paper: "$papersize$",$endif$
+  $if(typstR.primary-font)$primary-font: "$typstR.primary-font$",$elseif(mainfont)$primary-font: "$mainfont$",$endif$
+  $if(fontsize)$font-size: $fontsize$,$endif$
+  $if(typstR.margins)$
+  margins: ($if(typstR.margins.x)$x: $typstR.margins.x$,$endif$$if(typstR.margins.y)$y: $typstR.margins.y$,$endif$),
+  $elseif(margin)$margins: ($for(margin/pairs)$$margin.key$: $margin.value$,$endfor$),$endif$
+  section-numbering: $if(typstr-numbered)$"$section-numbering$"$else$none$endif$,
+  page-numbering: $if(page-numbering)$"$page-numbering$"$else$none$endif$,
+  toc: $if(toc)$true$else$false$endif$,
+  $if(toc-title)$toc-title: [$toc-title$],$endif$
+  toc-depth: $typstr-toc-depth$,
+  $if(toc-indent)$toc-indent: $toc-indent$,$endif$
   $if(title)$
-  title: "$title$",
+  title: [$title$],
   $endif$
   $if(subtitle)$
-  subtitle: "$subtitle$",
+  subtitle: [$subtitle$],
   $endif$
   $if(date)$
-  date: "$date$",
+  date: [$date$],
   $endif$
   $if(by-author)$
   authors: (
     $for(by-author)$
     (
-      $if(it.name.literal)$name: "$it.name.literal$",$endif$
+      $if(it.name.literal)$name: [$it.name.literal$],$endif$
       $if(it.email)$email: "$it.email$",$endif$
       $if(it.orcid)$orcid: "$it.orcid$",$endif$
       $if(it.attributes.corresponding)$corresponding: true,$endif$
       $if(it.affiliations)$
       affiliations: (
         $for(it.affiliations)$
-        (ref: "$it.ref$"),
+        (ref: "$if(it.ref)$$it.ref$$else$$it.id$$endif$"),
         $endfor$
       ),
       $endif$
@@ -61,11 +79,11 @@
   $if(typstR)$
   $if(typstR.keywords)$
   keywords: ($for(typstR.keywords)$
-"$it$"$sep$, $endfor$),
+"$it$", $endfor$),
   $endif$
   $if(typstR.jel)$
   jel: ($for(typstR.jel)$
-"$it$"$sep$, $endfor$),
+"$it$", $endfor$),
   $endif$
   $if(typstR.acknowledgements)$
   acknowledgements: [$typstR.acknowledgements$],
@@ -83,16 +101,13 @@
   code-availability: [$typstR.code-availability$],
   $endif$
   $if(typstR.logo)$
-  logo: "$typstR.logo$",
-  $endif$
-  $if(typstR.primary-font)$
-  primary-font: "$typstR.primary-font$",
+  logo: image("$typstR.logo$".replace("\\", ""), width: 2.5cm),
   $endif$
   $if(typstR.title-font)$
   title-font: "$typstR.title-font$",
   $endif$
   $if(typstR.accent-color)$
-  accent-color: rgb("$typstR.accent-color$"),
+  accent-color: rgb("$typstR.accent-color$".replace("\\", "")),
   $endif$
   $if(typstR.footer)$
   footer: "$typstR.footer$",
@@ -114,12 +129,6 @@
   $endif$
   $if(typstR.abstract-label)$
   abstract-label: "$typstR.abstract-label$",
-  $endif$
-  $if(typstR.margins)$
-  margins: (
-    $if(typstR.margins.x)$x: $typstR.margins.x$,$endif$
-    $if(typstR.margins.y)$y: $typstR.margins.y$,$endif$
-  ),
   $endif$
   $endif$
 )

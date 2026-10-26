@@ -1,14 +1,15 @@
 repo_root <- normalizePath(getwd(), winslash = "/", mustWork = TRUE)
-map_path <- file.path(repo_root, "tests", "testthat", "perf-scenario-map.yml")
-helper_path <- file.path(repo_root, "tests", "testthat", "helper-performance.R")
+map_path <- file.path(repo_root, "tools", "benchmarks", "perf-scenario-map.yml")
+helper_path <- file.path(repo_root, "tools", "benchmarks", "workloads.R")
 
 if (!file.exists(map_path)) {
-  stop("Missing tests/testthat/perf-scenario-map.yml", call. = FALSE)
+  stop("Missing tools/benchmarks/perf-scenario-map.yml", call. = FALSE)
 }
 if (!file.exists(helper_path)) {
-  stop("Missing tests/testthat/helper-performance.R", call. = FALSE)
+  stop("Missing tools/benchmarks/workloads.R", call. = FALSE)
 }
 
+pkgload::load_all(repo_root, quiet = TRUE)
 source(helper_path, local = TRUE)
 scenario_map <- yaml::read_yaml(map_path)$scenarios
 
@@ -126,7 +127,7 @@ v1_payload <- list(
   scenarios = v1_scenarios
 )
 
-yaml::write_yaml(current_payload, file.path(repo_root, "tests", "testthat", "perf-baseline.yml"))
-yaml::write_yaml(v1_payload, file.path(repo_root, "tests", "testthat", "perf-v1-baseline.yml"))
+yaml::write_yaml(current_payload, file.path(repo_root, "tools", "benchmarks", "perf-baseline.yml"))
+yaml::write_yaml(v1_payload, file.path(repo_root, "tools", "benchmarks", "perf-v1-baseline.yml"))
 
-cat("Wrote tests/testthat/perf-baseline.yml and tests/testthat/perf-v1-baseline.yml\n")
+cat("Wrote tools/benchmarks/perf-baseline.yml and tools/benchmarks/perf-v1-baseline.yml\n")

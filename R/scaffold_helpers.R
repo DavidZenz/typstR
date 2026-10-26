@@ -18,9 +18,11 @@ scaffold_apply_title_override <- function(path, title) {
   }
 
   qmd_path <- fs::path(path, "template.qmd")
-  lines <- readLines(qmd_path)
-  lines <- sub('^title: ".*"$', paste0('title: "', title, '"'), lines)
-  writeLines(lines, qmd_path)
+  lines <- readLines(qmd_path, encoding = "UTF-8")
+  index <- which(grepl("^title:", lines))
+  replacement <- strsplit(yaml::as.yaml(list(title = title)), "\n", fixed = TRUE)[[1]]
+  lines <- append(lines[-index], replacement, after = index - 1L)
+  writeLines(lines, qmd_path, useBytes = TRUE)
 
   invisible(NULL)
 }
@@ -37,7 +39,9 @@ scaffold_emit_success <- function(path, label) {
   invisible(NULL)
 }
 
-scaffold_project_from_template <- function(path, template_dir, success_label, title = NULL) {
+scaffold_project_from_template <- function(path, template_dir, success_label, title = NULL, open = FALSE) {
+  if (!is.null(title)) assert_text_scalar(title, "title")
+  if (!is_logical_scalar(open)) cli::cli_abort("{.arg open} must be TRUE or FALSE.")
   if (fs::dir_exists(path)) {
     cli::cli_abort(c(
       "Directory {.path {path}} already exists.",
@@ -50,6 +54,7 @@ scaffold_project_from_template <- function(path, template_dir, success_label, ti
   scaffold_copy_extension(path)
   scaffold_apply_title_override(path, title)
   scaffold_emit_success(path, success_label)
+  if (open) open_file(as.character(fs::path_abs(path)))
 
   invisible(path)
 }

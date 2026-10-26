@@ -1,45 +1,3 @@
-resolve_render_source_file <- function(relative_path) {
-  candidates <- c(
-    relative_path,
-    file.path("..", "..", relative_path),
-    file.path("..", "..", "00_pkg_src", "typstR", relative_path),
-    file.path(getwd(), relative_path)
-  )
-
-  existing <- candidates[file.exists(candidates)]
-  if (length(existing) == 0) {
-    stop(sprintf("Could not locate %s", relative_path))
-  }
-
-  normalizePath(existing[[1]], winslash = "/", mustWork = TRUE)
-}
-
-render_test_env <- local({
-  env <- new.env(parent = baseenv())
-  source(resolve_render_source_file("R/diagnostics.R"), local = env)
-  source(resolve_render_source_file("R/validation_environment.R"), local = env)
-  source(resolve_render_source_file("R/utils.R"), local = env)
-  source(resolve_render_source_file("R/render.R"), local = env)
-  env
-})
-
-get_render_fn <- function(name) {
-  get(name, envir = render_test_env, inherits = FALSE)
-}
-
-mock_environment_unavailable <- function() {
-  env <- render_test_env
-  assign("collect_environment_checks", function(path) {
-    location <- as.character(fs::path_abs(path))
-    list(
-      quarto = list(ok = FALSE, available = FALSE, version = NA_character_, reason = "quarto CLI unavailable"),
-      typst = list(ok = FALSE, available = FALSE, version = NA_character_, raw = NA_character_, reason = "quarto typst --version failed"),
-      quarto_floor = list(ok = FALSE, required = ">=1.4.11", compatible = FALSE, available = FALSE),
-      extension = list(ok = TRUE, present = TRUE, manifest = file.path(location, "_extensions", "typstR", "_extension.yml"))
-    )
-  }, envir = env)
-}
-
 primary_diag <- function(condition) {
   condition$diagnostics[[1]]
 }
@@ -53,11 +11,12 @@ assert_env_diag <- function(condition) {
 }
 
 test_that("render_pub() emits structured diagnostics when Quarto is unavailable", {
-  render_pub <- get_render_fn("render_pub")
-  mock_environment_unavailable()
+  testthat::local_mocked_bindings(collect_environment_checks = failing_checks, .package = "typstR")
+  path <- withr::local_tempfile(fileext = ".qmd")
+  writeLines("---\ntitle: Test\nformat: typstR-typst\n---", path)
 
   condition <- expect_error(
-    render_pub("paper.qmd", open = FALSE),
+    render_pub(path, open = FALSE),
     class = "typstR_diagnostics_error"
   )
 
@@ -66,11 +25,12 @@ test_that("render_pub() emits structured diagnostics when Quarto is unavailable"
 })
 
 test_that("render_working_paper() emits the same no-Quarto structured diagnostic", {
-  render_working_paper <- get_render_fn("render_working_paper")
-  mock_environment_unavailable()
+  testthat::local_mocked_bindings(collect_environment_checks = failing_checks, .package = "typstR")
+  path <- withr::local_tempfile(fileext = ".qmd")
+  writeLines("---\ntitle: Test\nformat: typstR-typst\n---", path)
 
   condition <- expect_error(
-    render_working_paper("paper.qmd", open = FALSE),
+    render_working_paper(path, open = FALSE),
     class = "typstR_diagnostics_error"
   )
 

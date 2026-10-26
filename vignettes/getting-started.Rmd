@@ -122,6 +122,11 @@ standard Quarto syntax such as `@smith2020`.
 Rendering depends on Quarto, so the call below is shown but not run during
 vignette checks.
 
+The minimum supported Quarto version is 1.4.11. Early Quarto 1.4 builds require
+a standalone Typst executable on `PATH`; the tested standalone version is
+0.15.1. Newer Quarto builds include Typst. Use `validate_render_environment()`
+to check the compiler available to your selected Quarto installation.
+
 ```{r eval = FALSE}
 render_working_paper("my-paper/template.qmd")
 ```
@@ -139,6 +144,60 @@ if (quarto::quarto_available()) {
   render_working_paper("my-paper/template.qmd")
 }
 ```
+
+
+## Validate before rendering
+
+```{r eval = FALSE}
+validate_manuscript("my-paper/template.qmd")
+validate_manuscript("my-paper", check_environment = TRUE)
+```
+
+The first call checks static YAML, publication metadata and configured files without
+requiring Quarto. Rendering runs those same checks plus Quarto/Typst and extension
+checks automatically. `validate_render_environment()` remains an environment-only
+check. Errors include stable diagnostic codes, locations and repair hints.
+
+Every variant needs a text title and the bundled `typstR-typst` format. Select
+`workingpaper` (default), `article` or `brief` with `typstR: format-variant`.
+Authors, affiliations, abstract, keywords, JEL codes, report numbers and branding
+are optional; supplied fields must have the documented types. Omit unused optional
+fields; Quarto rejects `null` for typed fields such as abstract and bibliography.
+Change inherited settings using a valid value or edit the declaring configuration.
+Literal citation examples inside
+fenced/inline code do not require a bibliography; citations in prose or the abstract
+do. Inline reference records need unique text IDs.
+
+File input works from outside the project, including paths with spaces. Directory
+input selects one immediate `.qmd`; `NULL` searches the current directory and
+reports ambiguity rather than guessing. The nearest `_quarto.yml` establishes the
+project root. Project settings, directory `_metadata.yml` and manuscript YAML are
+merged. Local resources (bibliography, logo, CSL and include files) resolve relative
+to the YAML file that declares them. Configured files must already exist.
+
+Static preflight rejects profiles, `.local` overrides, `metadata-files`, executable
+YAML and remote resources. It does not evaluate code-generated resources/citations
+or validate the whole Quarto schema. Citeproc checks bibliography contents at render
+time. For unsupported configuration, use Quarto directly and verify the output.
+
+## Layout and existing projects
+
+Section numbering is enabled by default. Set `number-sections: false` to disable
+it; `toc: true` adds a contents list after the abstract, with `toc-title` and
+`toc-depth` controlling its title and depth. `papersize: a4` selects A4 paper.
+Render helpers honor `output-file` and project `output-dir` when opening PDFs.
+
+Scaffolds contain their own extension copy. Updating the R package does not
+change existing projects. Back up `_extensions/typstR/`, then replace that
+directory with the contents of
+`system.file("quarto/extensions/typstR", package = "typstR")`. Keep your
+manuscript, bibliography, and project configuration; only replace the extension.
+
+In an `output: asis` R chunk, `appendix_title("Additional Data")` starts lettered
+appendices in working papers and articles. Subsequent appendix headings at the
+same level use B, C, and so on; nested headings use A.1, A.2, and so on. Briefs
+retain ordinary numbering. Disabling section numbering disables appendix
+numbering as well.
 
 ## Next steps
 

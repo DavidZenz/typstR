@@ -57,4 +57,4 @@ Translate the evidence into a short set of practical recommendations, including
 which measure can be implemented quickly and which one addresses longer-run
 competitiveness.
 
-## References
+<!-- Quarto adds the bibliography automatically when citations are present. -->

@@ -26,31 +26,14 @@ author <- function(name,
                    email = NULL,
                    orcid = NULL,
                    corresponding = FALSE) {
-  if (!is.character(name) || length(name) != 1L) {
-    cli::cli_abort(c(
-      "{.arg name} must be a single character string.",
-      "i" = "Received: {.obj_type_friendly {name}}"
-    ))
-  }
-
-  if (!is.null(orcid)) {
-    if (!grepl("^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]$", orcid)) {
-      cli::cli_abort(c(
-        "Invalid ORCID format: {.val {orcid}}",
-        "i" = "Expected format: XXXX-XXXX-XXXX-XXXX (digits, last character may be X)"
-      ))
-    }
-  }
-
-  if (!is.null(affiliation)) {
-    affiliation <- as.character(affiliation)
-  }
-
-  if (!is.null(corresponding) && (!is.logical(corresponding) || length(corresponding) != 1L)) {
-    cli::cli_abort(c(
-      "{.arg corresponding} must be a single logical value (`TRUE` or `FALSE`).",
-      "i" = "Received: {.obj_type_friendly {corresponding}}"
-    ))
+  assert_text_scalar(name, "name")
+  assert_text_scalar(email, "email", optional = TRUE)
+  assert_text_scalar(orcid, "orcid", optional = TRUE)
+  if (!is.null(email) && !is_email(email)) cli::cli_abort("Invalid email format: {.val {email}}")
+  if (!is.null(orcid) && !is_orcid(orcid)) cli::cli_abort("Invalid ORCID format: {.val {orcid}}")
+  if (!is.null(affiliation)) assert_text_sequence(affiliation, "affiliation")
+  if (!is_logical_scalar(corresponding)) {
+    cli::cli_abort("{.arg corresponding} must be a single logical value (`TRUE` or `FALSE`).")
   }
 
   fields <- Filter(Negate(is.null), list(
@@ -89,19 +72,11 @@ affiliation <- function(id, name,
                         department = NULL,
                         address = NULL,
                         country = NULL) {
-  if (!is.character(id) || length(id) != 1L) {
-    cli::cli_abort(c(
-      "{.arg id} must be a single character string.",
-      "i" = "Received: {.obj_type_friendly {id}}"
-    ))
-  }
-
-  if (!is.character(name) || length(name) != 1L) {
-    cli::cli_abort(c(
-      "{.arg name} must be a single character string.",
-      "i" = "Received: {.obj_type_friendly {name}}"
-    ))
-  }
+  assert_text_scalar(id, "id")
+  assert_text_scalar(name, "name")
+  assert_text_scalar(department, "department", optional = TRUE)
+  assert_text_scalar(address, "address", optional = TRUE)
+  assert_text_scalar(country, "country", optional = TRUE)
 
   fields <- Filter(Negate(is.null), list(
     id = id,
@@ -168,6 +143,27 @@ manuscript_meta <- function(authors,
                             funding = NULL,
                             data_availability = NULL,
                             code_availability = NULL) {
+  if (!is.list(authors) || !is.null(names(authors)) || !length(authors) ||
+      !all(vapply(authors, inherits, logical(1), "typstR_author"))) {
+    cli::cli_abort("{.arg authors} must be a non-empty list of {.fn author} objects.")
+  }
+  if (!is.list(affiliations) || !is.null(names(affiliations)) ||
+      !all(vapply(affiliations, inherits, logical(1), "typstR_affiliation"))) {
+    cli::cli_abort("{.arg affiliations} must be a list of {.fn affiliation} objects.")
+  }
+  # Revalidate objects in case their fields were changed after construction.
+  authors <- lapply(authors, function(x) do.call(author, unclass(x)))
+  affiliations <- lapply(affiliations, function(x) do.call(affiliation, unclass(x)))
+  if (!is.null(keywords)) assert_text_sequence(keywords, "keywords")
+  if (!is.null(jel)) {
+    assert_text_sequence(jel, "jel")
+    do.call(jel_codes, as.list(jel))
+  }
+  statements <- list(acknowledgements = acknowledgements, report_number = report_number,
+                     funding = funding, data_availability = data_availability,
+                     code_availability = code_availability)
+  for (key in names(statements)) assert_text_scalar(statements[[key]], key, optional = TRUE)
+
   # Extract all affiliation IDs referenced by authors
   author_aff_ids <- unlist(lapply(authors, function(a) {
     ids <- a[["affiliation"]]
@@ -176,6 +172,8 @@ manuscript_meta <- function(authors,
 
   # Extract defined affiliation IDs
   defined_aff_ids <- vapply(affiliations, function(aff) aff[["id"]], character(1L))
+
+  if (anyDuplicated(defined_aff_ids)) cli::cli_abort("Affiliation IDs must be unique.")
 
   # Cross-validate: find dangling references
   if (length(author_aff_ids) > 0L) {

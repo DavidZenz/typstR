@@ -31,7 +31,7 @@ The working paper starter ships with these commented fields:
 typstR:
   # logo: "logo.png"
   # accent-color: "#0A5DA6"
-  # primary-font: "Linux Libertine"
+  # primary-font: "Libertinus Serif"
   # footer: "Working Paper Series"
   # disclaimer-page: true
 ```
@@ -59,12 +59,18 @@ the page footer.
 
 ```yaml
 typstR:
-  primary-font: "Linux Libertine"
+  primary-font: "Libertinus Serif"
   footer: "Working Paper Series"
 ```
 
 Use a font that is available in the rendering environment. If you are sharing a
 project, document any non-default font requirement alongside the manuscript.
+
+`title-font` changes the title and subtitle without changing body text. When
+settings overlap, explicit `typstR` font/margin fields take precedence over
+standard Quarto settings such as `mainfont` and `margin`; package defaults apply
+when neither is supplied. Standard `fontsize`, `papersize`, `page-numbering`,
+`number-sections`, and TOC controls are passed through to the format.
 
 ## Adjust margins and disclaimer behavior
 
@@ -78,8 +84,8 @@ typstR:
   disclaimer-page: true
 ```
 
-`disclaimer-page` is useful when a series needs a standard notice ahead of the
-main manuscript.
+`disclaimer-page` adds a notice at the end by default. Set
+`disclaimer-position: first` to place it ahead of the main manuscript.
 
 ## Render only when Quarto is available
 
