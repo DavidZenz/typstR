@@ -8,18 +8,28 @@
   margins: (x: 1in, y: 1in),
   accent-color: none,
   footer-content: none,
+  paper: "us-letter",
+  font-size: 11pt,
+  section-numbering: "1.1",
+  page-numbering: "1",
   body,
 ) = {
   set page(
-    paper: "us-letter",
+    paper: paper,
     margin: margins,
-    numbering: "1",
-    footer: footer-content,
+    numbering: page-numbering,
+    footer: if footer-content == none { auto } else { context {
+      footer-content
+      if page.numbering != none {
+        parbreak()
+        align(center, counter(page).display(page.numbering))
+      }
+    } },
   )
 
-  set text(font: primary-font, size: 11pt)
+  set text(font: primary-font, size: font-size)
   set par(justify: true, leading: 0.65em)
-  set heading(numbering: "1.1")
+  set heading(numbering: section-numbering)
 
   show heading: it => {
     set text(fill: if accent-color == none { black } else { accent-color })

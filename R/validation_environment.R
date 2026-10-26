@@ -149,18 +149,32 @@ probe_typst <- function(quarto_check) {
   }
 
   output <- tryCatch(
-    system2(
+    suppressWarnings(system2(
       quarto_path,
       c("typst", "--version"),
       stdout = TRUE,
       stderr = TRUE
-    ),
+    )),
     error = function(error) structure(error$message, status = 1L)
   )
 
   status <- attr(output, "status")
   if (is.null(status)) {
     status <- 0L
+  }
+
+  # Early Quarto 1.4 releases invoke a standalone Typst executable. They do
+  # not implement `quarto typst`; probe exactly the executable they will use.
+  provider <- "quarto"
+  if (status != 0L && any(grepl("Unknown command.*typst", output))) {
+    executable <- Sys.which("typst")
+    if (nzchar(executable)) {
+      output <- tryCatch(system2(executable, "--version", stdout = TRUE, stderr = TRUE),
+                         error = function(e) structure(conditionMessage(e), status = 1L))
+      status <- attr(output, "status")
+      if (is.null(status)) status <- 0L
+      provider <- "standalone"
+    }
   }
 
   raw <- if (length(output) == 0) NA_character_ else paste(output, collapse = "\n")
@@ -172,7 +186,8 @@ probe_typst <- function(quarto_check) {
     available = available,
     version = version,
     raw = raw,
-    status = status
+    status = status,
+    provider = provider
   )
 }
 
@@ -265,7 +280,9 @@ probe_extension <- function(path) {
   }
   manifest <- as.character(fs::path(path, "_extensions", "typstR", "_extension.yml"))
   present <- fs::file_exists(manifest)
-  required <- c("typst-template.typ", "typst-show.typ", "formats/workingpaper.typ",
+  required <- c("typst-template.typ", "typst-show.typ", "appendix.lua",
+                "formats/workingpaper.typ", "formats/article.typ", "formats/brief.typ",
+                "templates/publication.typ", "templates/appendix.typ",
                 paste0("templates/", c("base", "titleblock", "authors", "abstract", "branding", "disclaimer"), ".typ"))
   missing <- required[!file.exists(file.path(dirname(manifest), required))]
 
@@ -298,7 +315,7 @@ diagnostics_from_environment_checks <- function(checks, path) {
       code = codebook[["env_typst_unavailable"]],
       severity = "error",
       location = list(file = project_path),
-      hint = "Run `quarto typst --version` and reinstall Quarto if Typst support is missing.",
+      hint = "Run `quarto typst --version`; early Quarto 1.4 requires a standalone `typst` executable on PATH.",
       message = "Typst is not available through the Quarto CLI.",
       details = checks$typst
     )

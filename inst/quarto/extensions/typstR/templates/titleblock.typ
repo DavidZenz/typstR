@@ -7,17 +7,18 @@
   subtitle: none,
   date: none,
   report-number: none,
+  title-font: "Libertinus Serif",
 ) = {
   if title != none {
     align(center)[
-      #text(size: 16pt, weight: "bold")[#title]
+      #text(font: title-font, size: 16pt, weight: "bold")[#title]
     ]
     v(0.5em)
   }
 
   if subtitle != none {
     align(center)[
-      #text(size: 13pt)[#subtitle]
+      #text(font: title-font, size: 13pt)[#subtitle]
     ]
     v(0.3em)
   }

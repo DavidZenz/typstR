@@ -4,3 +4,8 @@ $if(typstR-extension-path)$
 $else$
 #import "_extensions/typstR/formats/workingpaper.typ": working-paper
 $endif$
+
+// Pandoc bundled with early Quarto 1.4 emits string citation keys. Current
+// Typst expects labels; keep the adapter valid for either writer generation.
+#let typstr-cite = cite
+#let cite(key, ..options) = typstr-cite(if type(key) == str { label(key) } else { key }, ..options)

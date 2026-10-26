@@ -3,13 +3,26 @@
 Planning milestone v1.5 is independent of package version 0.1.0.
 Historical v1.4 check results are retained, but do not establish current readiness.
 
+## Audit correction verification
+
+The October 26 audit identified additional defects after the historical milestone
+verification. See `tools/audit-verification.md` for the corrective changes,
+toolchains, fresh check results, and remaining hosted verification. Historical
+passes remain historical; require all three current PDF lanes (Linux minimum,
+Linux pinned, Windows pinned) on the reviewed release commit.
+
+Quarto 1.4.11 needs standalone Typst on PATH; the compatibility lane pins Typst
+0.15.1. Newer Quarto uses its bundled compiler. Required assurance now renders
+nine PDFs: unchanged defaults, identified enriched documents, and anonymous
+unnumbered documents for each variant. Ordinary package tests never invoke Quarto.
+
 ## Final review
 
 - [ ] Review the release commit range, API changes, validation limits and NEWS.
 - [ ] Confirm DESCRIPTION version, maintainer email, license and URLs.
 - [ ] Require the existing five-target R CMD check matrix and Required PDF renders
   workflow to pass for the exact release commit. Record the run links.
-- [ ] Review the six PDF artifacts and representative page images; verify author
+- [ ] Review the nine PDF artifacts and representative page images; verify author
   affiliations, citations, branding, tables, equations and pagination.
 - [ ] Read the manual benchmark report; investigate flagged comparisons without
   silently replacing historical baselines.

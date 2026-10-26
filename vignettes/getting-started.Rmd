@@ -122,6 +122,11 @@ standard Quarto syntax such as `@smith2020`.
 Rendering depends on Quarto, so the call below is shown but not run during
 vignette checks.
 
+The minimum supported Quarto version is 1.4.11. Early Quarto 1.4 builds require
+a standalone Typst executable on `PATH`; the tested standalone version is
+0.15.1. Newer Quarto builds include Typst. Use `validate_render_environment()`
+to check the compiler available to your selected Quarto installation.
+
 ```{r eval = FALSE}
 render_working_paper("my-paper/template.qmd")
 ```
@@ -174,6 +179,25 @@ Static preflight rejects profiles, `.local` overrides, `metadata-files`, executa
 YAML and remote resources. It does not evaluate code-generated resources/citations
 or validate the whole Quarto schema. Citeproc checks bibliography contents at render
 time. For unsupported configuration, use Quarto directly and verify the output.
+
+## Layout and existing projects
+
+Section numbering is enabled by default. Set `number-sections: false` to disable
+it; `toc: true` adds a contents list after the abstract, with `toc-title` and
+`toc-depth` controlling its title and depth. `papersize: a4` selects A4 paper.
+Render helpers honor `output-file` and project `output-dir` when opening PDFs.
+
+Scaffolds contain their own extension copy. Updating the R package does not
+change existing projects. Back up `_extensions/typstR/`, then replace that
+directory with the contents of
+`system.file("quarto/extensions/typstR", package = "typstR")`. Keep your
+manuscript, bibliography, and project configuration; only replace the extension.
+
+In an `output: asis` R chunk, `appendix_title("Additional Data")` starts lettered
+appendices in working papers and articles. Subsequent appendix headings at the
+same level use B, C, and so on; nested headings use A.1, A.2, and so on. Briefs
+retain ordinary numbering. Disabling section numbering disables appendix
+numbering as well.
 
 ## Next steps
 

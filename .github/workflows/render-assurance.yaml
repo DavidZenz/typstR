@@ -8,9 +8,17 @@ permissions:
   contents: read
 jobs:
   render:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.os }} / Quarto ${{ matrix.quarto }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: ubuntu-latest, quarto: '1.4.11', standalone: true}
+          - {os: ubuntu-latest, quarto: '1.10.19', standalone: false}
+          - {os: windows-latest, quarto: '1.10.19', standalone: false}
     env:
-      TYPSTR_EXPECT_QUARTO: '1.10.19'
+      TYPSTR_EXPECT_QUARTO: ${{ matrix.quarto }}
       TYPSTR_EXPECT_TYPST: '0.15.1'
     steps:
       - uses: actions/checkout@v6
@@ -19,19 +27,41 @@ jobs:
           r-version: '4.6.1'
       - uses: quarto-dev/quarto-actions/setup@v2
         with:
-          version: '1.10.19'
+          version: ${{ matrix.quarto }}
+      - name: Install standalone Typst for early Quarto
+        if: matrix.standalone
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download v0.15.1 --repo typst/typst --pattern typst-x86_64-unknown-linux-musl.tar.xz --dir "$RUNNER_TEMP/typst"
+          tar -xf "$RUNNER_TEMP/typst/typst-x86_64-unknown-linux-musl.tar.xz" -C "$RUNNER_TEMP/typst"
+          echo "$RUNNER_TEMP/typst/typst-x86_64-unknown-linux-musl" >> "$GITHUB_PATH"
       - name: Install PDF tools and reference fonts
+        if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y poppler-utils fonts-linuxlibertine
+      - name: Install Windows PDF tools
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          choco install poppler --yes --no-progress
+          $pdfTool = Get-ChildItem C:/ProgramData/chocolatey/lib/poppler -Recurse -Filter pdftotext.exe | Select-Object -First 1
+          if (-not $pdfTool) { throw "pdftotext was not installed" }
+          $pdfTool.Directory.FullName >> $env:GITHUB_PATH
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: local::.
-      - name: Install source package
-        run: R CMD INSTALL .
+      - name: Install source tarball
+        shell: bash
+        run: |
+          R CMD build . --no-build-vignettes --no-manual
+          R CMD INSTALL typstR_0.1.0.tar.gz
       - name: Require clean-session public-helper renders and meaningful PDFs
+        shell: bash
         run: bash tools/run-render-assurance.sh artifacts/render
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: render-evidence
+          name: render-evidence-${{ matrix.os }}-${{ matrix.quarto }}
           path: artifacts/render/
           if-no-files-found: error

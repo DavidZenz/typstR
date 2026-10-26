@@ -38,8 +38,43 @@ is_text_scalar <- function(x) {
 }
 
 is_text_sequence <- function(x) {
-  if (is.character(x)) return(length(x) > 0L && all(!is.na(x) & nzchar(x)))
+  if (is.character(x)) return(length(x) > 0L && all(!is.na(x) & nzchar(trimws(x))))
   is.list(x) && is.null(names(x)) && length(x) > 0L && all(vapply(x, is_text_scalar, logical(1)))
+}
+
+is_logical_scalar <- function(x) {
+  is.logical(x) && length(x) == 1L && !is.na(x)
+}
+
+assert_text_scalar <- function(x, name, optional = FALSE) {
+  if (optional && is.null(x)) return(invisible(NULL))
+  if (!is_text_scalar(x)) {
+    cli::cli_abort("{.arg {name}} must be a single character string containing non-blank text.")
+  }
+  invisible(x)
+}
+
+assert_text_sequence <- function(x, name) {
+  if (!is_text_sequence(x)) {
+    cli::cli_abort("{.arg {name}} must be character strings with at least one non-blank value.")
+  }
+  invisible(x)
+}
+
+is_email <- function(x) {
+  is_text_scalar(x) && grepl("^[^[:space:]@]+@[^[:space:]@]+\\.[^[:space:]@]+$", x)
+}
+
+is_orcid <- function(x) {
+  is_text_scalar(x) && grepl("^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]$", x)
+}
+
+manuscript_citation_keys <- function(lines) {
+  matches <- gregexpr("(^|[[:space:]\\[;(])@[-A-Za-z0-9_:.]+", lines, perl = TRUE)
+  keys <- sub("^.*@", "", unlist(regmatches(lines, matches), use.names = FALSE))
+  prefixes <- c("fig", "tbl", "lst", "tip", "nte", "wrn", "imp", "cau", "thm",
+                "lem", "cor", "prp", "cnj", "def", "exm", "exr", "sol", "rem", "alg", "prf", "eq", "sec")
+  keys[!grepl(paste0("^(", paste(prefixes, collapse = "|"), ")-"), tolower(keys))]
 }
 
 # Citation syntax in literal code is not a manuscript citation. Ignore YAML,
@@ -200,6 +235,10 @@ validate_manuscript_context <- function(context, output_format, check_environmen
   } else if (is_yaml_mapping(meta$format) && !is.null(meta$format[[formats]]) && !identical(meta$format[[formats]], "default")) {
     add("manuscript_format_invalid", "Format options must be a mapping or default.", "format")
   }
+  if ("anonymized" %in% names(meta)) {
+    add("manuscript_metadata_invalid", "Place anonymized inside the typstR mapping.", "anonymized",
+        hint = "Use typstR: {anonymized: true}; top-level anonymized does not hide authors.")
+  }
   if (!is_text_scalar(meta$title)) add("manuscript_metadata_invalid", "A non-empty title is required for all publication variants.", "title")
   for (key in intersect(names(meta), c("subtitle", "abstract"))) {
     if (!is_text_scalar(meta[[key]])) add("manuscript_metadata_invalid", paste(key, "must be non-empty text."), key)
@@ -217,7 +256,7 @@ validate_manuscript_context <- function(context, output_format, check_environmen
     if (!is_text_scalar(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must be non-empty text."), paste0("typstR.", key))
   }
   for (key in intersect(names(typ), c("anonymized", "disclaimer-page"))) {
-    if (!is.logical(typ[[key]]) || length(typ[[key]]) != 1L || is.na(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must be true or false."), paste0("typstR.", key))
+    if (!is_logical_scalar(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must be true or false."), paste0("typstR.", key))
   }
   for (key in intersect(names(typ), c("keywords", "jel"))) {
     if (!is_text_sequence(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must contain text values."), paste0("typstR.", key))
@@ -250,6 +289,11 @@ validate_manuscript_context <- function(context, output_format, check_environmen
     if (!is_yaml_mapping(aff) || !is_text_scalar(aff$id) || !is_text_scalar(aff$name)) {
       add("manuscript_metadata_invalid", "Each affiliation needs text id and name.", "affiliations")
     } else ids <- c(ids, aff$id)
+    if (is_yaml_mapping(aff)) {
+      for (key in intersect(names(aff), c("department", "address", "country"))) {
+        if (!is_text_scalar(aff[[key]])) add("manuscript_metadata_invalid", paste(key, "must be non-empty text."), paste0("affiliations.", key))
+      }
+    }
   }
   if (anyDuplicated(ids)) add("manuscript_metadata_invalid", "Affiliation IDs must be unique.", "affiliations")
   for (i in seq_along(authors)) {
@@ -266,9 +310,9 @@ validate_manuscript_context <- function(context, output_format, check_environmen
     for (key in intersect(names(a), c("email", "orcid"))) {
       if (!is_text_scalar(a[[key]])) add("manuscript_metadata_invalid", paste(key, "must be text."), paste0(field, ".", key))
     }
-    if (is_text_scalar(a$email) && !grepl("^[^[:space:]@]+@[^[:space:]@]+\\.[^[:space:]@]+$", a$email)) add("manuscript_metadata_invalid", "Malformed author email.", paste0(field, ".email"))
-    if (is_text_scalar(a$orcid) && !grepl("^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]$", a$orcid)) add("manuscript_metadata_invalid", "Malformed ORCID.", paste0(field, ".orcid"))
-    if (!is.null(a$corresponding) && (!is.logical(a$corresponding) || length(a$corresponding) != 1L || is.na(a$corresponding))) add("manuscript_metadata_invalid", "corresponding must be true or false.", paste0(field, ".corresponding"))
+    if (is_text_scalar(a$email) && !is_email(a$email)) add("manuscript_metadata_invalid", "Malformed author email.", paste0(field, ".email"))
+    if (is_text_scalar(a$orcid) && !is_orcid(a$orcid)) add("manuscript_metadata_invalid", "Malformed ORCID.", paste0(field, ".orcid"))
+    if ("corresponding" %in% names(a) && !is_logical_scalar(a$corresponding)) add("manuscript_metadata_invalid", "corresponding must be true or false.", paste0(field, ".corresponding"))
     refs <- a$affiliation
     if (is_text_sequence(refs) && length(ids) && any(!unlist(refs) %in% ids)) add("manuscript_metadata_invalid", "Author references undefined affiliation IDs.", paste0(field, ".affiliation"))
     if (!is.null(refs) && !is_text_sequence(refs)) {
@@ -325,7 +369,7 @@ validate_manuscript_context <- function(context, output_format, check_environmen
   for (text in Filter(is_text_scalar, narrative)) {
     body <- c(body, manuscript_prose_lines(strsplit(text, "\n", fixed = TRUE)[[1]]))
   }
-  if (any(grepl("(^|[[:space:]\\[;])@[-A-Za-z0-9_:.]+", body)) && is.null(meta$bibliography) && is.null(meta$references)) {
+  if (length(manuscript_citation_keys(body)) && is.null(meta$bibliography) && is.null(meta$references)) {
     add("manuscript_resource_missing", "Citations require bibliography or inline references.", "bibliography",
         hint = "Set bibliography to a local .bib/CSL file, or supply Quarto inline references.")
   }

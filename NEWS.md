@@ -3,6 +3,28 @@
 First release preparation; CRAN submission and acceptance are not yet recorded.
 Planning milestones v1.0–v1.5 are internal identifiers, not package versions.
 
+## Audit corrections
+
+- Fix singleton keyword/JEL rendering, pass through Quarto page, font, numbering,
+  and TOC controls, and apply title-font with explicit branding precedence.
+- Consolidate publication variants and implement lettered academic appendices
+  with a bundled filter while preserving import paths and public R returns.
+- Validate constructor metadata consistently, distinguish cross-references from
+  citations, and reject misplaced anonymization settings.
+- Preserve literal scaffold titles, implement scaffold opening, and resolve
+  actual Quarto output paths before opening rendered PDFs.
+- Add PDF content/property assertions and required Linux minimum/current and
+  Windows render lanes. Early Quarto 1.4 uses standalone Typst on PATH.
+
+## Test suite simplification
+
+- Keep ordinary tests independent of Quarto and Poppler; consolidate scaffold,
+  validation, and render-path regressions using package loading and scoped mocks.
+- Reduce required PDF assurance from fifteen to nine scenarios per toolchain,
+  retaining all three variants and the Linux minimum/current and Windows lanes.
+- Move benchmarks and baseline validation to the explicit developer command;
+  rely on R CMD check for documentation structure instead of custom Rd tests.
+
 ## First release reliability (planning milestone v1.5)
 
 - Resolve manuscript and project context before preflight so documented file

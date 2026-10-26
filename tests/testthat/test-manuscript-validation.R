@@ -1,16 +1,3 @@
-manuscript_fixture <- function(yaml = c("title: Test", "format: typstR-typst"), body = "Body") {
-  root <- withr::local_tempdir(.local_envir = parent.frame())
-  file <- file.path(root, "paper.qmd")
-  writeLines(c("---", yaml, "---", body), file)
-  file
-}
-
-manuscript_codes <- function(path, ...) {
-  err <- tryCatch(validate_manuscript(path, ...), error = identity)
-  expect_s3_class(err, "typstR_diagnostics_error")
-  vapply(err$diagnostics, `[[`, character(1), "code")
-}
-
 test_that("all scaffold defaults validate without Quarto", {
   root <- withr::local_tempdir()
   for (create in list(create_working_paper, create_article, create_policy_brief)) {
@@ -174,4 +161,15 @@ test_that("project configuration must have the Quarto mapping shape", {
   file <- manuscript_fixture()
   writeLines("project: default", file.path(dirname(file), "_quarto.yml"))
   expect_true("DIAG-MANUSCRIPT-003" %in% manuscript_codes(file))
+})
+
+test_that("preflight distinguishes cross-references from bibliography citations", {
+  for (body in c("See @eq-main and @Fig-main.", "See [@tbl-one; @Sec-two].", "See @thm-main, @lst-code and @tip-note.")) {
+    expect_true(validate_manuscript(manuscript_fixture(body = body))$ok)
+  }
+  for (body in c("See @eq-main and @smith2020.", "See (@smith2020).", "[@Fig-main; @smith2020]")) {
+    expect_true("DIAG-MANUSCRIPT-004" %in% manuscript_codes(manuscript_fixture(body = body)))
+  }
+  expect_true("DIAG-MANUSCRIPT-003" %in% manuscript_codes(manuscript_fixture(
+    c("title: Test", "format: typstR-typst", "anonymized: true"))))
 })

@@ -11,6 +11,10 @@ remotes::install_github("DavidZenz/typstR")
 > `typstR` installs like any other R package. You only need Quarto when you
 > render a document.
 
+Rendering requires Quarto 1.4.11 or newer. Early Quarto 1.4 builds also need a
+standalone Typst executable on `PATH` (tested with Typst 0.15.1); newer Quarto
+builds include the compiler.
+
 ## First run: scaffold -> edit -> render
 
 Start with the working paper scaffold:
@@ -75,3 +79,18 @@ The exported helpers keep manuscript metadata readable and reusable:
 - `render_pub()` and `render_working_paper()` wrap Quarto rendering from R.
 
 For the documentation hub version of this workflow, use `pkgdown/index.md`.
+
+## Developer checks
+
+Ordinary package tests exercise metadata, scaffolding, validation, and mocked
+rendering without invoking Quarto or PDF tools:
+
+```r
+testthat::test_local()
+```
+
+After installing a source tarball, run the required nine-case PDF suite with
+`bash tools/run-render-assurance.sh artifacts/render`. It requires Quarto,
+Typst, and Poppler and fails when a prerequisite or scenario fails. Run manual
+benchmarks separately with `Rscript --vanilla tools/benchmark.R artifacts/benchmark`.
+See [test suite coverage](tools/test-suite.md) for the scenario matrix and commands.

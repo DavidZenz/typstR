@@ -70,10 +70,6 @@ test_that("sort_diagnostics() produces deterministic results across repeated run
   second <- sort_diagnostics(diagnostics)
 
   expect_identical(first, second)
-  expect_identical(
-    vapply(first, function(x) x$code, character(1)),
-    vapply(second, function(x) x$code, character(1))
-  )
 })
 
 test_that("sort_diagnostics() normalizes Windows path separators", {
