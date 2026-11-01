@@ -173,3 +173,74 @@ test_that("preflight distinguishes cross-references from bibliography citations"
   expect_true("DIAG-MANUSCRIPT-003" %in% manuscript_codes(manuscript_fixture(
     c("title: Test", "format: typstR-typst", "anonymized: true"))))
 })
+
+
+test_that("both local config suffixes fail closed with an actionable file pointer", {
+  for (main in c("_quarto.yml", "_quarto.yaml")) {
+    for (local in c("_quarto.yml.local", "_quarto.yaml.local")) {
+      file <- manuscript_fixture(c("title: Test", "format: typstR-typst", "author: [{name: Ada}]"))
+      root <- dirname(file)
+      writeLines(c("project: {type: default}", "typstR: {anonymized: true}"), file.path(root, main))
+      override <- file.path(root, local)
+      writeLines("format: {typstR-typst: {typstR: {anonymized: false}}}", override)
+      err <- tryCatch(validate_manuscript(file), error = identity)
+      expect_s3_class(err, "typstR_diagnostics_error")
+      expect_identical(err$diagnostics[[1]]$code, "DIAG-MANUSCRIPT-005")
+      expect_identical(err$diagnostics[[1]]$location$file, normalizePath(override, winslash = "/"))
+      expect_match(err$diagnostics[[1]]$hint, "local override")
+      writeLines("editor: source", override)
+      expect_true(validate_manuscript(file)$metadata$typstR$anonymized)
+      writeLines("# Empty local configuration", override)
+      expect_true(validate_manuscript(file)$metadata$typstR$anonymized)
+    }
+  }
+  file <- manuscript_fixture(c("title: Test", "format: typstR-typst", "typstR: {anonymized: true}"))
+  root <- dirname(file)
+  writeLines("project: {type: default}", file.path(root, "_quarto.yml"))
+  writeLines("editor: source", file.path(root, "_quarto.yml.local"))
+  writeLines("typstR: {anonymized: false}", file.path(root, "_quarto.yaml.local"))
+  expect_true(validate_manuscript(file)$metadata$typstR$anonymized)
+})
+
+test_that("canonical YAML booleans are required after metadata merging", {
+  ambiguous <- c("yes", "no", "on", "off", "YES", "NO", "True", "FALSE", "1", "0", "'true'", "'false'", "null")
+  fields <- c("typstR: {anonymized: %s}", "typstR: {disclaimer-page: %s}",
+              "author: [{name: Ada, corresponding: %s}]",
+              "format: {typstR-typst: {number-sections: %s}}")
+  for (field in fields) {
+    for (value in ambiguous) {
+      file <- manuscript_fixture(c("title: Test", "format: typstR-typst", sprintf(field, value)))
+      # Avoid duplicate format keys when the test supplies format-specific options.
+      if (startsWith(field, "format:")) {
+        writeLines(c("---", "title: Test", sprintf(field, value), "---", "Body"), file)
+      }
+      expect_true("DIAG-MANUSCRIPT-003" %in% manuscript_codes(file), info = paste(field, value))
+    }
+  }
+  for (value in c("true", "false")) {
+    file <- manuscript_fixture(c("title: Test", "format: typstR-typst",
+                                paste0("typstR: {anonymized: ", value, "}")))
+    expect_identical(validate_manuscript(file)$metadata$typstR$anonymized, identical(value, "true"))
+  }
+  file <- manuscript_fixture(c("title: Test", "format: {typstR-typst: {typstR: {anonymized: true}}}"))
+  writeLines("typstR: {anonymized: no}", file.path(dirname(file), "_metadata.yml"))
+  expect_true(validate_manuscript(file)$metadata$typstR$anonymized)
+  writeLines("QUARTO_PROFILE=review", file.path(dirname(file), "_environment.local"))
+  expect_true("DIAG-MANUSCRIPT-005" %in% manuscript_codes(file))
+})
+
+test_that("citation scanning distinguishes comments, indented code and suppressed citations", {
+  literal <- list(
+    "    @code", "\t@code", c("    @code", "", "    @more"),
+    "<!-- @editor -->", c("<!--", "@editor", "-->"),
+    "Text <!-- @editor --> remains.", "Email ada@example.org; identifier x@host.",
+    c("```", "<!--", "```", "Body"), "See [-@Fig-main; @eq-main]."
+  )
+  for (body in literal) expect_true(validate_manuscript(manuscript_fixture(body = body))$ok)
+  citations <- list("Use `<!--` and cite @real.", "[-@smith2020]", "[@one; -@two]", "<!-- @editor --> Cite @real.",
+                   c("    @code", "", "Cite @real."), c("Paragraph", "    continued @real"),
+                   c("<!--", "@editor", "--> Cite @real."), "See [-@eq-main; -@smith2020].")
+  for (body in citations) {
+    expect_true("DIAG-MANUSCRIPT-004" %in% manuscript_codes(manuscript_fixture(body = body)))
+  }
+})

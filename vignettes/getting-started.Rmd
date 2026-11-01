@@ -81,11 +81,18 @@ lead_author <- author(
 
 home_institute <- affiliation("1", "Centre for European Industrial Analysis")
 
-manuscript_meta(
+metadata <- manuscript_meta(
   authors = list(lead_author),
   affiliations = list(home_institute)
 )
+yaml::as.yaml(metadata, handlers = list(logical = function(value) {
+  structure(ifelse(value, "true", "false"), class = "verbatim")
+}))
 ```
+
+Use unquoted `true` and `false` for boolean settings. Values such as `yes`, `no`,
+`on`, `off`, numbers, and quoted boolean strings are rejected. The logical
+handler above avoids the YAML 1.1 `yes`/`no` output of `yaml::as.yaml()`.
 
 ## Check `_quarto.yml` and `references.bib`
 
@@ -175,9 +182,12 @@ project root. Project settings, directory `_metadata.yml` and manuscript YAML ar
 merged. Local resources (bibliography, logo, CSL and include files) resolve relative
 to the YAML file that declares them. Configured files must already exist.
 
-Static preflight rejects profiles, `.local` overrides, `metadata-files`, executable
+Static preflight rejects profiles, publication overrides in either
+`_quarto.yml.local` or `_quarto.yaml.local`, `metadata-files`, executable
 YAML and remote resources. It does not evaluate code-generated resources/citations
-or validate the whole Quarto schema. Citeproc checks bibliography contents at render
+or validate the whole Quarto schema. Empty/editor-only local files are allowed;
+move publication settings into the main project or document YAML for static
+validation. Conflicting overrides are reported with their file path. Citeproc checks bibliography contents at render
 time. For unsupported configuration, use Quarto directly and verify the output.
 
 ## Layout and existing projects

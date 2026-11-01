@@ -32,11 +32,11 @@ run_pdf_audit_case <- function(out, variant, mode, rasterize = FALSE) {
   typ <- list(`format-variant` = variant, anonymized = anonymous,
               `primary-font` = if (numbered) "Libertinus Serif" else "DejaVu Sans Mono",
               `title-font` = "DejaVu Sans Mono", margins = list(x = "1in", y = "1in"),
-              acknowledgements = "SecretAcknowledgement", `report-number` = "AuditReport",
+              acknowledgements = "SecretAcknowledgement", `report-number` = 'AuditReport "quoted"',
               funding = "AuditFunding", `data-availability` = "AuditDataStatement",
               `code-availability` = "AuditCodeStatement")
   if (numbered) {
-    typ$keywords <- list("AuditKeyword")
+    typ$keywords <- list('AuditKeyword trade "policy" C:\\data Identifier_one \u00dcber & 50%')
     typ$jel <- list("F10")
   } else {
     # Exercise standard font/margin fallback as well as typstR precedence above.
@@ -48,20 +48,23 @@ run_pdf_audit_case <- function(out, variant, mode, rasterize = FALSE) {
                author = list(list(name = "SecretAuthor", email = "secret@example.org",
                                   orcid = "0000-0001-2345-6789", corresponding = TRUE,
                                   affiliation = list("institute"))),
-               affiliations = list(list(id = "institute", name = "SecretInstitute")),
-               abstract = "AuditAbstract", format = list(`typstR-typst` = options), typstR = typ)
+               affiliations = list(list(id = "institute", name = 'SecretInstitute "quoted" & Research', department = 'Department "one"')),
+               subtitle = "*AuditSubtitle* **bold**", abstract = "*AuditAbstract*", format = list(`typstR-typst` = options), typstR = typ)
   if (numbered) {
     dir.create(file.path(project, "assets"))
     writeLines('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60"><rect width="200" height="60" fill="#002147"/><text x="10" y="40" font-size="30" fill="white">typstR</text></svg>',
-               file.path(project, "assets", "logo.svg"))
-    typ$logo <- "assets/logo.svg"
-    typ$footer <- "AuditFooter"
+               file.path(project, "assets", "logo_mark.svg"))
+    typ$logo <- "assets/logo_mark.svg"
+    typ$footer <- 'AuditFooter "quoted" C:\\archive\n\u00dcber & 50%'
     typ$`accent-color` <- "#002147"
     typ$`disclaimer-page` <- TRUE
     typ$`disclaimer-text` <- "AuditDisclaimer"
     config$bibliography <- "references.bib"
   }
   # Inherited project metadata must survive document-level format options.
+  # Format-specific document values must win over inherited anonymization.
+  typ$anonymized <- !anonymous
+  meta$format$`typstR-typst`$typstR <- list(anonymized = anonymous)
   config$typstR <- typ
   meta$typstR <- NULL
   writeLines(audit_yaml(config), file.path(project, "_quarto.yml"), useBytes = TRUE)
@@ -80,7 +83,18 @@ run_pdf_audit_case <- function(out, variant, mode, rasterize = FALSE) {
                           "", "[^audit]: AuditFootnote", "",
                           "| AuditTable | Estimate |", "|:--|--:|", "| Treatment | 1.25 |")
   writeLines(c("---", audit_yaml(meta), "---", "", body), input, useBytes = TRUE)
-  if (!validate_manuscript(input)$ok) stop("Audit preflight failed: ", id)
+  if (variant == "article" && anonymous) {
+    override <- file.path(project, "_quarto.yaml.local")
+    writeLines("typstR: {anonymized: false}", override)
+    blocked <- tryCatch(validate_manuscript(input), error = identity)
+    if (!inherits(blocked, "typstR_diagnostics_error") ||
+        !any(vapply(blocked$diagnostics, function(x) identical(x$location$file, override), logical(1)))) {
+      stop("Local override did not fail closed: ", id)
+    }
+    writeLines("editor: source", override)
+  }
+  preflight <- validate_manuscript(input)
+  if (!preflight$ok || !identical(preflight$metadata$typstR$anonymized, anonymous)) stop("Audit preflight failed: ", id)
   result <- withVisible(render_pub(input, quiet = FALSE, open = FALSE))
   if (result$visible || !is.null(result$value)) stop("Render return contract changed")
   pdf <- if (variant == "article") file.path(project, "results", "nested chapter", "review copy.pdf") else
@@ -106,6 +120,8 @@ run_pdf_audit_case <- function(out, variant, mode, rasterize = FALSE) {
   assert(grepl("BodyMarker", flat, fixed = TRUE), "body is missing")
   title_text <- chartr("\u201c\u201d", '\"\"', flat)
   assert(grepl('AuditTitle "quoted": \u00dcber', title_text, fixed = TRUE), "literal title changed")
+  assert(grepl("AuditSubtitle bold", flat, fixed = TRUE), "formatted subtitle missing")
+  if (!anonymous) assert(grepl('SecretInstitute "quoted" & Research', title_text, fixed = TRUE), "literal affiliation changed")
   assert(!grepl("@eq-audit|\\?\\?", flat), "unresolved cross-reference")
   secret <- c("SecretAuthor", "SecretInstitute", "secret@example.org", "0000-0001-2345-6789", "SecretAcknowledgement")
   if (anonymous) {
@@ -128,7 +144,9 @@ run_pdf_audit_case <- function(out, variant, mode, rasterize = FALSE) {
     assert(grepl(token, flat, fixed = TRUE), paste("publication statement missing:", token))
   }
   if (numbered) {
-    assert(grepl("AuditKeyword", flat, fixed = TRUE), "singleton keyword missing")
+    assert(grepl('AuditKeyword trade "policy" C:\\data Identifier_one \u00dcber & 50%', title_text, fixed = TRUE), "literal keyword changed")
+    assert(grepl('AuditFooter "quoted" C:\\archive', title_text, fixed = TRUE), "literal footer changed")
+    if (variant != "article") assert(grepl('AuditReport "quoted"', title_text, fixed = TRUE), "literal report number changed")
     assert(grepl("F10", flat, fixed = TRUE) == (variant != "brief"), "JEL variant behavior changed")
     assert(grepl("AuditReport", flat, fixed = TRUE) == (variant != "article"), "report-number variant behavior changed")
     assert(grepl("AuditContents", flat, fixed = TRUE), "TOC is missing")

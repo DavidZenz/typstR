@@ -31,7 +31,8 @@ An S3 object with class \code{c("typstR_author", "list")}.
 \description{
 Returns an S3 object of class \code{typstR_author} representing a manuscript
 author. Fields are serializable to Quarto-compatible YAML via
-\code{yaml::as.yaml()}.
+\code{yaml::as.yaml()} with a logical handler emitting \code{true}/\code{false} (see the
+getting-started vignette); its default \code{yes}/\code{no} output is not Quarto YAML.
 }
 \examples{
 author(

@@ -2,7 +2,8 @@
 #'
 #' Returns an S3 object of class `typstR_author` representing a manuscript
 #' author. Fields are serializable to Quarto-compatible YAML via
-#' `yaml::as.yaml()`.
+#' `yaml::as.yaml()` with a logical handler emitting `true`/`false` (see the
+#' getting-started vignette); its default `yes`/`no` output is not Quarto YAML.
 #'
 #' @param name Character scalar. Author's full name (required).
 #' @param affiliation Character vector of affiliation IDs, or `NULL`.

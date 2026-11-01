@@ -67,3 +67,10 @@ workloads mock external probes; scaffolding copies real assets. Historical
 baselines and derivation tooling live under `tools/benchmarks/`; do not reset
 baselines automatically. Harness setup changed during consolidation, so historical
 ratios require investigation on comparable hardware and are not speed claims.
+
+
+November 1 regressions extend these same nine cases with quoted/backslash/Unicode
+metadata, preserved subtitle markup, format-specific anonymization precedence,
+and a conflicting local override followed by an editor-only override. The unit
+suite covers both local suffixes, ambiguous YAML boolean spellings, negative
+citations, indented code and HTML comments. The matrix size is unchanged.

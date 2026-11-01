@@ -15,7 +15,9 @@
 #' Project YAML, directory `_metadata.yml` and document YAML are merged in that
 #' order. Relative resource paths are based on the configuration file that
 #' declares them. Profiles, local configuration, executable YAML, metadata-files,
-#' and generated resources are not supported by this static preflight.
+#' and generated resources are not supported by this static preflight. Empty or
+#' editor-only local configuration is allowed. Boolean fields require unquoted
+#' `true` or `false`.
 #' See the getting-started article for the validation contract and limitations.
 #' @examples
 #' \dontrun{
@@ -70,7 +72,7 @@ is_orcid <- function(x) {
 }
 
 manuscript_citation_keys <- function(lines) {
-  matches <- gregexpr("(^|[[:space:]\\[;(])@[-A-Za-z0-9_:.]+", lines, perl = TRUE)
+  matches <- gregexpr("(^|[[:space:]\\[;(])-?@[A-Za-z0-9_][A-Za-z0-9_:.+-]*", lines, perl = TRUE)
   keys <- sub("^.*@", "", unlist(regmatches(lines, matches), use.names = FALSE))
   prefixes <- c("fig", "tbl", "lst", "tip", "nte", "wrn", "imp", "cau", "thm",
                 "lem", "cor", "prp", "cnj", "def", "exm", "exr", "sol", "rem", "alg", "prf", "eq", "sec")
@@ -87,17 +89,50 @@ manuscript_prose_lines <- function(lines) {
   prose <- character(length(lines))
   kept <- 0L
   fence <- NULL
+  comment <- FALSE
+  indented <- FALSE
+  previous_blank <- TRUE
   for (line in lines) {
     marker <- regmatches(line, regexpr("^ {0,3}(`{3,}|~{3,})", line))
-    if (is.null(fence) && length(marker) && nzchar(marker)) {
-      fence <- trimws(marker)
-    } else if (!is.null(fence)) {
+    if (is.null(fence) && !length(marker) && !comment) {
+      line <- gsub("(`+)(.*?)\\1", "", line, perl = TRUE)
+    }
+    # Comments may span lines or have prose on either side. Do not interpret
+    # their delimiters inside code. Keep non-comment prose on the same line.
+    if (is.null(fence) && (comment || !grepl("^( {4}|\\t)", line))) {
+      parts <- character()
+      repeat {
+        delimiter <- if (comment) "-->" else "<!--"
+        pos <- regexpr(delimiter, line, fixed = TRUE)[[1]]
+        if (pos < 0L) {
+          if (!comment) parts <- c(parts, line)
+          break
+        }
+        if (!comment) parts <- c(parts, substr(line, 1L, pos - 1L))
+        line <- substring(line, pos + nchar(delimiter))
+        comment <- !comment
+      }
+      line <- paste(parts, collapse = " ")
+    }
+    marker <- regmatches(line, regexpr("^ {0,3}(`{3,}|~{3,})", line))
+    blank <- !nzchar(trimws(line))
+    code_indent <- grepl("^( {4}|\\t)", line)
+    if (!is.null(fence)) {
       closing <- paste0("^ {0,3}", substr(fence, 1L, 1L), "{", nchar(fence), ",}\\s*$")
       if (grepl(closing, line)) fence <- NULL
+    } else if (code_indent && (indented || previous_blank)) {
+      indented <- TRUE
+    } else if (indented && blank) {
+      # Blank lines may occur inside an indented code block.
+    } else if (length(marker) && nzchar(marker)) {
+      indented <- FALSE
+      fence <- trimws(marker)
     } else {
+      indented <- FALSE
       kept <- kept + 1L
-      prose[[kept]] <- gsub("`+[^`]*`+", "", line)
+      prose[[kept]] <- gsub("(`+)(.*?)\\1", "", line, perl = TRUE)
     }
+    previous_blank <- blank
   }
   prose[seq_len(kept)]
 }
@@ -165,7 +200,9 @@ validate_manuscript_context <- function(context, output_format, check_environmen
     }
     meta <- tryCatch(
       withCallingHandlers(yaml::yaml.load(paste(lines, collapse = "\n"), eval.expr = FALSE,
-                                         handlers = list(seq = function(x) as.list(x))),
+                                         handlers = list(seq = function(x) as.list(x),
+                                           `bool#yes` = function(x) if (identical(x, "true")) TRUE else x,
+                                           `bool#no` = function(x) if (identical(x, "false")) FALSE else x)),
                           warning = function(w) stop(conditionMessage(w))),
       error = function(e) {
         add("manuscript_yaml_invalid", paste("Invalid YAML:", conditionMessage(e)), "yaml", file)
@@ -215,10 +252,29 @@ validate_manuscript_context <- function(context, output_format, check_environmen
       }
     }
   }
-  local_configs <- if (is.null(context$project_file)) character() else paste0(context$project_file, ".local")
-  if (nzchar(Sys.getenv("QUARTO_PROFILE")) || any(file.exists(local_configs))) {
-    add("manuscript_unsupported", "Profiles and local project overrides require Quarto-specific evaluation.", "profile",
-        hint = "Remove active profiles/local overrides or render directly with Quarto after manual validation.")
+  # Quarto discovers either suffix independently of the main config suffix.
+  # Static preflight cannot safely evaluate local publication/profile overrides
+  # on every supported Quarto version. Empty/editor-only files do not affect it.
+  local_configs <- if (is.null(context$project_file)) character() else
+    file.path(context$project_dir, c("_quarto.yml.local", "_quarto.yaml.local"))
+  # Quarto selects .yml.local before .yaml.local when both exist.
+  for (file in utils::head(local_configs[file.exists(local_configs)], 1L)) {
+    local <- read_metadata(file)
+    if (length(setdiff(names(local), "editor"))) {
+      add("manuscript_unsupported", "Local project overrides may change the effective publication settings.",
+          "configuration", file,
+          "Move publication settings into project/document YAML, or remove this local override before validating and rendering.")
+    }
+  }
+  if (nzchar(Sys.getenv("QUARTO_PROFILE"))) {
+    add("manuscript_unsupported", "Active profiles require Quarto-specific evaluation.", "profile",
+        hint = "Remove active profiles or render directly with Quarto after manual validation.")
+  }
+  for (file in file.path(context$project_dir, c("_environment", "_environment.local"))) {
+    if (file.exists(file) && any(grepl("^\\s*(export\\s+)?QUARTO_PROFILE\\s*=", readLines(file, warn = FALSE)))) {
+      add("manuscript_unsupported", "Environment-file profiles require Quarto-specific evaluation.", "profile", file,
+          "Remove QUARTO_PROFILE from this environment file before using typstR preflight.")
+    }
   }
   formats <- if (is_text_scalar(meta$format)) meta$format else if (is_yaml_mapping(meta$format)) names(meta$format) else character()
   if (!is.null(output_format)) {
@@ -234,6 +290,11 @@ validate_manuscript_context <- function(context, output_format, check_environmen
     meta <- merge_manuscript_metadata(meta, meta$format[[formats]])
   } else if (is_yaml_mapping(meta$format) && !is.null(meta$format[[formats]]) && !identical(meta$format[[formats]], "default")) {
     add("manuscript_format_invalid", "Format options must be a mapping or default.", "format")
+  }
+  for (key in intersect(names(meta), c("number-sections", "toc", "keep-typ"))) {
+    if (!is_logical_scalar(meta[[key]])) {
+      add("manuscript_metadata_invalid", paste(key, "must use the unquoted YAML booleans true or false."), key)
+    }
   }
   if ("anonymized" %in% names(meta)) {
     add("manuscript_metadata_invalid", "Place anonymized inside the typstR mapping.", "anonymized",
@@ -256,7 +317,7 @@ validate_manuscript_context <- function(context, output_format, check_environmen
     if (!is_text_scalar(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must be non-empty text."), paste0("typstR.", key))
   }
   for (key in intersect(names(typ), c("anonymized", "disclaimer-page"))) {
-    if (!is_logical_scalar(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must be true or false."), paste0("typstR.", key))
+    if (!is_logical_scalar(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must use the unquoted YAML booleans true or false."), paste0("typstR.", key))
   }
   for (key in intersect(names(typ), c("keywords", "jel"))) {
     if (!is_text_sequence(typ[[key]])) add("manuscript_metadata_invalid", paste(key, "must contain text values."), paste0("typstR.", key))
@@ -312,7 +373,7 @@ validate_manuscript_context <- function(context, output_format, check_environmen
     }
     if (is_text_scalar(a$email) && !is_email(a$email)) add("manuscript_metadata_invalid", "Malformed author email.", paste0(field, ".email"))
     if (is_text_scalar(a$orcid) && !is_orcid(a$orcid)) add("manuscript_metadata_invalid", "Malformed ORCID.", paste0(field, ".orcid"))
-    if ("corresponding" %in% names(a) && !is_logical_scalar(a$corresponding)) add("manuscript_metadata_invalid", "corresponding must be true or false.", paste0(field, ".corresponding"))
+    if ("corresponding" %in% names(a) && !is_logical_scalar(a$corresponding)) add("manuscript_metadata_invalid", "corresponding must use the unquoted YAML booleans true or false.", paste0(field, ".corresponding"))
     refs <- a$affiliation
     if (is_text_sequence(refs) && length(ids) && any(!unlist(refs) %in% ids)) add("manuscript_metadata_invalid", "Author references undefined affiliation IDs.", paste0(field, ".affiliation"))
     if (!is.null(refs) && !is_text_sequence(refs)) {

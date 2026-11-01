@@ -32,7 +32,9 @@ formats, and configured local resources. The same checks run before rendering.
 Project YAML, directory \verb{_metadata.yml} and document YAML are merged in that
 order. Relative resource paths are based on the configuration file that
 declares them. Profiles, local configuration, executable YAML, metadata-files,
-and generated resources are not supported by this static preflight.
+and generated resources are not supported by this static preflight. Empty or
+editor-only local configuration is allowed. Boolean fields require unquoted
+\code{true} or \code{false}.
 See the getting-started article for the validation contract and limitations.
 }
 \examples{

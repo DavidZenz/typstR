@@ -16,6 +16,20 @@ Planning milestones v1.0–v1.5 are internal identifiers, not package versions.
 - Add PDF content/property assertions and required Linux minimum/current and
   Windows render lanes. Early Quarto 1.4 uses standalone Typst on PATH.
 
+## Validation and encoding corrections
+
+- Fail closed on publication overrides in both local project config filenames,
+  including format-specific metadata; allow empty/editor-only local files.
+- Require canonical YAML booleans consistently with Quarto and diagnose
+  environment-file profiles before rendering.
+- Encode Typst string metadata independently of content markup, preserving
+  quotes, backslashes, Unicode and line breaks in publication fields and paths.
+- Ignore HTML comments and indented code during citation preflight, and detect
+  suppressed-author citations such as `[-@key]`.
+- Require quarto R 1.5.0 for `quarto_available()` and testthat 3.1.7 for
+  namespace mocking; the Quarto CLI minimum remains 1.4.11. Extend the
+  nine required render scenarios with literal metadata and anonymity regressions.
+
 ## Test suite simplification
 
 - Keep ordinary tests independent of Quarto and Poppler; consolidate scaffold,
