@@ -147,8 +147,9 @@ November 1 fixes. Historical local measurements above remain unchanged.
 
 ## Manuscript validation and encoding fixes — November 1, 2026
 
-This is fresh local verification of the subsequent working-tree changes. The
-hosted run above is historical and does not certify these uncommitted fixes.
+This section records local verification performed before the fixes were
+committed as `19fb617`. The earlier hosted run above certifies `eb1d0a3`;
+hosted verification of the fixes is recorded in the update below.
 
 ### Decisions and regression coverage
 
@@ -220,10 +221,46 @@ appendices and anonymity, without clipping or overlap.
 
 ### Remaining limitations
 
-The three existing Ubuntu/Windows CI lanes are unchanged. These new changes have
-not been executed on hosted Windows or on a pushed review commit; the earlier
-successful Windows run must not be treated as verification of this working tree.
-Static preflight intentionally rejects effective local publication/profile
-overrides rather than resolving arbitrary dynamic Quarto configuration. Authors
-must still review identifying body text and publication statements. No commit,
-push, release tag or CRAN submission was performed as part of this fix.
+The three existing Ubuntu/Windows CI lanes are unchanged; hosted verification
+of `19fb617` is recorded below. Static preflight intentionally rejects effective
+local publication/profile overrides rather than resolving arbitrary dynamic
+Quarto configuration. Authors must still review identifying body text and
+publication statements. No release tag or CRAN submission was performed.
+
+
+## Hosted verification of 19fb617 — November 1, 2026
+
+All three workflows completed successfully for commit
+[`19fb6178edb19c883ed386cd9da7d8f5278a3635`](https://github.com/DavidZenz/typstR/commit/19fb6178edb19c883ed386cd9da7d8f5278a3635).
+These results verify the manuscript validation and Typst encoding fixes,
+including hosted Windows execution, and resolve the earlier verification gap.
+
+### Required PDF renders
+
+[Required PDF renders, run 41352880407](https://github.com/DavidZenz/typstR/actions/runs/41352880407)
+passed all three jobs. Each job log explicitly records
+`PASS: nine required renders; zero skipped`, for 27 successful renders in total.
+
+| Runner | Quarto CLI | Typst / provider | Result |
+|---|---|---|---|
+| Windows latest | 1.10.19 | 0.15.1 / Quarto bundled | 9 passed, 0 skipped |
+| Ubuntu latest | 1.10.19 | 0.15.1 / Quarto bundled | 9 passed, 0 skipped |
+| Ubuntu latest | 1.4.11 | 0.15.1 / standalone | 9 passed, 0 skipped |
+
+Each job successfully built and installed a source tarball, ran the clean-session
+public-helper PDF/content/property checks, and uploaded its render evidence.
+The workflow pins R 4.6.1. Hosted tarballs are independent builds; the local
+source-tarball hash above is not asserted as their hash.
+
+### Package checks and documentation
+
+[R CMD check, run 41352880422](https://github.com/DavidZenz/typstR/actions/runs/41352880422)
+passed all five targets: Windows release, macOS release, and Ubuntu release,
+devel, and oldrel-1.
+
+[Pkgdown, run 41352880411](https://github.com/DavidZenz/typstR/actions/runs/41352880411)
+also completed successfully.
+
+No CI failures required code changes. These hosted results apply to `19fb617`;
+this follow-up changes only release-verification documentation. Final release
+approval, tagging, CRAN submission and acceptance remain separate maintainer gates.

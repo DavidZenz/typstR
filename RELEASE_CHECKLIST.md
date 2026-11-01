@@ -16,6 +16,16 @@ Quarto 1.4.11 needs standalone Typst on PATH; the compatibility lane pins Typst
 nine PDFs: unchanged defaults, identified enriched documents, and anonymous
 unnumbered documents for each variant. Ordinary package tests never invoke Quarto.
 
+## Latest hosted verification — November 1, 2026
+
+Commit [`19fb617`](https://github.com/DavidZenz/typstR/commit/19fb6178edb19c883ed386cd9da7d8f5278a3635)
+passed the [required PDF workflow](https://github.com/DavidZenz/typstR/actions/runs/41352880407):
+Windows/Quarto 1.10.19 and Ubuntu/Quarto 1.4.11 and 1.10.19 each completed all
+nine renders with zero skipped cases. The [five-target package checks](https://github.com/DavidZenz/typstR/actions/runs/41352880422)
+and [pkgdown build](https://github.com/DavidZenz/typstR/actions/runs/41352880411)
+also passed. Full evidence is recorded in `tools/audit-verification.md`.
+These results cover that commit; review any later package changes before release.
+
 ## Final review
 
 - [ ] Review the release commit range, API changes, validation limits and NEWS.
