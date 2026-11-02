@@ -17,7 +17,6 @@ and
 to build structured metadata:
 
 ``` r
-
 authors <- list(
   author(
     "Elena Fischer",
@@ -68,7 +67,6 @@ codes and a report number usually belong on the title page.
 The package includes small helpers for common end-matter blocks:
 
 ``` r
-
 funding("This research was supported by the Applied Trade Policy Programme.")
 #> [1] "This research was supported by the Applied Trade Policy Programme."
 #> attr(,"class")

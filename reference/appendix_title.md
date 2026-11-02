@@ -2,8 +2,10 @@
 
 Outputs a markdown header with Quarto's `{.appendix}` class via
 [`cat()`](https://rdrr.io/r/base/cat.html), suitable for use in Quarto
-code chunks with `#| output: asis`. This marks the section as an
-appendix in Quarto's cross-reference system.
+code chunks with `#| output: asis`. This marks the section for typstR's
+bundled appendix filter. Working papers and articles use lettered
+appendix numbering; policy briefs retain ordinary numbering. Explicitly
+disabled section numbering remains disabled.
 
 ## Usage
 

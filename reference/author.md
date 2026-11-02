@@ -2,7 +2,9 @@
 
 Returns an S3 object of class `typstR_author` representing a manuscript
 author. Fields are serializable to Quarto-compatible YAML via
-[`yaml::as.yaml()`](https://yaml.r-lib.org/reference/as.yaml.html).
+[`yaml::as.yaml()`](https://yaml.r-lib.org/reference/as.yaml.html) with
+a logical handler emitting `true`/`false` (see the getting-started
+vignette); its default `yes`/`no` output is not Quarto YAML.
 
 ## Usage
 

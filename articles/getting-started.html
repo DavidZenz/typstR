@@ -143,11 +143,20 @@ the Quarto file:</p>
 <span></span>
 <span><span class="va">home_institute</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/affiliation.html">affiliation</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"Centre for European Industrial Analysis"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/manuscript_meta.html">manuscript_meta</a></span><span class="op">(</span></span>
+<span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/manuscript_meta.html">manuscript_meta</a></span><span class="op">(</span></span>
 <span>  authors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">lead_author</span><span class="op">)</span>,</span>
 <span>  affiliations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">home_institute</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;typstR_meta&gt; 1 author(s), 1 affiliation(s)</span></span></code></pre></div>
+<span><span class="fu">yaml</span><span class="fu">::</span><span class="fu"><a href="https://yaml.r-lib.org/reference/as.yaml.html" class="external-link">as.yaml</a></span><span class="op">(</span><span class="va">metadata</span>, handlers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">value</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">value</span>, <span class="st">"true"</span>, <span class="st">"false"</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"verbatim"</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "author:\n- name: Elena Fischer\n  affiliation: '1'\n  email: elena.fischer@example.org\n  corresponding: true\naffiliations:\n- id: '1'\n  name: Centre for European Industrial Analysis\n"</span></span></code></pre></div>
+<p>Use unquoted <code>true</code> and <code>false</code> for boolean
+settings. Values such as <code>yes</code>, <code>no</code>,
+<code>on</code>, <code>off</code>, numbers, and quoted boolean strings
+are rejected. The logical handler above avoids the YAML 1.1
+<code>yes</code>/<code>no</code> output of
+<code><a href="https://yaml.r-lib.org/reference/as.yaml.html" class="external-link">yaml::as.yaml()</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="check-_quarto-yml-and-references-bib">Check <code>_quarto.yml</code> and <code>references.bib</code><a class="anchor" aria-label="anchor" href="#check-_quarto-yml-and-references-bib"></a>
@@ -184,6 +193,11 @@ the manuscript with standard Quarto syntax such as
 </h2>
 <p>Rendering depends on Quarto, so the call below is shown but not run
 during vignette checks.</p>
+<p>The minimum supported Quarto version is 1.4.11. Early Quarto 1.4
+builds require a standalone Typst executable on <code>PATH</code>; the
+tested standalone version is 0.15.1. Newer Quarto builds include Typst.
+Use <code><a href="../reference/validate_render_environment.html">validate_render_environment()</a></code> to check the compiler
+available to your selected Quarto installation.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/render_working_paper.html">render_working_paper</a></span><span class="op">(</span><span class="st">"my-paper/template.qmd"</span><span class="op">)</span></span></code></pre></div>
 <p>If you prefer to guard the call in your own scripts, use the same
@@ -196,6 +210,71 @@ condition that package tests use:</p>
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu">quarto</span><span class="fu">::</span><span class="fu"><a href="https://quarto-dev.github.io/quarto-r/reference/quarto_available.html" class="external-link">quarto_available</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="../reference/render_working_paper.html">render_working_paper</a></span><span class="op">(</span><span class="st">"my-paper/template.qmd"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="validate-before-rendering">Validate before rendering<a class="anchor" aria-label="anchor" href="#validate-before-rendering"></a>
+</h2>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/validate_manuscript.html">validate_manuscript</a></span><span class="op">(</span><span class="st">"my-paper/template.qmd"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/validate_manuscript.html">validate_manuscript</a></span><span class="op">(</span><span class="st">"my-paper"</span>, check_environment <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>The first call checks static YAML, publication metadata and
+configured files without requiring Quarto. Rendering runs those same
+checks plus Quarto/Typst and extension checks automatically.
+<code><a href="../reference/validate_render_environment.html">validate_render_environment()</a></code> remains an environment-only
+check. Errors include stable diagnostic codes, locations and repair
+hints.</p>
+<p>Every variant needs a text title and the bundled
+<code>typstR-typst</code> format. Select <code>workingpaper</code>
+(default), <code>article</code> or <code>brief</code> with
+<code>typstR: format-variant</code>. Authors, affiliations, abstract,
+keywords, JEL codes, report numbers and branding are optional; supplied
+fields must have the documented types. Omit unused optional fields;
+Quarto rejects <code>null</code> for typed fields such as abstract and
+bibliography. Change inherited settings using a valid value or edit the
+declaring configuration. Literal citation examples inside fenced/inline
+code do not require a bibliography; citations in prose or the abstract
+do. Inline reference records need unique text IDs.</p>
+<p>File input works from outside the project, including paths with
+spaces. Directory input selects one immediate <code>.qmd</code>;
+<code>NULL</code> searches the current directory and reports ambiguity
+rather than guessing. The nearest <code>_quarto.yml</code> establishes
+the project root. Project settings, directory <code>_metadata.yml</code>
+and manuscript YAML are merged. Local resources (bibliography, logo, CSL
+and include files) resolve relative to the YAML file that declares them.
+Configured files must already exist.</p>
+<p>Static preflight rejects profiles, publication overrides in either
+<code>_quarto.yml.local</code> or <code>_quarto.yaml.local</code>,
+<code>metadata-files</code>, executable YAML and remote resources. It
+does not evaluate code-generated resources/citations or validate the
+whole Quarto schema. Empty/editor-only local files are allowed; move
+publication settings into the main project or document YAML for static
+validation. Conflicting overrides are reported with their file path.
+Citeproc checks bibliography contents at render time. For unsupported
+configuration, use Quarto directly and verify the output.</p>
+</div>
+<div class="section level2">
+<h2 id="layout-and-existing-projects">Layout and existing projects<a class="anchor" aria-label="anchor" href="#layout-and-existing-projects"></a>
+</h2>
+<p>Section numbering is enabled by default. Set
+<code>number-sections: false</code> to disable it;
+<code>toc: true</code> adds a contents list after the abstract, with
+<code>toc-title</code> and <code>toc-depth</code> controlling its title
+and depth. <code>papersize: a4</code> selects A4 paper. Render helpers
+honor <code>output-file</code> and project <code>output-dir</code> when
+opening PDFs.</p>
+<p>Scaffolds contain their own extension copy. Updating the R package
+does not change existing projects. Back up
+<code>_extensions/typstR/</code>, then replace that directory with the
+contents of
+<code>system.file("quarto/extensions/typstR", package = "typstR")</code>.
+Keep your manuscript, bibliography, and project configuration; only
+replace the extension.</p>
+<p>In an <code>output: asis</code> R chunk,
+<code>appendix_title("Additional Data")</code> starts lettered
+appendices in working papers and articles. Subsequent appendix headings
+at the same level use B, C, and so on; nested headings use A.1, A.2, and
+so on. Briefs retain ordinary numbering. Disabling section numbering
+disables appendix numbering as well.</p>
 </div>
 <div class="section level2">
 <h2 id="next-steps">Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>

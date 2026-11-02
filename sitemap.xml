@@ -8,6 +8,7 @@
 <url><loc>https://davidzenz.github.io/typstR/LICENSE-text.html</loc></url>
 <url><loc>https://davidzenz.github.io/typstR/LICENSE.html</loc></url>
 <url><loc>https://davidzenz.github.io/typstR/PUB_FORMATS.html</loc></url>
+<url><loc>https://davidzenz.github.io/typstR/RELEASE_CHECKLIST.html</loc></url>
 <url><loc>https://davidzenz.github.io/typstR/RENDERING_STRATEGY.html</loc></url>
 <url><loc>https://davidzenz.github.io/typstR/STRUCTURE.html</loc></url>
 <url><loc>https://davidzenz.github.io/typstR/TABLE_FIG_STRATEGY.html</loc></url>
@@ -43,6 +44,7 @@
 <url><loc>https://davidzenz.github.io/typstR/reference/report_number.html</loc></url>
 <url><loc>https://davidzenz.github.io/typstR/reference/tab_note.html</loc></url>
 <url><loc>https://davidzenz.github.io/typstR/reference/typstR-package.html</loc></url>
+<url><loc>https://davidzenz.github.io/typstR/reference/validate_manuscript.html</loc></url>
 <url><loc>https://davidzenz.github.io/typstR/reference/validate_render_environment.html</loc></url>
 </urlset>
 

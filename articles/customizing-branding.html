@@ -88,7 +88,7 @@ to tune the YAML-facing branding controls.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">typstR</span><span class="kw">:</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co">  # logo: "logo.png"</span></span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co">  # accent-color: "#0A5DA6"</span></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">  # primary-font: "Linux Libertine"</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">  # primary-font: "Libertinus Serif"</span></span>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">  # footer: "Working Paper Series"</span></span>
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">  # disclaimer-page: true</span></span></code></pre></div>
 <p>Uncomment the fields you need and keep the rest at their
@@ -112,11 +112,19 @@ working paper series.</p>
 <p><code>primary-font</code> changes the main text family, while
 <code>footer</code> adds short text to the page footer.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">typstR</span><span class="kw">:</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="at">  </span><span class="fu">primary-font</span><span class="kw">:</span><span class="at"> </span><span class="st">"Linux Libertine"</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="at">  </span><span class="fu">primary-font</span><span class="kw">:</span><span class="at"> </span><span class="st">"Libertinus Serif"</span></span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="at">  </span><span class="fu">footer</span><span class="kw">:</span><span class="at"> </span><span class="st">"Working Paper Series"</span></span></code></pre></div>
 <p>Use a font that is available in the rendering environment. If you are
 sharing a project, document any non-default font requirement alongside
 the manuscript.</p>
+<p><code>title-font</code> changes the title and subtitle without
+changing body text. When settings overlap, explicit <code>typstR</code>
+font/margin fields take precedence over standard Quarto settings such as
+<code>mainfont</code> and <code>margin</code>; package defaults apply
+when neither is supplied. Standard <code>fontsize</code>,
+<code>papersize</code>, <code>page-numbering</code>,
+<code>number-sections</code>, and TOC controls are passed through to the
+format.</p>
 </div>
 <div class="section level2">
 <h2 id="adjust-margins-and-disclaimer-behavior">Adjust margins and disclaimer behavior<a class="anchor" aria-label="anchor" href="#adjust-margins-and-disclaimer-behavior"></a>
@@ -128,8 +136,9 @@ in YAML.</p>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="at">    </span><span class="fu">x</span><span class="kw">:</span><span class="at"> 1.1in</span></span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="at">    </span><span class="fu">y</span><span class="kw">:</span><span class="at"> 1in</span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="at">  </span><span class="fu">disclaimer-page</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div>
-<p><code>disclaimer-page</code> is useful when a series needs a standard
-notice ahead of the main manuscript.</p>
+<p><code>disclaimer-page</code> adds a notice at the end by default. Set
+<code>disclaimer-position: first</code> to place it ahead of the main
+manuscript.</p>
 </div>
 <div class="section level2">
 <h2 id="render-only-when-quarto-is-available">Render only when Quarto is available<a class="anchor" aria-label="anchor" href="#render-only-when-quarto-is-available"></a>

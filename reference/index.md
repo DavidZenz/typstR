@@ -50,3 +50,5 @@
 
 - [`validate_render_environment()`](https://davidzenz.github.io/typstR/reference/validate_render_environment.md)
   : Validate render environment prerequisites
+- [`validate_manuscript()`](https://davidzenz.github.io/typstR/reference/validate_manuscript.md)
+  : Validate a typstR manuscript

@@ -46,7 +46,7 @@ if (FALSE) { # \dontrun{
 render_pub("my-working-paper/template.qmd", quiet = TRUE, open = FALSE)
 render_pub(
   "my-article/template.qmd",
-  output_format = "typstR-article",
+  output_format = "typstR-typst",
   quiet = TRUE,
   open = FALSE
 )

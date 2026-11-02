@@ -10,7 +10,6 @@ stay in a normal Quarto workflow while using a publication-ready format.
 Install the package in R:
 
 ``` r
-
 remotes::install_github("DavidZenz/typstR")
 ```
 
@@ -20,7 +19,6 @@ remotes::install_github("DavidZenz/typstR")
 The default onboarding path is:
 
 ``` r
-
 library(typstR)
 
 create_working_paper("my-paper")
@@ -60,7 +58,6 @@ Once the working-paper path is clear, you can branch into adjacent
 formats:
 
 ``` r
-
 create_article("my-article")
 create_policy_brief("my-brief")
 ```
@@ -70,6 +67,15 @@ Use
 for article-style manuscripts and
 [`create_policy_brief()`](https://davidzenz.github.io/typstR/reference/create_policy_brief.md)
 for shorter policy-facing outputs.
+
+## Validation and release status
+
+[`validate_manuscript()`](https://davidzenz.github.io/typstR/reference/validate_manuscript.md)
+checks static metadata and local resources without Quarto. Render
+helpers add runtime checks automatically. See Getting Started for
+supported configuration and resource paths. Package 0.1.0 is being
+prepared for first release; planning milestone identifiers v1.0–v1.5 are
+not package releases.
 
 # Package index
 
@@ -123,6 +129,8 @@ for shorter policy-facing outputs.
 
 - [`validate_render_environment()`](https://davidzenz.github.io/typstR/reference/validate_render_environment.md)
   : Validate render environment prerequisites
+- [`validate_manuscript()`](https://davidzenz.github.io/typstR/reference/validate_manuscript.md)
+  : Validate a typstR manuscript
 
 # Articles
 

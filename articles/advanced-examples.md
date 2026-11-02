@@ -18,7 +18,6 @@ For more complex layouts, `typstR` supports the `gt` package via its
 Typst output.
 
 ``` r
-
 library(gt)
 library(typstR)
 
@@ -71,25 +70,33 @@ pre-publication drafts.
 
 ### Anonymization
 
-For double-blind review, set `anonymized: true` in the YAML header (or
-within the `typstR:` block depending on the specific template version).
-This will hide author names and affiliations.
+For double-blind review, set `anonymized: true` inside the `typstR:`
+block. This hides names, affiliations, corresponding-author details,
+ORCIDs, and acknowledgements. A top-level `anonymized` field is rejected
+by preflight.
 
 ``` yaml
 ---
 title: "My Anonymous Submission"
-anonymized: true
+typstR:
+  anonymized: true
 ---
 ```
+
+Review the manuscript body, funding and availability statements, logos,
+and other publication details for identifying information before sharing
+a review copy.
 
 ### Disclaimer Pages
 
 For working papers, you can enable a dedicated disclaimer page before
-the main content:
+the main content by also setting `disclaimer-position: first` (the
+default is last):
 
 ``` yaml
 typstR:
   disclaimer-page: true
+  disclaimer-position: first
 ```
 
 ## Bibliography Styles

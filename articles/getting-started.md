@@ -8,12 +8,10 @@ one Quarto project, and render a PDF when Quarto is available.
 Start by creating a working paper directory:
 
 ``` r
-
 library(typstR)
 ```
 
 ``` r
-
 create_working_paper("my-paper")
 ```
 
@@ -60,7 +58,6 @@ You can also build structured metadata in R before pasting it into the
 Quarto file:
 
 ``` r
-
 lead_author <- author(
   "Elena Fischer",
   email = "elena.fischer@example.org",
@@ -70,12 +67,21 @@ lead_author <- author(
 
 home_institute <- affiliation("1", "Centre for European Industrial Analysis")
 
-manuscript_meta(
+metadata <- manuscript_meta(
   authors = list(lead_author),
   affiliations = list(home_institute)
 )
-#> <typstR_meta> 1 author(s), 1 affiliation(s)
+yaml::as.yaml(metadata, handlers = list(logical = function(value) {
+  structure(ifelse(value, "true", "false"), class = "verbatim")
+}))
+#> [1] "author:\n- name: Elena Fischer\n  affiliation: '1'\n  email: elena.fischer@example.org\n  corresponding: true\naffiliations:\n- id: '1'\n  name: Centre for European Industrial Analysis\n"
 ```
+
+Use unquoted `true` and `false` for boolean settings. Values such as
+`yes`, `no`, `on`, `off`, numbers, and quoted boolean strings are
+rejected. The logical handler above avoids the YAML 1.1 `yes`/`no`
+output of
+[`yaml::as.yaml()`](https://yaml.r-lib.org/reference/as.yaml.html).
 
 ## Check `_quarto.yml` and `references.bib`
 
@@ -112,8 +118,13 @@ with standard Quarto syntax such as `@smith2020`.
 Rendering depends on Quarto, so the call below is shown but not run
 during vignette checks.
 
-``` r
+The minimum supported Quarto version is 1.4.11. Early Quarto 1.4 builds
+require a standalone Typst executable on `PATH`; the tested standalone
+version is 0.15.1. Newer Quarto builds include Typst. Use
+[`validate_render_environment()`](https://davidzenz.github.io/typstR/reference/validate_render_environment.md)
+to check the compiler available to your selected Quarto installation.
 
+``` r
 render_working_paper("my-paper/template.qmd")
 ```
 
@@ -121,18 +132,81 @@ If you prefer to guard the call in your own scripts, use the same
 condition that package tests use:
 
 ``` r
-
 quarto_ready <- quarto::quarto_available()
 quarto_ready
 #> [1] TRUE
 ```
 
 ``` r
-
 if (quarto::quarto_available()) {
   render_working_paper("my-paper/template.qmd")
 }
 ```
+
+## Validate before rendering
+
+``` r
+validate_manuscript("my-paper/template.qmd")
+validate_manuscript("my-paper", check_environment = TRUE)
+```
+
+The first call checks static YAML, publication metadata and configured
+files without requiring Quarto. Rendering runs those same checks plus
+Quarto/Typst and extension checks automatically.
+[`validate_render_environment()`](https://davidzenz.github.io/typstR/reference/validate_render_environment.md)
+remains an environment-only check. Errors include stable diagnostic
+codes, locations and repair hints.
+
+Every variant needs a text title and the bundled `typstR-typst` format.
+Select `workingpaper` (default), `article` or `brief` with
+`typstR: format-variant`. Authors, affiliations, abstract, keywords, JEL
+codes, report numbers and branding are optional; supplied fields must
+have the documented types. Omit unused optional fields; Quarto rejects
+`null` for typed fields such as abstract and bibliography. Change
+inherited settings using a valid value or edit the declaring
+configuration. Literal citation examples inside fenced/inline code do
+not require a bibliography; citations in prose or the abstract do.
+Inline reference records need unique text IDs.
+
+File input works from outside the project, including paths with spaces.
+Directory input selects one immediate `.qmd`; `NULL` searches the
+current directory and reports ambiguity rather than guessing. The
+nearest `_quarto.yml` establishes the project root. Project settings,
+directory `_metadata.yml` and manuscript YAML are merged. Local
+resources (bibliography, logo, CSL and include files) resolve relative
+to the YAML file that declares them. Configured files must already
+exist.
+
+Static preflight rejects profiles, publication overrides in either
+`_quarto.yml.local` or `_quarto.yaml.local`, `metadata-files`,
+executable YAML and remote resources. It does not evaluate
+code-generated resources/citations or validate the whole Quarto schema.
+Empty/editor-only local files are allowed; move publication settings
+into the main project or document YAML for static validation.
+Conflicting overrides are reported with their file path. Citeproc checks
+bibliography contents at render time. For unsupported configuration, use
+Quarto directly and verify the output.
+
+## Layout and existing projects
+
+Section numbering is enabled by default. Set `number-sections: false` to
+disable it; `toc: true` adds a contents list after the abstract, with
+`toc-title` and `toc-depth` controlling its title and depth.
+`papersize: a4` selects A4 paper. Render helpers honor `output-file` and
+project `output-dir` when opening PDFs.
+
+Scaffolds contain their own extension copy. Updating the R package does
+not change existing projects. Back up `_extensions/typstR/`, then
+replace that directory with the contents of
+`system.file("quarto/extensions/typstR", package = "typstR")`. Keep your
+manuscript, bibliography, and project configuration; only replace the
+extension.
+
+In an `output: asis` R chunk, `appendix_title("Additional Data")` starts
+lettered appendices in working papers and articles. Subsequent appendix
+headings at the same level use B, C, and so on; nested headings use A.1,
+A.2, and so on. Briefs retain ordinary numbering. Disabling section
+numbering disables appendix numbering as well.
 
 ## Next steps
 

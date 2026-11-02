@@ -146,22 +146,28 @@ process and pre-publication drafts.</p>
 <div class="section level3">
 <h3 id="anonymization">Anonymization<a class="anchor" aria-label="anchor" href="#anonymization"></a>
 </h3>
-<p>For double-blind review, set <code>anonymized: true</code> in the
-YAML header (or within the <code>typstR:</code> block depending on the
-specific template version). This will hide author names and
-affiliations.</p>
+<p>For double-blind review, set <code>anonymized: true</code> inside the
+<code>typstR:</code> block. This hides names, affiliations,
+corresponding-author details, ORCIDs, and acknowledgements. A top-level
+<code>anonymized</code> field is rejected by preflight.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="pp">---</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"My Anonymous Submission"</span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">anonymized</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">typstR</span><span class="kw">:</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="at">  </span><span class="fu">anonymized</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div>
+<p>Review the manuscript body, funding and availability statements,
+logos, and other publication details for identifying information before
+sharing a review copy.</p>
 </div>
 <div class="section level3">
 <h3 id="disclaimer-pages">Disclaimer Pages<a class="anchor" aria-label="anchor" href="#disclaimer-pages"></a>
 </h3>
 <p>For working papers, you can enable a dedicated disclaimer page before
-the main content:</p>
+the main content by also setting <code>disclaimer-position: first</code>
+(the default is last):</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">typstR</span><span class="kw">:</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="at">  </span><span class="fu">disclaimer-page</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="at">  </span><span class="fu">disclaimer-page</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="at">  </span><span class="fu">disclaimer-position</span><span class="kw">:</span><span class="at"> first</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
