@@ -12,7 +12,10 @@ test_that("diagnostics codebook exposes stable Phase 05 and Phase 06 mappings", 
       "env_quarto_unavailable",
       "env_typst_unavailable",
       "env_quarto_floor_incompatible",
-      "env_extension_missing"
+      "env_extension_missing",
+      "manuscript_yaml_invalid", "manuscript_format_invalid",
+      "manuscript_metadata_invalid", "manuscript_resource_missing",
+      "manuscript_unsupported"
     )
   )
 

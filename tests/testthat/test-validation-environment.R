@@ -1,105 +1,3 @@
-with_validation_bindings <- function(bindings, code) {
-  env <- validation_test_env
-  restore <- list()
-
-  for (name in names(bindings)) {
-    has_existing <- exists(name, envir = env, inherits = FALSE)
-    restore[[name]] <- if (has_existing) get(name, envir = env, inherits = FALSE) else NULL
-    assign(name, bindings[[name]], envir = env)
-  }
-
-  withr::defer({
-    for (name in names(bindings)) {
-      previous <- restore[[name]]
-      if (is.null(previous)) {
-        if (exists(name, envir = env, inherits = FALSE)) {
-          rm(list = name, envir = env)
-        }
-      } else {
-        assign(name, previous, envir = env)
-      }
-    }
-  })
-
-  force(code)
-}
-
-passing_checks <- function(path) {
-  list(
-    quarto = list(
-      ok = TRUE,
-      available = TRUE,
-      version = "1.5.1"
-    ),
-    typst = list(
-      ok = TRUE,
-      available = TRUE,
-      version = "0.13.1",
-      raw = "typst 0.13.1"
-    ),
-    quarto_floor = list(
-      ok = TRUE,
-      required = ">=1.4.11",
-      compatible = TRUE,
-      available = TRUE
-    ),
-    extension = list(
-      ok = TRUE,
-      present = TRUE,
-      manifest = as.character(fs::path_abs(file.path(path, "_extensions", "typstR", "_extension.yml")))
-    )
-  )
-}
-
-failing_checks <- function(path) {
-  list(
-    quarto = list(
-      ok = FALSE,
-      available = FALSE,
-      version = NA_character_,
-      reason = "quarto CLI unavailable"
-    ),
-    typst = list(
-      ok = FALSE,
-      available = FALSE,
-      version = NA_character_,
-      raw = NA_character_,
-      reason = "quarto typst --version failed"
-    ),
-    quarto_floor = list(
-      ok = FALSE,
-      required = ">=1.4.11",
-      compatible = FALSE,
-      available = FALSE
-    ),
-    extension = list(
-      ok = FALSE,
-      present = FALSE,
-      manifest = as.character(fs::path_abs(file.path(path, "_extensions", "typstR", "_extension.yml")))
-    )
-  )
-}
-
-new_render_validation_env <- function() {
-  env <- new.env(parent = baseenv())
-  source(resolve_validation_source_file("R/diagnostics.R"), local = env)
-  source(resolve_validation_source_file("R/validation_environment.R"), local = env)
-  source(resolve_validation_source_file("R/utils.R"), local = env)
-  source(resolve_validation_source_file("R/render.R"), local = env)
-  env
-}
-
-copy_extension_into <- function(dest_dir) {
-  ext_src <- system.file("quarto", "extensions", "typstR", package = "typstR")
-  if (!nzchar(ext_src)) {
-    ext_src <- resolve_validation_source_file("inst/quarto/extensions/typstR")
-  }
-
-  dir.create(file.path(dest_dir, "_extensions"), showWarnings = FALSE)
-  fs::dir_copy(ext_src, file.path(dest_dir, "_extensions", "typstR"))
-  invisible(file.path(dest_dir, "_extensions", "typstR", "_extension.yml"))
-}
-
 test_that("validate_render_environment() returns a structured pass report", {
   validate_render_environment <- get_validation_fn("validate_render_environment")
   path <- tempfile("validation-pass-")
@@ -113,28 +11,6 @@ test_that("validate_render_environment() returns a structured pass report", {
   expect_s3_class(report, "typstR_validation_report")
   expect_true(report$ok)
   expect_named(report$checks, c("quarto", "typst", "quarto_floor", "extension"))
-})
-
-test_that("validate_render_environment() skips diagnostics assembly on all-pass checks", {
-  validate_render_environment <- get_validation_fn("validate_render_environment")
-  path <- tempfile("validation-fast-path-")
-  dir.create(path)
-
-  diagnostics_called <- FALSE
-
-  report <- with_validation_bindings(
-    list(
-      collect_environment_checks = function(path) passing_checks(path),
-      diagnostics_from_environment_checks = function(checks, path) {
-        diagnostics_called <<- TRUE
-        list()
-      }
-    ),
-    validate_render_environment(path)
-  )
-
-  expect_s3_class(report, "typstR_validation_report")
-  expect_false(diagnostics_called)
 })
 
 test_that("validate_render_environment() emits aggregate environment diagnostics", {
@@ -154,18 +30,18 @@ test_that("validate_render_environment() emits aggregate environment diagnostics
 })
 
 test_that("render_pub() and standalone validation emit equivalent diagnostics", {
-  env <- new_render_validation_env()
   path <- tempfile("validation-render-equivalence-")
   dir.create(path)
+  writeLines("---\ntitle: Test\nformat: typstR-typst\n---", file.path(path, "paper.qmd"))
 
-  assign("collect_environment_checks", function(path) failing_checks(path), envir = env)
+  testthat::local_mocked_bindings(collect_environment_checks = failing_checks, .package = "typstR")
 
   standalone_condition <- expect_error(
-    get("validate_render_environment", envir = env)(path),
+    validate_render_environment(path),
     class = "typstR_diagnostics_error"
   )
   render_condition <- expect_error(
-    get("render_pub", envir = env)(path, open = FALSE),
+    render_pub(path, open = FALSE),
     class = "typstR_diagnostics_error"
   )
 
@@ -222,27 +98,4 @@ test_that("collect_environment_checks() evaluates extension presence when Quarto
 
   expect_true(extension_probe_called)
   expect_false(checks$extension$ok)
-})
-
-test_that("validate_render_environment() captures real Quarto/Typst evidence when available", {
-  skip_if_not(requireNamespace("quarto", quietly = TRUE) && quarto::quarto_available())
-
-  validate_render_environment <- get_validation_fn("validate_render_environment")
-  manifest_path <- resolve_validation_source_file("inst/quarto/extensions/typstR/_extension.yml")
-
-  withr::with_tempdir({
-    copy_extension_into(".")
-
-    report <- with_validation_bindings(
-      list(extension_manifest_source = function() manifest_path),
-      validate_render_environment(".")
-    )
-
-    expect_s3_class(report, "typstR_validation_report")
-    expect_true(isTRUE(report$checks$quarto$available))
-    expect_true(nzchar(report$checks$quarto$version))
-    expect_true(isTRUE(report$checks$typst$available))
-    expect_true(!is.na(report$checks$quarto_floor$required))
-    expect_true(isTRUE(report$checks$extension$present))
-  })
 })

@@ -25,6 +25,7 @@ create_article <- function(path, title = NULL, open = interactive()) {
     path = path,
     template_dir = "article",
     success_label = "article",
-    title = title
+    title = title,
+    open = open
   )
 }

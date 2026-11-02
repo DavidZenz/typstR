@@ -12,6 +12,10 @@ resolve_input <- function(input) {
     input <- "."
   }
 
+  if (!is.character(input) || length(input) != 1L || is.na(input) || !nzchar(input)) {
+    cli::cli_abort("{.arg input} must be NULL or a single non-empty path.")
+  }
+
   abort_input_diagnostic <- function(issue_key, message, hint, location_file, details = NULL) {
     code <- diagnostics_codebook()[[issue_key]]
     diagnostic <- new_diagnostic(
@@ -61,7 +65,50 @@ resolve_input <- function(input) {
     )
   }
 
+  if (!identical(tolower(fs::path_ext(input)), "qmd")) {
+    abort_input_diagnostic(
+      issue_key = "input_not_found",
+      message = "Input must be a .qmd manuscript.",
+      hint = "Specify an existing .qmd file or a directory containing one.",
+      location_file = input
+    )
+  }
+
   as.character(fs::path_real(input))
+}
+
+# Resolve from the manuscript, never from the caller's working directory. The
+# nearest project configuration is the boundary for extension discovery.
+resolve_render_context <- function(input) {
+  manuscript <- resolve_input(input)
+  manuscript_dir <- dirname(manuscript)
+  current <- manuscript_dir
+  extension_dir <- NULL
+  project_file <- NULL
+
+  repeat {
+    if (is.null(extension_dir) && file.exists(file.path(current, "_extensions", "typstR", "_extension.yml"))) {
+      extension_dir <- current
+    }
+    configs <- file.path(current, c("_quarto.yml", "_quarto.yaml"))
+    configs <- configs[file.exists(configs)]
+    if (length(configs)) {
+      project_file <- configs[[1]]
+      break
+    }
+    parent <- dirname(current)
+    if (identical(parent, current)) break
+    current <- parent
+  }
+
+  project_dir <- if (is.null(project_file)) manuscript_dir else dirname(project_file)
+  list(
+    input = manuscript,
+    manuscript_dir = manuscript_dir,
+    project_dir = project_dir,
+    project_file = project_file,
+    extension_dir = if (is.null(extension_dir)) project_dir else extension_dir
+  )
 }
 
 #' Open a file in the system viewer

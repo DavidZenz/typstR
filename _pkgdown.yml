@@ -45,7 +45,9 @@ reference:
   - render_pub
   - render_working_paper
 - title: Validation and diagnostics
-  contents: validate_render_environment
+  contents:
+  - validate_render_environment
+  - validate_manuscript
 articles:
 - title: Articles
   contents:

@@ -8,6 +8,11 @@
 // so we strip backslashes before passing to image().
 #let render-logo(logo-path) = {
   if logo-path == none { return }
+  if type(logo-path) == content {
+    align(right, logo-path)
+    v(0.5em)
+    return
+  }
   if logo-path == "" { return }
   let clean-path = logo-path.replace("\\", "")
   align(right)[#image(clean-path, width: 2.5cm)]

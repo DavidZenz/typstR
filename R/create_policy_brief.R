@@ -26,6 +26,7 @@ create_policy_brief <- function(path, title = NULL, open = interactive()) {
     path = path,
     template_dir = "policy-brief",
     success_label = "policy brief",
-    title = title
+    title = title,
+    open = open
   )
 }

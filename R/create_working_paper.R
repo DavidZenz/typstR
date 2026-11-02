@@ -25,6 +25,7 @@ create_working_paper <- function(path, title = NULL, open = interactive()) {
     path = path,
     template_dir = "workingpaper",
     success_label = "working paper",
-    title = title
+    title = title,
+    open = open
   )
 }

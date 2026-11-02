@@ -193,3 +193,25 @@ test_that("print.typstR_meta outputs correct text", {
   expect_output(print(m), "<typstR_meta>")
   expect_output(print(m), "2")
 })
+
+test_that("constructors reject missing, blank and vector metadata consistently", {
+  for (bad in list(NA_character_, "", "  ", c("one", "two"))) {
+    expect_error(author(bad), "name.*single character")
+    expect_error(affiliation(bad, "Institute"), "id.*single character")
+    for (fn in list(report_number, funding, data_availability, code_availability)) {
+      expect_error(fn(bad), "text.*single character")
+    }
+    expect_error(author("Ada", email = bad), "email.*single character")
+    expect_error(author("Ada", orcid = bad), "orcid.*single character")
+  }
+  expect_error(author("Ada", email = "invalid"), "email format")
+  expect_error(author("Ada", corresponding = NA), "single logical")
+  expect_error(keywords(), "at least one")
+  expect_error(keywords(" "), "non-blank")
+  expect_error(jel_codes(), "character")
+  expect_error(jel_codes("F10", 1), "character")
+  expect_error(manuscript_meta(list()), "non-empty list")
+  expect_error(manuscript_meta(author("Ada")), "list")
+  expect_error(manuscript_meta(list(author("Ada")), list(affiliation("a", "One"), affiliation("a", "Two"))), "unique")
+  expect_error(manuscript_meta(list(author("Ada")), funding = NA_character_), "funding")
+})

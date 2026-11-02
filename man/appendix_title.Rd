@@ -18,7 +18,9 @@ The title string, invisibly.
 \description{
 Outputs a markdown header with Quarto's \code{{.appendix}} class via \code{\link[=cat]{cat()}},
 suitable for use in Quarto code chunks with \verb{#| output: asis}. This marks
-the section as an appendix in Quarto's cross-reference system.
+the section for typstR's bundled appendix filter. Working papers and articles
+use lettered appendix numbering; policy briefs retain ordinary numbering.
+Explicitly disabled section numbering remains disabled.
 }
 \examples{
 \dontrun{

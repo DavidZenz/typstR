@@ -16,11 +16,24 @@
     return
   }
 
+  // Quarto treats scalar affiliation IDs as institution names, creating aliases
+  // such as (id: "aff-1", name: "1"). Reconcile these with explicit ID tables
+  // so the public metadata helpers and native {ref: ...} syntax both work.
+  let original-affiliations = affiliations
+  affiliations = affiliations.filter(aff => not original-affiliations.any(other => {
+    (other.at("id", default: none) == aff.at("name", default: "") and
+      other.at("id", default: none) != aff.at("id", default: none))
+  }))
+
   // Build affiliation ID-to-index mapping (1-based)
   let aff-map = (:)
   for (i, aff) in affiliations.enumerate() {
     let aff-id = aff.at("id", default: str(i))
     aff-map.insert(aff-id, i + 1)
+  }
+  for aff in original-affiliations {
+    let target = aff-map.at(aff.at("name", default: ""), default: none)
+    if target != none { aff-map.insert(aff.at("id", default: ""), target) }
   }
 
   // Render authors centered with superscript affiliation numbers

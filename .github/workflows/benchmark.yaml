@@ -1,0 +1,27 @@
+name: Manual performance evidence
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.6.1'
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: '1.10.19'
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::bench, any::pkgload, local::.
+      - name: Measure mapped workloads
+        run: Rscript --vanilla tools/benchmark.R artifacts/benchmark
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: benchmark-evidence
+          path: artifacts/benchmark/
+          if-no-files-found: error

@@ -49,7 +49,9 @@ tab_note <- function(...) {
 #'
 #' Outputs a markdown header with Quarto's `{.appendix}` class via [cat()],
 #' suitable for use in Quarto code chunks with `#| output: asis`. This marks
-#' the section as an appendix in Quarto's cross-reference system.
+#' the section for typstR's bundled appendix filter. Working papers and articles
+#' use lettered appendix numbering; policy briefs retain ordinary numbering.
+#' Explicitly disabled section numbering remains disabled.
 #'
 #' @param title A single character string giving the appendix section title.
 #' @param level An integer giving the header level (number of `#` characters).
@@ -63,11 +65,9 @@ tab_note <- function(...) {
 #' appendix_title("Additional Tables", level = 2)
 #' }
 appendix_title <- function(title, level = 1) {
-  if (!is.character(title) || length(title) != 1L) {
-    cli::cli_abort("{.arg title} must be a single character string.")
-  }
+  assert_text_scalar(title, "title")
   if (!is.numeric(level) || length(level) != 1L || is.na(level) ||
-      level < 1 || level != as.integer(level)) {
+      !is.finite(level) || level < 1 || level > .Machine$integer.max || level != as.integer(level)) {
     cli::cli_abort("{.arg level} must be a positive integer.")
   }
   header <- paste0(strrep("#", level), " Appendix: ", title, " {.appendix}")

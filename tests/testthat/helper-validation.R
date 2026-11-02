@@ -1,62 +1,63 @@
-validation_repo_root <- local({
-  candidates <- c(
-    getwd(),
-    file.path(getwd(), ".."),
-    file.path(getwd(), "..", ".."),
-    file.path(getwd(), "..", "..", "00_pkg_src", "typstR")
-  )
+get_validation_fn <- function(name) getFromNamespace(name, "typstR")
 
-  for (candidate in candidates) {
-    candidate <- normalizePath(candidate, winslash = "/", mustWork = FALSE)
-    if (file.exists(file.path(candidate, "DESCRIPTION")) &&
-        dir.exists(file.path(candidate, "R")) &&
-        dir.exists(file.path(candidate, "inst"))) {
-      return(candidate)
-    }
-  }
-
-  NA_character_
-})
-
-resolve_validation_source_file <- function(relative_path, must_exist = TRUE) {
-  candidates <- c(
-    relative_path,
-    file.path("..", "..", relative_path),
-    file.path(getwd(), relative_path),
-    if (!is.na(validation_repo_root)) file.path(validation_repo_root, relative_path)
-  )
-
-  existing <- candidates[file.exists(candidates)]
-  if (length(existing) == 0) {
-    if (!must_exist) {
-      return(NA_character_)
-    }
-
-    stop(sprintf("Could not locate %s", relative_path))
-  }
-
-  normalizePath(existing[[1]], winslash = "/", mustWork = TRUE)
+with_validation_bindings <- function(bindings, code) {
+  do.call(testthat::local_mocked_bindings,
+          c(bindings, list(.package = "typstR", .env = environment())))
+  force(code)
 }
 
-validation_test_env <- local({
-  env <- new.env(parent = baseenv())
-  source(resolve_validation_source_file("R/diagnostics.R"), local = env)
-
-  validation_source <- resolve_validation_source_file(
-    "R/validation_environment.R",
-    must_exist = FALSE
+passing_checks <- function(path) {
+  list(
+    quarto = list(
+      ok = TRUE,
+      available = TRUE,
+      version = "1.5.1"
+    ),
+    typst = list(
+      ok = TRUE,
+      available = TRUE,
+      version = "0.13.1",
+      raw = "typst 0.13.1"
+    ),
+    quarto_floor = list(
+      ok = TRUE,
+      required = ">=1.4.11",
+      compatible = TRUE,
+      available = TRUE
+    ),
+    extension = list(
+      ok = TRUE,
+      present = TRUE,
+      manifest = as.character(fs::path_abs(file.path(path, "_extensions", "typstR", "_extension.yml")))
+    )
   )
-  if (!is.na(validation_source)) {
-    source(validation_source, local = env)
-  }
+}
 
-  env
-})
-
-get_validation_fn <- function(name) {
-  if (!exists(name, envir = validation_test_env, inherits = FALSE)) {
-    stop(sprintf("Could not find %s in validation test environment", name), call. = FALSE)
-  }
-
-  get(name, envir = validation_test_env, inherits = FALSE)
+failing_checks <- function(path) {
+  list(
+    quarto = list(
+      ok = FALSE,
+      available = FALSE,
+      version = NA_character_,
+      reason = "quarto CLI unavailable"
+    ),
+    typst = list(
+      ok = FALSE,
+      available = FALSE,
+      version = NA_character_,
+      raw = NA_character_,
+      reason = "quarto typst --version failed"
+    ),
+    quarto_floor = list(
+      ok = FALSE,
+      required = ">=1.4.11",
+      compatible = FALSE,
+      available = FALSE
+    ),
+    extension = list(
+      ok = FALSE,
+      present = FALSE,
+      manifest = as.character(fs::path_abs(file.path(path, "_extensions", "typstR", "_extension.yml")))
+    )
+  )
 }

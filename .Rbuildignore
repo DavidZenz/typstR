@@ -24,3 +24,6 @@
 ^\.Rhistory$
 ^\.DS_Store$
 ^cran-comments\.md$
+^tools$
+^artifacts$
+^RELEASE_CHECKLIST\.md$

@@ -14,7 +14,8 @@ keywords <- function(...) {
   if (any(not_char)) {
     cli::cli_abort("{.arg ...} must be character strings.")
   }
-  codes <- unlist(args)
+  codes <- unlist(args, use.names = FALSE)
+  assert_text_sequence(codes, "...")
   structure(as.list(codes), class = c("typstR_keywords", "list"))
 }
 
@@ -36,10 +37,12 @@ print.typstR_keywords <- function(x, ...) {
 #' @examples
 #' jel_codes("F10", "L52")
 jel_codes <- function(...) {
-  codes <- c(...)
-  if (!is.character(codes)) {
+  args <- list(...)
+  if (!length(args) || !all(vapply(args, is.character, logical(1)))) {
     cli::cli_abort("{.arg ...} must be character strings.")
   }
+  codes <- unlist(args, use.names = FALSE)
+  assert_text_sequence(codes, "...")
   valid <- grepl("^[A-Z][0-9]{1,2}$", codes)
   if (!all(valid)) {
     invalid <- codes[!valid]
@@ -68,9 +71,7 @@ print.typstR_jel <- function(x, ...) {
 #' @examples
 #' report_number("WP 001")
 report_number <- function(text) {
-  if (!is.character(text) || length(text) != 1L) {
-    cli::cli_abort("{.arg text} must be a single character string.")
-  }
+  assert_text_scalar(text, "text")
   structure(text, class = c("typstR_report_number", "character"))
 }
 
@@ -85,9 +86,7 @@ report_number <- function(text) {
 #' @examples
 #' funding("Supported by ERC Grant 12345.")
 funding <- function(text) {
-  if (!is.character(text) || length(text) != 1L) {
-    cli::cli_abort("{.arg text} must be a single character string.")
-  }
+  assert_text_scalar(text, "text")
   structure(text, class = c("typstR_funding", "character"))
 }
 
@@ -102,9 +101,7 @@ funding <- function(text) {
 #' @examples
 #' data_availability("Data available at https://example.com/data")
 data_availability <- function(text) {
-  if (!is.character(text) || length(text) != 1L) {
-    cli::cli_abort("{.arg text} must be a single character string.")
-  }
+  assert_text_scalar(text, "text")
   structure(text, class = c("typstR_data_availability", "character"))
 }
 
@@ -119,8 +116,6 @@ data_availability <- function(text) {
 #' @examples
 #' code_availability("Replication code at https://github.com/example/repo")
 code_availability <- function(text) {
-  if (!is.character(text) || length(text) != 1L) {
-    cli::cli_abort("{.arg text} must be a single character string.")
-  }
+  assert_text_scalar(text, "text")
   structure(text, class = c("typstR_code_availability", "character"))
 }

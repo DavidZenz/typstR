@@ -42,7 +42,7 @@ typstR:
   # Branding (uncomment to customize):
   # logo: "logo.png"
   # accent-color: "#0A5DA6"
-  # primary-font: "Linux Libertine"
+  # primary-font: "Libertinus Serif"
   # footer: "Working Paper Series"
   # disclaimer-page: true
 ---
@@ -71,4 +71,4 @@ the broader economic interpretation.
 Close with the main takeaway, limits of the analysis, and the next step for the
 research agenda.
 
-## References
+<!-- Quarto adds the bibliography automatically when citations are present. -->

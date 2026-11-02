@@ -1,36 +1,8 @@
-resolve_source_file <- function(relative_path) {
-  candidates <- c(
-    relative_path,
-    file.path("..", "..", relative_path),
-    file.path("..", "..", "00_pkg_src", "typstR", relative_path),
-    file.path(getwd(), relative_path)
-  )
-
-  existing <- candidates[file.exists(candidates)]
-  if (length(existing) == 0) {
-    stop(sprintf("Could not locate %s", relative_path))
-  }
-
-  normalizePath(existing[[1]], winslash = "/", mustWork = TRUE)
-}
-
-input_diagnostics_env <- local({
-  env <- new.env(parent = baseenv())
-  source(resolve_source_file("R/diagnostics.R"), local = env)
-  source(resolve_source_file("R/utils.R"), local = env)
-  env
-})
-
-resolve_input_fn <- function() {
-  get("resolve_input", envir = input_diagnostics_env, inherits = FALSE)
-}
-
 primary_diag <- function(condition) {
   condition$diagnostics[[1]]
 }
 
 test_that("resolve_input() emits DIAG-INPUT-001 when no qmd is discoverable", {
-  resolve_input <- resolve_input_fn()
 
   withr::with_tempdir({
     condition <- expect_error(
@@ -49,7 +21,6 @@ test_that("resolve_input() emits DIAG-INPUT-001 when no qmd is discoverable", {
 })
 
 test_that("resolve_input() emits DIAG-INPUT-002 with deterministic details for ambiguous directories", {
-  resolve_input <- resolve_input_fn()
 
   withr::with_tempdir({
     writeLines("---\ntitle: 'A'\n---", "alpha.qmd")
@@ -71,7 +42,6 @@ test_that("resolve_input() emits DIAG-INPUT-002 with deterministic details for a
 })
 
 test_that("resolve_input() emits DIAG-INPUT-003 for missing explicit inputs", {
-  resolve_input <- resolve_input_fn()
 
   withr::with_tempdir({
     missing <- "missing.qmd"

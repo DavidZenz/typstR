@@ -16,7 +16,12 @@ DIAGNOSTIC_CODEBOOK <- c(
   env_quarto_unavailable = "DIAG-ENV-001",
   env_typst_unavailable = "DIAG-ENV-002",
   env_quarto_floor_incompatible = "DIAG-ENV-003",
-  env_extension_missing = "DIAG-ENV-004"
+  env_extension_missing = "DIAG-ENV-004",
+  manuscript_yaml_invalid = "DIAG-MANUSCRIPT-001",
+  manuscript_format_invalid = "DIAG-MANUSCRIPT-002",
+  manuscript_metadata_invalid = "DIAG-MANUSCRIPT-003",
+  manuscript_resource_missing = "DIAG-MANUSCRIPT-004",
+  manuscript_unsupported = "DIAG-MANUSCRIPT-005"
 )
 
 DIAGNOSTIC_CODEBOOK_REFERENCE <- DIAGNOSTIC_CODEBOOK
@@ -244,7 +249,7 @@ emit_diagnostics_error <- function(diagnostics,
   sorted <- sort_diagnostics(diagnostics)
 
   cli::cli_abort(
-    c(message, "i" = hint),
+    c("{message}", "i" = "{hint}"),
     class = c("typstR_diagnostics_error", "typstR_error"),
     diagnostics = sorted
   )
