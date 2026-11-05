@@ -129,3 +129,24 @@ test_that("early Quarto inspect fallback retains document output and project out
   expect_identical(resolve_render_output(context, metadata = list(`output-file` = "submission.pdf")),
                    as.character(fs::path(root, "results", "chapter", "submission.pdf")))
 })
+
+
+test_that("render helpers pass preflight's inline citation policy to Quarto", {
+  root <- withr::local_tempdir()
+  create_article(file.path(root, "inline"), open = FALSE)
+  project <- file.path(root, "inline")
+  writeLines(c("---", "title: Inline", "format: typstR-typst",
+               "references: [{id: doe2020, title: Example}]", "typstR: {anonymized: true}", "---", "[@doe2020]"),
+             file.path(project, "template.qmd"))
+  testthat::local_mocked_bindings(collect_environment_checks = passing_checks, .package = "typstR")
+  testthat::local_mocked_bindings(
+    quarto_inspect = function(input, quiet) list(formats = list(`typstR-typst` = list(pandoc = list(`output-file` = "template.pdf")))),
+    quarto_render = function(input, output_format, quiet, metadata) {
+      expect_false(metadata$citeproc)
+      expect_false(metadata$format$`typstR-typst`$citeproc)
+      expect_true(metadata[["typstr-inline-citeproc"]])
+      expect_true(metadata$typstR$anonymized)
+      file.create(file.path(project, "template.pdf"))
+    }, .package = "quarto")
+  expect_no_error(render_pub(project, open = FALSE))
+})

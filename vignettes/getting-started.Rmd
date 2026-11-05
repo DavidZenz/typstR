@@ -216,3 +216,23 @@ follow-up tasks instead of repeating the scaffold/render introduction:
 
 - `vignette("working-papers", package = "typstR")` for working-paper metadata
 - `vignette("customizing-branding", package = "typstR")` for branding fields
+
+
+## Inline references and metadata filename precedence
+
+Inline CSL `references:` work with `render_pub()` and `render_working_paper()`;
+the helpers select citeproc automatically when inline references are present,
+including manuscripts that also use an external bibliography. An explicit
+`citeproc: false` with inline references is rejected with a correction hint.
+Bibliography-only manuscripts retain their existing native Typst citation style.
+The helpers use the bundled citeproc compatibility filter so cross-references
+and inline references work on Quarto 1.4.11 as well as current Quarto. When
+rendering directly with modern Quarto, set `citeproc: true` in the selected format;
+use the R helpers for inline references on Quarto 1.4.11.
+
+At every configuration level, Quarto selects `.yml` before `.yaml`: this applies
+to `_quarto` project files, `_quarto.*.local` overrides and `_metadata` directory
+files. typstR uses the same selection rule. Shadowed siblings do not contribute
+settings or errors; a malformed selected file fails validation without falling
+back to its sibling. Nested directory settings and document/format settings keep
+their usual precedence. Keep one file per configuration level to avoid confusion.

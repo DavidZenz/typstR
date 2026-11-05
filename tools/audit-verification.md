@@ -264,3 +264,103 @@ also completed successfully.
 No CI failures required code changes. These hosted results apply to `19fb617`;
 this follow-up changes only release-verification documentation. Final release
 approval, tagging, CRAN submission and acceptance remain separate maintainer gates.
+
+## Metadata, citations and pagination — November 5, 2026
+
+This section verifies the uncommitted corrective tree on
+`codex/metadata-citation-pagination`, based on main
+`cd4d52c0f85576415cffb68cdf6b4a912edc0344`. Toolchain reports record that base
+commit; they do not assert that the fixes were committed there. The earlier
+[main render run 41403529575](https://github.com/DavidZenz/typstR/actions/runs/41403529575)
+is baseline evidence only. Historical results above remain unchanged.
+
+### Reproductions and corrections
+
+| Defect | Baseline reproduction | Corrected behavior |
+|---|---|---|
+| Conflicting directory YAML | `_metadata.yml` sets anonymity false, `.yaml` sets true; preflight reports true while PDF contains `VisibleAuthor` | One shared selector uses `.yml` before `.yaml` for project, local and directory files. Preflight reflects the selected value. Reverse conflicts and nested format-specific metadata are checked against actual identified/anonymous PDFs. |
+| Inline references | A valid `references:` entry plus `[@doe2020]` passes preflight, then compilation fails with a missing label | Helpers process inline and mixed external/inline citations automatically; explicit `citeproc: false` fails early with a correction hint. Bibliography-only documents retain native Typst output. |
+| First disclaimer | Minimal document has three physical pages: a numbered blank page, disclaimer, manuscript | Disclaimer occupies physical page 1, manuscript follows on page 2. The minimal anonymous fixture has exactly two meaningful pages; headers, footers and the manuscript counter are preserved. |
+
+Original projects, copied baseline extensions, PDFs, extracted text and logs
+are retained in `artifacts/preflight-release-20261105/before/`. The inline
+reproduction's restored manuscript is paired with the original failure log;
+the later successful opt-in PDF is not presented as a failing baseline PDF.
+
+Selected malformed or dynamic configuration fails closed; shadowed siblings
+do not contribute settings or diagnostics. Directory hierarchy and selected
+format overrides remain intact. Approved anonymization is also carried into
+render metadata. Missing bibliography and explicit citeproc policy diagnostics
+remain offline unit tests.
+
+Quarto 1.4.11 exposed two additional compatibility details during verification:
+its automatic citeproc runs before cross-reference handling, and its Typst
+writer ignores resolved citation content. The existing bundled Lua filter now
+runs citeproc explicitly for inline-reference helper renders, protects reserved
+cross-references (including mixed citation groups), unwraps processed citations,
+and avoids duplicate native bibliographies. Early writer reference labels are
+attached to explicit blocks. Header includes are applied before the publication
+show rule so the first disclaimer also receives configured headers. These
+changes use Pandoc's public Lua API and add no dependencies or runtime files.
+
+### Source-package and documentation evidence
+
+Tarball: `artifacts/preflight-release-20261105/check/typstR_0.1.0.tar.gz`.
+SHA-256: `6038d6790fc73467345e3fdf86f6a399f90ce82cb582bc9ee62736c6030b7ac0`.
+Package version remains **0.1.0**; public signatures, classes and invisible
+returns are unchanged.
+
+- Ordinary tests and installed-package check tests: **646 passes, zero failures,
+  warnings or skips**. The ordinary suite does not require Quarto.
+- `R CMD check --as-cran`, macOS ARM64/R 4.6.2: **zero errors, zero warnings,
+  two notes** (new submission; installed HTML Tidy too old for HTML validation).
+  Full log: `artifacts/preflight-release-20261105/check/typstR.Rcheck/00check.log`.
+- Roxygen help, source vignettes, examples and PDF manual build pass.
+- Pkgdown builds successfully to
+  `artifacts/preflight-release-20261105/pkgdown/`. Installed rmarkdown/Pandoc
+  emit deprecated `--mathml`/`--mathjax` option messages; these are recorded in
+  `pkgdown-final.log`, not suppressed or counted as warning-free PDF renders.
+
+### Installed-helper PDF matrix
+
+Every row installs the exact tarball above and runs the same nine required
+scenarios in a clean R session. All three complete with
+`PASS: nine required renders; zero skipped` and no render warnings.
+
+| Platform | R / quarto R | Quarto CLI / Typst | Evidence directory |
+|---|---|---|---|
+| Ubuntu 26.04 ARM64, C locale | 4.5.2 / 1.5.1 | 1.4.11 / standalone 0.15.1 | `artifacts/preflight-release-20261105/linux-minimum-verified/` |
+| Ubuntu 26.04 ARM64, C locale | 4.5.2 / 1.5.1 | 1.10.19 / bundled 0.15.1 | `artifacts/preflight-release-20261105/linux-current-verified/` |
+| macOS ARM64 | 4.6.2 / 1.5.1 | 1.11.9 / bundled 0.15.1 | `artifacts/preflight-release-20261105/macos-verified/` |
+
+The Mac's installed Quarto had updated to 1.11.9. The first version assertion
+correctly failed before rendering; `macos-version-preflight.log` retains it.
+Pinned supported versions were verified independently on Linux. An intermediate
+minimum-version run also exposed an overly strict native citation assertion:
+old Pandoc emits `[1]`, newer Pandoc emits `J. Smith [1]` for the same textual
+citation. The assertion now accepts both native numeric forms without changing
+package behavior. That failed run is retained in
+`linux-minimum-native-style-check/`; the final full rerun passes all nine cases.
+
+Fixtures verify resolved output paths, content/privacy, bibliography uniqueness,
+cross-references, section/page numbering, dimensions, embedded fonts and physical
+page order. Sources, generated Typst, PDFs, page-specific text, PDF properties,
+font reports, bounding boxes, page images and logs are retained. Visual review
+of academic first-disclaimer/title pages, anonymous content and brief output
+including its last disclaimer confirms readable layout without clipping or
+overlap. The first-disclaimer manuscript retains Roman `ii` on physical page 2.
+
+### Scope and remaining verification
+
+The required nine-case CI matrix is unchanged: Ubuntu/1.4.11, Ubuntu/1.10.19,
+Windows/1.10.19. **No fresh hosted or Windows result is claimed for this working
+tree.** That verification remains for the next authorized push/PR; earlier green
+runs certify their own commits only.
+
+Static preflight still rejects effective dynamic/local publication overrides.
+Direct modern Quarto users must enable citeproc for inline references; on
+Quarto 1.4.11 use the R render helpers. Existing projects retain copied extensions:
+back up and replace `_extensions/typstR/` as documented, without replacing their
+manuscript, bibliography or configuration. Authors must review identifying body
+text and publication statements. No commit, push, release tag or CRAN submission
+was performed for this corrective tree.

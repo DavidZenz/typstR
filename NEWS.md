@@ -3,6 +3,19 @@
 First release preparation; CRAN submission and acceptance are not yet recorded.
 Planning milestones v1.0–v1.5 are internal identifiers, not package versions.
 
+## Metadata precedence, inline references and disclaimers
+
+- Share Quarto's `.yml`-before-`.yaml` selection across project, local and directory
+  metadata. Ignore shadowed siblings and fail on malformed selected files,
+  preventing anonymous preflight reports from disagreeing with rendered authors.
+- Carry approved anonymization into render metadata and select citeproc for
+  inline references automatically in the R helpers. Diagnose explicit disabling
+  with inline references; retain native bibliography-only behavior.
+- Place first-position disclaimers on physical page 1 without an extra blank page,
+  preserving headers, footers and the manuscript's numbering pattern/counter.
+- Extend the existing nine-case PDF matrix with metadata conflicts, inline/mixed
+  citations and physical-page assertions; public APIs and CLI minimum are unchanged.
+
 ## Audit corrections
 
 - Fix singleton keyword/JEL rendering, pass through Quarto page, font, numbering,

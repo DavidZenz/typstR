@@ -11,6 +11,10 @@
 #' @param open If `TRUE`, opens the rendered PDF in the system viewer.
 #'   Defaults to `TRUE` in interactive sessions.
 #' @return `NULL`, invisibly.
+#' @details
+#' Documents with inline `references` use citeproc automatically; an explicit
+#' `citeproc: false` is rejected before rendering. Bibliography-only documents
+#' retain the native Typst bibliography unless citeproc is explicitly enabled.
 #' @examples
 #' \dontrun{
 #' render_pub("my-working-paper/template.qmd", quiet = TRUE, open = FALSE)
@@ -36,6 +40,19 @@ render_pub <- function(input = NULL, output_format = NULL, quiet = FALSE,
     render_metadata$typstR <- list(logo = as.character(
       fs::path_rel(report$metadata$typstR$logo, start = context$manuscript_dir)
     ))
+  }
+
+  if (!is.null(report$metadata$references)) {
+    # Older Quarto runs citeproc before cross-reference processing and its Typst
+    # writer ignores resolved Cite content. The bundled Lua filter handles both.
+    render_metadata$citeproc <- FALSE
+    render_metadata$format <- list(`typstR-typst` = list(citeproc = FALSE))
+    render_metadata[["typstr-inline-citeproc"]] <- TRUE
+  }
+  # Carry an approved anonymous setting into Quarto as an additional safeguard.
+  # Never force an identified setting over a potentially private configuration.
+  if (isTRUE(report$metadata$typstR$anonymized)) {
+    render_metadata[["typstR"]][["anonymized"]] <- TRUE
   }
 
   # Render via quarto R package (never shell out directly)

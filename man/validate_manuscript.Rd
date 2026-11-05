@@ -34,7 +34,9 @@ order. Relative resource paths are based on the configuration file that
 declares them. Profiles, local configuration, executable YAML, metadata-files,
 and generated resources are not supported by this static preflight. Empty or
 editor-only local configuration is allowed. Boolean fields require unquoted
-\code{true} or \code{false}.
+\code{true} or \code{false}. At each directory, \code{.yml} takes precedence over \code{.yaml};
+shadowed siblings are ignored. Inline references select citeproc for the
+render helpers unless explicitly disabled, which is diagnosed before rendering.
 See the getting-started article for the validation contract and limitations.
 }
 \examples{

@@ -74,3 +74,15 @@ metadata, preserved subtitle markup, format-specific anonymization precedence,
 and a conflicting local override followed by an editor-only override. The unit
 suite covers both local suffixes, ambiguous YAML boolean spellings, negative
 citations, indented code and HTML comments. The matrix size is unchanged.
+
+November 5 regressions use conflicting `_metadata.yml`/`.yaml` siblings in the
+anonymous cases and nested identified articles. The identified working paper
+combines external and inline references, including a shared cross-reference/
+citation group; the article uses inline references with explicit citeproc enabled;
+the brief retains native bibliography-only output. These cases also reject
+duplicate bibliography entries. First-position disclaimers in working papers
+are checked page by page, including a minimal two-page anonymous document,
+preserved headers/footers and the manuscript page counter. Identified articles
+and briefs retain last-position disclaimers; other anonymous cases disable them.
+The ordinary suite covers selected versus shadowed configuration files and the
+early diagnostic for explicitly disabling citeproc with inline references.

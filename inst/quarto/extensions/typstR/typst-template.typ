@@ -9,3 +9,8 @@ $endif$
 // Typst expects labels; keep the adapter valid for either writer generation.
 #let typstr-cite = cite
 #let cite(key, ..options) = typstr-cite(if type(key) == str { label(key) } else { key }, ..options)
+
+// Header definitions must precede the publication show rule on every Quarto.
+$for(typstr-header-includes)$
+$typstr-header-includes$
+$endfor$

@@ -85,7 +85,11 @@ typstR:
 ```
 
 `disclaimer-page` adds a notice at the end by default. Set
-`disclaimer-position: first` to place it ahead of the main manuscript.
+`disclaimer-position: first` to place it on physical page 1, followed directly
+by the manuscript, without a leading blank page. Disclaimer pages suppress their
+page numbers; the manuscript retains its configured numbering pattern and page
+counter (so after one first-position disclaimer its first physical page is 2).
+Configured headers and footers remain available on the disclaimer page.
 
 ## Render only when Quarto is available
 

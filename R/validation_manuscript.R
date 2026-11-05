@@ -17,7 +17,9 @@
 #' declares them. Profiles, local configuration, executable YAML, metadata-files,
 #' and generated resources are not supported by this static preflight. Empty or
 #' editor-only local configuration is allowed. Boolean fields require unquoted
-#' `true` or `false`.
+#' `true` or `false`. At each directory, `.yml` takes precedence over `.yaml`;
+#' shadowed siblings are ignored. Inline references select citeproc for the
+#' render helpers unless explicitly disabled, which is diagnosed before rendering.
 #' See the getting-started article for the validation contract and limitations.
 #' @examples
 #' \dontrun{
@@ -226,8 +228,7 @@ validate_manuscript_context <- function(context, output_format, check_environmen
   dirs <- context$manuscript_dir
   while (!identical(dirs[[1]], context$project_dir)) dirs <- c(dirname(dirs[[1]]), dirs)
   for (dir in dirs) {
-    candidates <- file.path(dir, c("_metadata.yml", "_metadata.yaml"))
-    sources <- c(sources, candidates[file.exists(candidates)])
+    sources <- c(sources, quarto_config_file(dir, "_metadata"))
   }
   meta <- list()
   for (file in sources) meta <- merge_manuscript_metadata(meta, read_metadata(file))
@@ -255,10 +256,9 @@ validate_manuscript_context <- function(context, output_format, check_environmen
   # Quarto discovers either suffix independently of the main config suffix.
   # Static preflight cannot safely evaluate local publication/profile overrides
   # on every supported Quarto version. Empty/editor-only files do not affect it.
-  local_configs <- if (is.null(context$project_file)) character() else
-    file.path(context$project_dir, c("_quarto.yml.local", "_quarto.yaml.local"))
-  # Quarto selects .yml.local before .yaml.local when both exist.
-  for (file in utils::head(local_configs[file.exists(local_configs)], 1L)) {
+  local_config <- if (is.null(context$project_file)) NULL else
+    quarto_config_file(context$project_dir, suffix = ".local")
+  for (file in local_config) {
     local <- read_metadata(file)
     if (length(setdiff(names(local), "editor"))) {
       add("manuscript_unsupported", "Local project overrides may change the effective publication settings.",
@@ -291,7 +291,7 @@ validate_manuscript_context <- function(context, output_format, check_environmen
   } else if (is_yaml_mapping(meta$format) && !is.null(meta$format[[formats]]) && !identical(meta$format[[formats]], "default")) {
     add("manuscript_format_invalid", "Format options must be a mapping or default.", "format")
   }
-  for (key in intersect(names(meta), c("number-sections", "toc", "keep-typ"))) {
+  for (key in intersect(names(meta), c("number-sections", "toc", "keep-typ", "citeproc"))) {
     if (!is_logical_scalar(meta[[key]])) {
       add("manuscript_metadata_invalid", paste(key, "must use the unquoted YAML booleans true or false."), key)
     }
@@ -412,6 +412,16 @@ validate_manuscript_context <- function(context, output_format, check_environmen
       add("manuscript_metadata_invalid", "Inline references must be a sequence of mappings with text IDs.", "references")
     } else if (anyDuplicated(vapply(refs, `[[`, character(1), "id"))) {
       add("manuscript_metadata_invalid", "Inline reference IDs must be unique.", "references")
+    }
+  }
+  # Native Typst bibliography rendering cannot consume inline CSL references.
+  # Select citeproc for these documents only; preserve native .bib workflows.
+  if (!is.null(meta$references)) {
+    if (identical(meta$citeproc, FALSE)) {
+      add("manuscript_unsupported", "Inline references require citeproc: true.", "citeproc",
+          hint = "Remove citeproc: false to let render_pub() select citeproc, or explicitly set citeproc: true in the selected format.")
+    } else if (is.null(meta$citeproc)) {
+      meta$citeproc <- TRUE
     }
   }
   if (!is.null(typ$logo)) check_resource(typ$logo, "typstR.logo")
