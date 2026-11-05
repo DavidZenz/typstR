@@ -77,6 +77,14 @@ resolve_input <- function(input) {
   as.character(fs::path_real(input))
 }
 
+# Quarto selects the first existing sibling; it never merges both suffixes.
+# Share this rule across project, local and per-directory configuration.
+quarto_config_file <- function(directory, stem = "_quarto", suffix = "") {
+  candidates <- file.path(directory, paste0(stem, c(".yml", ".yaml"), suffix))
+  found <- candidates[file.exists(candidates)]
+  if (length(found)) found[[1L]] else NULL
+}
+
 # Resolve from the manuscript, never from the caller's working directory. The
 # nearest project configuration is the boundary for extension discovery.
 resolve_render_context <- function(input) {
@@ -90,10 +98,9 @@ resolve_render_context <- function(input) {
     if (is.null(extension_dir) && file.exists(file.path(current, "_extensions", "typstR", "_extension.yml"))) {
       extension_dir <- current
     }
-    configs <- file.path(current, c("_quarto.yml", "_quarto.yaml"))
-    configs <- configs[file.exists(configs)]
-    if (length(configs)) {
-      project_file <- configs[[1]]
+    config <- quarto_config_file(current)
+    if (!is.null(config)) {
+      project_file <- config
       break
     }
     parent <- dirname(current)

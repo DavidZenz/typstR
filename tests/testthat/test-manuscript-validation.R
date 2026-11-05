@@ -244,3 +244,57 @@ test_that("citation scanning distinguishes comments, indented code and suppresse
     expect_true("DIAG-MANUSCRIPT-004" %in% manuscript_codes(manuscript_fixture(body = body)))
   }
 })
+
+
+test_that("Quarto filename precedence is shared across project, local and directory YAML", {
+  file <- manuscript_fixture(c("title: Test", "format: typstR-typst", "author: Ada"))
+  root <- dirname(file)
+  writeLines("project: {type: default}", file.path(root, "_quarto.yml"))
+  # Ignored siblings must not contribute metadata, errors or dynamic settings.
+  writeLines("title: [broken", file.path(root, "_quarto.yaml"))
+  writeLines("editor: source", file.path(root, "_quarto.yml.local"))
+  writeLines("profile: review", file.path(root, "_quarto.yaml.local"))
+  for (anonymous in c(FALSE, TRUE)) {
+    canonical <- paste0("typstR: {anonymized: ", tolower(as.character(anonymous)), "}")
+    shadow <- paste0("typstR: {anonymized: ", tolower(as.character(!anonymous)), "}")
+    writeLines(canonical, file.path(root, "_metadata.yml"))
+    writeLines(shadow, file.path(root, "_metadata.yaml"))
+    expect_identical(validate_manuscript(file)$metadata$typstR$anonymized, anonymous)
+  }
+  writeLines("metadata-files: ignored.yml", file.path(root, "_metadata.yaml"))
+  expect_true(validate_manuscript(file)$ok)
+  nested <- file.path(root, "nested")
+  dir.create(nested)
+  nested_file <- file.path(nested, "paper.qmd")
+  writeLines(c("---", "title: Nested", "format: typstR-typst", "---", "Body"), nested_file)
+  writeLines("typstR: {anonymized: false}", file.path(nested, "_metadata.yaml"))
+  expect_false(validate_manuscript(nested_file)$metadata$typstR$anonymized)
+  writeLines("format: {typstR-typst: {typstR: {anonymized: true}}}", file.path(nested, "_metadata.yml"))
+  expect_true(validate_manuscript(nested_file)$metadata$typstR$anonymized)
+  writeLines("typstR: [broken", file.path(nested, "_metadata.yml"))
+  err <- tryCatch(validate_manuscript(nested_file), error = identity)
+  expect_s3_class(err, "typstR_diagnostics_error")
+  expect_identical(err$diagnostics[[1]]$code, "DIAG-MANUSCRIPT-001")
+  writeLines("metadata-files: unsafe.yml", file.path(nested, "_metadata.yml"))
+  expect_true("DIAG-MANUSCRIPT-005" %in% manuscript_codes(nested_file))
+})
+
+test_that("inline reference policy selects citeproc without altering bibliography-only documents", {
+  file <- manuscript_fixture(c("title: Inline", "format: typstR-typst",
+                              "references: [{id: doe2020, title: Example}]"), body = "[@doe2020]")
+  expect_true(validate_manuscript(file)$metadata$citeproc)
+  lines <- readLines(file)
+  writeLines(sub("format: typstR-typst", "format: {typstR-typst: {citeproc: true}}", lines, fixed = TRUE), file)
+  expect_true(validate_manuscript(file)$metadata$citeproc)
+  writeLines(sub("format: typstR-typst", "format: {typstR-typst: {citeproc: false}}", lines, fixed = TRUE), file)
+  err <- tryCatch(validate_manuscript(file), error = identity)
+  expect_s3_class(err, "typstR_diagnostics_error")
+  expect_identical(err$diagnostics[[1]]$location$field, "citeproc")
+  expect_match(err$diagnostics[[1]]$hint, "citeproc: true", fixed = TRUE)
+  file <- manuscript_fixture(c("title: External", "format: typstR-typst", "bibliography: refs.bib"), body = "[@smith2020]")
+  writeLines("", file.path(dirname(file), "refs.bib"))
+  expect_null(validate_manuscript(file)$metadata$citeproc)
+  writeLines(c("---", "title: Mixed", "format: typstR-typst", "bibliography: refs.bib",
+               "references: [{id: doe2020, title: Example}]", "---", "[@smith2020; @doe2020] and @sec-data"), file)
+  expect_true(validate_manuscript(file)$metadata$citeproc)
+})

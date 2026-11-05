@@ -59,12 +59,40 @@ run_pdf_audit_case <- function(out, variant, mode, rasterize = FALSE) {
     typ$`accent-color` <- "#002147"
     typ$`disclaimer-page` <- TRUE
     typ$`disclaimer-text` <- "AuditDisclaimer"
-    config$bibliography <- "references.bib"
+    if (variant != "article") config$bibliography <- "references.bib"
+    if (variant == "workingpaper") typ$`disclaimer-position` <- "first"
+  }
+  if (variant == "workingpaper") {
+    meta$`include-in-header` <- list(text = "#set page(header: [AuditHeader])")
+  }
+  if (variant == "workingpaper" && anonymous) {
+    typ$`disclaimer-page` <- TRUE
+    typ$`disclaimer-position` <- "first"
+    typ$`disclaimer-text` <- "AuditFirstDisclaimer"
   }
   # Inherited project metadata must survive document-level format options.
   # Format-specific document values must win over inherited anonymization.
   typ$anonymized <- !anonymous
   meta$format$`typstR-typst`$typstR <- list(anonymized = anonymous)
+  if (anonymous || variant == "article") {
+    # Remove the document override so filename selection determines anonymity.
+    meta$format$`typstR-typst`$typstR <- NULL
+    directory_meta <- list(typstR = list(anonymized = anonymous))
+    if (variant == "article") {
+      writeLines(audit_yaml(list(typstR = list(anonymized = !anonymous))), file.path(project, "_metadata.yml"), useBytes = TRUE)
+      directory_meta <- list(format = list(`typstR-typst` = directory_meta))
+    }
+    writeLines(audit_yaml(directory_meta), file.path(dir, "_metadata.yml"), useBytes = TRUE)
+    writeLines(audit_yaml(list(typstR = list(anonymized = !anonymous))), file.path(dir, "_metadata.yaml"), useBytes = TRUE)
+  }
+  if (numbered && variant != "brief") {
+    meta$references <- list(list(id = "doe2020", type = "article-journal",
+                                title = "AuditInlineReference",
+                                author = list(list(family = "InlineAuthor", given = "Jane")),
+                                issued = list(`date-parts` = list(list(2020L)))))
+    # Mixed working papers exercise automatic selection; articles opt in explicitly.
+    if (variant == "article") meta$format$`typstR-typst`$citeproc <- TRUE
+  }
   config$typstR <- typ
   meta$typstR <- NULL
   writeLines(audit_yaml(config), file.path(project, "_quarto.yml"), useBytes = TRUE)
@@ -79,9 +107,11 @@ run_pdf_audit_case <- function(out, variant, mode, rasterize = FALSE) {
             appendix("AuditData"), "", "AppendixBody", "",
             heading("AuditDetail", level + 1L), "", "NestedBody", "",
             capture.output(appendix_title("AuditMethods", level)), "", "MethodsBody")
-  if (numbered) body <- c(body, "", "Citation resolves to @smith2020. Footnote marker.[^audit]",
+  citation <- if (variant == "article") "[@doe2020]" else if (variant == "workingpaper") "[@smith2020; @doe2020]" else "@smith2020"
+  if (numbered) body <- c(body, "", paste("Citation resolves to", citation, ". Footnote marker.[^audit]"),
                           "", "[^audit]: AuditFootnote", "",
                           "| AuditTable | Estimate |", "|:--|--:|", "| Treatment | 1.25 |")
+  if (numbered && variant == "workingpaper") body <- c(body, "", "CrossAndCite [@eq-audit; @doe2020].")
   writeLines(c("---", audit_yaml(meta), "---", "", body), input, useBytes = TRUE)
   if (variant == "article" && anonymous) {
     override <- file.path(project, "_quarto.yaml.local")
@@ -122,7 +152,8 @@ run_pdf_audit_case <- function(out, variant, mode, rasterize = FALSE) {
   assert(grepl('AuditTitle "quoted": \u00dcber', title_text, fixed = TRUE), "literal title changed")
   assert(grepl("AuditSubtitle bold", flat, fixed = TRUE), "formatted subtitle missing")
   if (!anonymous) assert(grepl('SecretInstitute "quoted" & Research', title_text, fixed = TRUE), "literal affiliation changed")
-  assert(!grepl("@eq-audit|\\?\\?", flat), "unresolved cross-reference")
+  assert(grepl("BodyMarker sees Equation 1.", flat, fixed = TRUE), "cross-reference content was lost")
+  assert(!grepl("@eq-audit|@doe2020|@smith2020|\\?\\?", flat), "unresolved cross-reference or citation")
   secret <- c("SecretAuthor", "SecretInstitute", "secret@example.org", "0000-0001-2345-6789", "SecretAcknowledgement")
   if (anonymous) {
     combined <- paste(flat, paste(info, collapse = " "))
@@ -150,10 +181,25 @@ run_pdf_audit_case <- function(out, variant, mode, rasterize = FALSE) {
     assert(grepl("F10", flat, fixed = TRUE) == (variant != "brief"), "JEL variant behavior changed")
     assert(grepl("AuditReport", flat, fixed = TRUE) == (variant != "article"), "report-number variant behavior changed")
     assert(grepl("AuditContents", flat, fixed = TRUE), "TOC is missing")
-    for (token in c("AuditFooter", "AuditDisclaimer", "AuditFootnote", "AuditTable", "1.25", "Smith")) {
+    for (token in c("AuditFooter", "AuditDisclaimer", "AuditFootnote", "AuditTable", "1.25", if (variant != "article") "Smith")) {
       assert(grepl(token, flat, fixed = TRUE), paste("enriched content missing:", token))
     }
-    assert(any(grepl(">i</word>", bbox, fixed = TRUE)), "page-numbering pattern was ignored")
+    if (variant != "brief") {
+      assert(grepl("AuditInlineReference", flat, fixed = TRUE), "inline reference title missing")
+      assert(lengths(regmatches(flat, gregexpr("AuditInlineReference", flat, fixed = TRUE))) == 1L,
+             "inline bibliography entry was duplicated")
+      assert(grepl("InlineAuthor", flat, fixed = TRUE), "inline citation author missing")
+      if (variant == "workingpaper") {
+        assert(grepl("CrossAndCite Equation 1; (InlineAuthor 2020).", flat, fixed = TRUE),
+               "mixed cross-reference/citation group was lost")
+      }
+    } else {
+      # Early Pandoc omits the author prefix for textual native Typst cites.
+      assert(grepl("Citation resolves to (J[.] Smith )?\\[1\\]", flat),
+             "native numeric bibliography style changed")
+    }
+    numeral <- if (variant == "workingpaper") ">ii</word>" else ">i</word>"
+    assert(any(grepl(numeral, bbox, fixed = TRUE)), "page-numbering pattern was ignored")
     assert(regexpr("AuditAbstract", flat)[[1]] < regexpr("AuditContents", flat)[[1]], "TOC precedes abstract")
     outline <- strsplit(flat, "AuditContents", fixed = TRUE)[[1]][[2]]
     outline <- strsplit(outline, "BodyMarker", fixed = TRUE)[[1]][[1]]
@@ -171,6 +217,33 @@ run_pdf_audit_case <- function(out, variant, mode, rasterize = FALSE) {
     footer_y <- as.numeric(sub('.*yMin="([^"]+)".*', "\\1", footer_words))
     assert(!any(footer_y > 720), "disabled page numbering appears")
   }
+  # Inspect physical pages as well as the flattened text: blank first pages
+  # and misplaced numbering are otherwise invisible to content assertions.
+  page_count <- as.integer(sub("^Pages:[[:space:]]+", "", info[grepl("^Pages:", info)]))
+  pages <- lapply(seq_len(page_count), function(n) extract("pdftotext", c("-f", n, "-l", n, "-layout", shQuote(pdf), "-")))
+  page_flat <- vapply(pages, function(x) gsub("[[:space:]]+", " ", paste(x, collapse = " ")), character(1))
+  writeLines(unlist(Map(function(n, x) c(paste("PAGE", n), x), seq_along(pages), pages)), file.path(out, paste0(id, "-pages.txt")))
+  for (content in page_flat) {
+    assert(grepl("AuditTitle|BodyMarker|AppendixBody|AuditTable|AuditDisclaimer|AuditFirstDisclaimer|Bibliography|References|AuditFunding|AuditDataStatement|AuditCodeStatement", content), "empty physical page")
+  }
+  first_disclaimer <- variant == "workingpaper"
+  disclaimer <- if (anonymous) "AuditFirstDisclaimer" else "AuditDisclaimer"
+  if (first_disclaimer) {
+    assert(grepl(disclaimer, page_flat[[1]], fixed = TRUE), "first disclaimer is not on physical page 1")
+    assert(!grepl("AuditTitle", page_flat[[1]], fixed = TRUE), "disclaimer shares the manuscript title page")
+    assert(grepl("AuditTitle", page_flat[[2]], fixed = TRUE), "manuscript does not follow first disclaimer")
+    assert(!any(grepl("^[ivxlcdm0-9]+$", trimws(pages[[1]]))), "first disclaimer has a page number")
+    assert(all(vapply(page_flat[1:2], grepl, logical(1), pattern = "AuditHeader", fixed = TRUE)), "header was lost")
+    if (anonymous) assert(page_count == 2L, "minimal first-disclaimer document is not exactly two pages")
+    else {
+      assert(all(vapply(page_flat[1:2], grepl, logical(1), pattern = "AuditFooter", fixed = TRUE)), "footer was lost")
+      assert(any(trimws(pages[[2]]) == "ii"), "manuscript page counter was reset")
+    }
+  } else if (numbered) {
+    assert(grepl(disclaimer, tail(page_flat, 1), fixed = TRUE), "last disclaimer moved")
+    assert(!grepl("AuditTitle", tail(page_flat, 1), fixed = TRUE), "last disclaimer shares title page")
+    assert(!any(grepl("^[ivxlcdm0-9]+$", trimws(tail(pages, 1)[[1]]))), "last disclaimer has a page number")
+  } else assert(!grepl("Audit(First)?Disclaimer", flat), "disabled disclaimer appears")
   file.copy(pdf, file.path(out, paste0(id, ".pdf")), overwrite = TRUE)
   if (rasterize && system2("pdftoppm", c("-scale-to", "1200", "-png", shQuote(pdf), shQuote(file.path(out, id))))) stop("Rasterization failed")
   invisible(pdf)

@@ -30,6 +30,11 @@ Defaults to \code{TRUE} in interactive sessions.}
 Renders a Quarto document using the Quarto CLI after running the shared
 environment validation checks that typstR uses before rendering.
 }
+\details{
+Documents with inline \code{references} use citeproc automatically; an explicit
+\code{citeproc: false} is rejected before rendering. Bibliography-only documents
+retain the native Typst bibliography unless citeproc is explicitly enabled.
+}
 \examples{
 \dontrun{
 render_pub("my-working-paper/template.qmd", quiet = TRUE, open = FALSE)

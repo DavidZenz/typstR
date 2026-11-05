@@ -8,6 +8,9 @@ contributes:
       number-sections: true
       section-numbering: "1.1"
       page-numbering: "1"
+      # Preserve native Typst bibliography output. R render helpers select
+      # citeproc automatically for inline references, including Quarto 1.4.11.
+      # Direct modern Quarto users can set true; on 1.4.11 use the R helpers.
       citeproc: false
       filters:
         - appendix.lua

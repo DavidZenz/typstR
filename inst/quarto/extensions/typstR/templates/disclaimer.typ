@@ -7,13 +7,13 @@
 
 // render-disclaimer(text, position, enabled)
 //
-// Renders a standalone disclaimer page (preceded by a page break).
+// Renders a standalone disclaimer page, without a leading empty page.
 // The caller is responsible for calling this function at the correct position
 // in the document (before the body for position == "first", after for "last").
 //
 // Parameters:
 //   text     — disclaimer text content; if none, uses default: value above
-//   position — "first" or "last" (informational only; not used here — caller branches)
+//   position — "first" avoids a leading pagebreak; "last" follows the manuscript
 //   enabled  — boolean; if false returns immediately without rendering anything
 #let render-disclaimer(
   disclaimer-text: none,
@@ -24,7 +24,7 @@
 
   let disclaimer-content = if disclaimer-text != none { disclaimer-text } else { default-disclaimer-text }
 
-  pagebreak()
+  if position != "first" { pagebreak() }
   {
     set page(numbering: none)
     align(center + horizon)[
